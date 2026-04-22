@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KRV & Co. — SME Market Intelligence</title>
+<!-- Adobe Typekit -->
+<script>
+(function(d){var config={kitId:'lso5kkg',scriptTimeout:3000,async:true},h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)})(document);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:      #0d1f17;   /* darkened #142D23 for depth */
+  --card:    #142D23;   /* KRV Primary Green */
+  --card2:   #1a3829;
+  --cream:   #F7F3E7;   /* KRV Secondary */
+  --hi:      #E7F0EB;   /* KRV Highlight */
+  --accent:  #4A8F7E;   /* KRV Accent */
+  --cream-dim: rgba(247,243,231,0.55);
+  --cream-faint: rgba(247,243,231,0.15);
+  --border:  rgba(247,243,231,0.1);
+  --gold:    #C49A2A;
+  --red:     #8B2E2E;
+  --cost1:   #4A8F7E;
+  --cost2:   #2e8068;
+  --cost3:   #1e6b52;
+  --cost4:   #2a5040;
+  --serif: 'miller-display', 'Georgia', serif;
+  --sans:  'articulat-cf', 'Inter', sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--cream);
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:300;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── PAGE STRUCTURE ── */
+.page{padding:44px 48px 72px;}
+.page+.page{
+  border-top:1px solid rgba(247,243,231,0.06);
+  padding-top:56px;
+}
+
+/* ── HEADER ── */
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:32px;
+  border-bottom:1px solid var(--border);
+  padding-bottom:24px;
+}
+.kicker{
+  font-family:var(--sans);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.2em;
+  color:var(--accent);margin-bottom:8px;
+}
+.h-title{
+  font-family:var(--serif);font-style:italic;
+  font-size:44px;font-weight:400;
+  color:var(--cream);line-height:1.05;margin-bottom:6px;
+}
+.h-sub{
+  font-size:12px;font-weight:300;
+  color:var(--cream-dim);letter-spacing:0.03em;
+}
+.h-stat-label{
+  font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--accent);margin-bottom:4px;text-align:right;
+}
+.h-stat{
+  font-family:var(--serif);font-style:italic;
+  font-size:60px;font-weight:400;
+  line-height:1;text-align:right;
+}
+.h-stat-sub{font-size:11px;font-weight:300;color:var(--cream-dim);margin-top:3px;text-align:right;}
+.h-stat.neg{color:#c05040;}
+.h-stat.pos{color:var(--accent);}
+
+/* ── INSIGHT BAR ── */
+.insight-bar{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-left:3px solid var(--gold);
+  padding:14px 20px;margin-bottom:32px;
+  display:flex;align-items:flex-start;gap:20px;
+}
+.ib-tag{
+  font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--gold);white-space:nowrap;padding-top:2px;
+}
+.ib-text{font-size:12px;font-weight:300;color:var(--cream-dim);line-height:1.65;}
+.ib-text strong{color:var(--cream);font-weight:600;}
+
+/* ── GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.full{grid-column:1/-1;}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--border);padding:26px;}
+.card-label{
+  font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.2em;
+  color:var(--accent);margin-bottom:5px;
+}
+.card-title{
+  font-family:var(--serif);font-style:italic;
+  font-size:18px;font-weight:400;
+  color:var(--cream);line-height:1.25;margin-bottom:18px;
+}
+
+/* ── ANATOMY TABLE ── */
+.anat-row{display:flex;align-items:stretch;border-bottom:1px solid var(--border);}
+.anat-row:last-child{border-bottom:none;}
+.anat-sw{width:3px;flex-shrink:0;}
+.anat-body{flex:1;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.anat-lbl{font-size:11px;font-weight:300;color:var(--cream-dim);line-height:1.4;}
+.anat-lbl strong{display:block;font-size:12px;font-weight:600;color:var(--cream);margin-bottom:1px;}
+.anat-lbl .why{font-size:10px;color:var(--accent);font-style:italic;font-family:var(--serif);}
+.anat-val{
+  font-family:var(--serif);font-style:italic;
+  font-size:20px;color:var(--cream);
+  white-space:nowrap;text-align:right;
+}
+.anat-val .u{font-size:10px;font-family:var(--sans);font-style:normal;color:var(--cream-dim);}
+
+.sum-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 14px;margin-top:8px;
+  background:var(--card2);
+}
+.sum-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--cream-dim);}
+.sum-val{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--cream);}
+
+.yield-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 14px;margin-top:6px;
+  border:1px solid rgba(74,143,126,0.35);background:rgba(74,143,126,0.07);
+}
+.yield-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--accent);}
+.yield-val{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--accent);}
+
+.gap-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 14px;margin-top:6px;
+  background:rgba(139,46,46,0.1);border:1px solid rgba(139,46,46,0.3);
+}
+.gap-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:#c05040;}
+.gap-val{font-family:var(--serif);font-style:italic;font-size:26px;color:#c05040;}
+
+/* ── EVENT PILLS ── */
+.events{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+.ep{background:var(--card2);border:1px solid var(--border);padding:10px 14px;flex:1;min-width:155px;}
+.ep-date{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--accent);margin-bottom:3px;}
+.ep-head{font-size:12px;font-weight:600;color:var(--cream);}
+.ep-sub{font-size:10px;font-weight:300;color:var(--cream-dim);margin-top:2px;}
+
+/* ── LEGEND ── */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;}
+.li{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:300;color:var(--cream-dim);}
+.li-dot{width:10px;height:10px;flex-shrink:0;}
+.li-line{width:20px;height:2px;flex-shrink:0;}
+.li-dash{width:20px;height:0;flex-shrink:0;border-top:2px dashed var(--gold);}
+
+/* ── GAUGE ── */
+.gauge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.gauge-card{background:var(--card);border:1px solid var(--border);padding:24px 20px;text-align:center;}
+.gc-country{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.2em;color:var(--accent);margin-bottom:14px;}
+.gc-wrap{position:relative;width:160px;height:90px;margin:0 auto 10px;}
+.gc-num{
+  position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  font-family:var(--serif);font-style:italic;font-size:26px;color:var(--cream);
+  line-height:1;white-space:nowrap;
+}
+.gc-unit{font-size:10px;font-style:normal;font-family:var(--sans);color:var(--cream-dim);}
+.gc-sub{font-size:10px;font-weight:300;color:var(--cream-dim);margin-bottom:8px;}
+.gc-badge{display:inline-block;padding:3px 10px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;}
+.badge-r{background:rgba(139,46,46,0.18);color:#c05040;}
+.badge-a{background:rgba(196,154,42,0.15);color:var(--gold);}
+.badge-g{background:rgba(74,143,126,0.15);color:var(--accent);}
+.gc-stats{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:7px;text-align:left;}
+.gc-row{display:flex;justify-content:space-between;}
+.gc-lbl{font-size:10px;font-weight:300;color:var(--cream-dim);}
+.gc-val{font-size:10px;font-weight:600;color:var(--cream);}
+
+/* ── SCALE BAR ── */
+.scale-bar{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+.sb-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);}
+.sb-item{display:flex;align-items:center;gap:8px;}
+.sb-dot{width:10px;height:10px;flex-shrink:0;}
+.sb-text{font-size:11px;font-weight:300;color:var(--cream-dim);}
+.sb-bench{font-size:10px;font-weight:300;color:var(--cream-dim);font-style:italic;font-family:var(--serif);margin-left:auto;}
+
+/* ── FOOTNOTE ── */
+.footnote{
+  padding:24px 48px 48px;
+  border-top:1px solid var(--border);
+  font-size:10px;font-weight:300;
+  color:rgba(247,243,231,0.4);
+  line-height:1.8;
+}
+.footnote strong{color:var(--accent);font-weight:500;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  CHART C — WHY BANKS DON'T LEND TO SMEs
+════════════════════════════════════════ -->
+<div class="page" id="chart-c">
+
+  <div class="header">
+    <div>
+      <div class="kicker">KRV &amp; Co. — Private Market Pulse</div>
+      <div class="h-title">Why Banks Don't Lend to SMEs</div>
+      <div class="h-sub">Thailand SME Lending Economics · Cost Anatomy vs. Yield · 2024–2026</div>
+    </div>
+    <div>
+      <div class="h-stat-label">Bank Spread on SME Loans</div>
+      <div class="h-stat neg">−2.5%</div>
+      <div class="h-stat-sub">mid-point spread · range −1% to −5% · structurally loss-making</div>
+    </div>
+  </div>
+
+  <div class="insight-bar">
+    <div class="ib-tag">The Core Problem</div>
+    <div class="ib-text">
+      The Bank of Thailand cut its policy rate to a historic low of <strong>1.00%</strong> in February 2026 — and SME credit contracted further.
+      <strong>Cheap money was never the constraint.</strong>
+      Every baht of SME lending costs Thai banks <strong>9.5–13.5%</strong> to extend against a portfolio yield of <strong>8–10%</strong> —
+      a mid-point cost of <strong>11.5%</strong> against a mid-point yield of <strong>9%</strong>.
+      The implied loss is structural, embedded in four cost layers no rate cut can dissolve.
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- LEFT: anatomy -->
+    <div class="card">
+      <div class="card-label">Cost Decomposition</div>
+      <div class="card-title">What it costs a Thai bank to make one SME loan</div>
+      <div class="anat-row">
+        <div class="anat-sw" style="background:#4A8F7E;"></div>
+        <div class="anat-body">
+          <div class="anat-lbl"><strong>Operating &amp; Origination Cost</strong>Loan officers · due diligence · documentation · monitoring<div class="why">Small-ticket loans carry the same fixed cost as large ones — per-baht cost is highest for SMEs.</div></div>
+          <div class="anat-val">3.0–4.0<span class="u">%</span></div>
+        </div>
+      </div>
+      <div class="anat-row">
+        <div class="anat-sw" style="background:#2e8068;"></div>
+        <div class="anat-body">
+          <div class="anat-lbl"><strong>Provisioning &amp; Credit Loss</strong>NPL reserve · Stage 2 migration · write-offs<div class="why">SME NPL ratio at 7.2%; Stage 2 loans at 11.7% of book (BOT FS Review, Q3 2025).</div></div>
+          <div class="anat-val">2.5–4.0<span class="u">%</span></div>
+        </div>
+      </div>
+      <div class="anat-row">
+        <div class="anat-sw" style="background:#1e6b52;"></div>
+        <div class="anat-body">
+          <div class="anat-lbl"><strong>Cost of Funds</strong>Deposit rates + wholesale funding cost<div class="why">Banks pay depositors to hold the money they lend out.</div></div>
+          <div class="anat-val">2.5–3.5<span class="u">%</span></div>
+        </div>
+      </div>
+      <div class="anat-row">
+        <div class="anat-sw" style="background:#2a5040;"></div>
+        <div class="anat-body">
+          <div class="anat-lbl"><strong>Basel III Capital Charge</strong>85–100% risk weight on unrated SMEs vs. 20% for AA corporates<div class="why">Regulatory architecture forces banks to hold 4–5× more capital against SME loans than large-corp loans.</div></div>
+          <div class="anat-val">1.5–2.0<span class="u">%</span></div>
+        </div>
+      </div>
+      <div class="sum-row"><div class="sum-lbl">Total Cost to Extend</div><div class="sum-val">9.5–13.5%</div></div>
+      <div class="yield-row"><div class="yield-lbl">SME Loan Portfolio Yield</div><div class="yield-val">8–10%</div></div>
+      <div class="gap-row"><div class="gap-lbl">▼ Negative Spread (Loss Per Loan)</div><div class="gap-val">−1% to −5%</div></div>
+    </div>
+
+    <!-- RIGHT: stacked bar -->
+    <div class="card">
+      <div class="card-label">Visual Anatomy</div>
+      <div class="card-title">Cost stack vs. SME yield — where the loss is made</div>
+      <div style="position:relative;height:320px;"><canvas id="chartC1"></canvas></div>
+      <div class="legend">
+        <div class="li"><div class="li-dot" style="background:#4A8F7E;"></div>Operating &amp; Origination (highest cost)</div>
+        <div class="li"><div class="li-dot" style="background:#2e8068;"></div>Provisioning &amp; Credit Loss</div>
+        <div class="li"><div class="li-dot" style="background:#1e6b52;"></div>Cost of Funds</div>
+        <div class="li"><div class="li-dot" style="background:#2a5040;"></div>Basel III Capital Charge</div>
+        <div class="li"><div class="li-dot" style="background:#E7F0EB;"></div>SME Loan Yield</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card full">
+    <div class="card-label">The Rate Paradox · 2019–2026</div>
+    <div class="card-title">BOT policy rate fell to historic low — SME stress rose in parallel. Rate was never the constraint.</div>
+    <div style="position:relative;height:240px;"><canvas id="chartC2"></canvas></div>
+    <div class="legend" style="margin-top:12px;">
+      <div class="li"><div class="li-line" style="background:var(--accent);"></div>BOT Policy Rate (%)</div>
+      <div class="li"><div class="li-line" style="background:var(--cost3);"></div>SME NPL Ratio (%)</div>
+      <div class="li"><div class="li-dash"></div>SME Loan Growth YoY (%)</div>
+    </div>
+    <div class="events">
+      <div class="ep"><div class="ep-date">Feb 2026</div><div class="ep-head">BOT cuts to 1.00%</div><div class="ep-sub">Historic all-time low</div></div>
+      <div class="ep"><div class="ep-date">Q4 2025</div><div class="ep-head">SME loans −4.1% YoY</div><div class="ep-sub">Banks contracted further post-cut</div></div>
+      <div class="ep"><div class="ep-date">Q3 2025</div><div class="ep-head">NPL 7.2% · Stage 2: 11.7%</div><div class="ep-sub">Provisioning surge forces retreat</div></div>
+      <div class="ep"><div class="ep-date">Basel III · Ongoing</div><div class="ep-head">85–100% risk weight</div><div class="ep-sub">vs. 20% for AA-rated corporates</div></div>
+    </div>
+  </div>
+
+</div><!-- /page C -->
+
+
+<!-- ═══════════════════════════════════════
+  CHART A — SME FUNDING GAP
+════════════════════════════════════════ -->
+<div class="page" id="chart-a">
+
+  <div class="header">
+    <div>
+      <div class="kicker">KRV &amp; Co. — Private Market Pulse</div>
+      <div class="h-title">The SME Funding Gap</div>
+      <div class="h-sub">ASEAN Country vs. Emerging Market Average · Absolute &amp; GDP-Normalized · 2024–2025</div>
+    </div>
+    <div>
+      <div class="h-stat-label">ASEAN Combined Gap</div>
+      <div class="h-stat pos">$450B+</div>
+      <div class="h-stat-sub">Thailand · Philippines · Indonesia · Vietnam</div>
+    </div>
+  </div>
+
+  <div class="insight-bar">
+    <div class="ib-tag">The Scale</div>
+    <div class="ib-text">
+      Asia-Pacific holds <strong>46%</strong> of the global <strong>$5.7 trillion</strong> MSME financing gap — against 46% of global GDP.
+      In ASEAN, SMEs account for <strong>97–99%</strong> of all registered enterprises, contribute <strong>45%</strong> of regional GDP, and employ <strong>85%</strong> of the labor force.
+      They are the most productive cohort in these economies — and they are <strong>locked out of formal capital, market by market.</strong>
+    </div>
+  </div>
+
+  <div class="card full">
+    <div class="card-label">Chart A · Dual Indicator</div>
+    <div class="card-title">SME Funding Gap — Absolute USD Billions (bars) vs. Gap as % of GDP (line)</div>
+    <div style="position:relative;height:360px;"><canvas id="chartA"></canvas></div>
+    <div class="legend" style="margin-top:14px;">
+      <div class="li"><div class="li-dot" style="background:var(--card2);border:1px solid var(--accent);"></div>ASEAN / EM Average</div>
+      <div class="li"><div class="li-dot" style="background:var(--accent);"></div>Country (USD Billions, left axis)</div>
+      <div class="li"><div class="li-dot" style="background:#8B2E2E;"></div>Highest gap countries</div>
+      <div class="li"><div class="li-line" style="background:var(--gold);"></div>Gap as % of GDP (right axis)</div>
+    </div>
+  </div>
+
+  <div class="events" style="margin-top:20px;">
+    <div class="ep"><div class="ep-date">Philippines</div><div class="ep-head">$206B Gap</div><div class="ep-sub">Bank compliance 4.45% vs. 10% legal mandate. Largest gap relative to banking system size.</div></div>
+    <div class="ep"><div class="ep-date">Indonesia</div><div class="ep-head">$165–234B Gap</div><div class="ep-sub">MSME credit −0.06% YoY while total bank credit grew 9.37% (Feb 2026).</div></div>
+    <div class="ep"><div class="ep-date">Thailand</div><div class="ep-head">~$50B Est. Gap</div><div class="ep-sub">SME loans −4.1% YoY in Q4 2025, even after BOT cut rates to historic low.</div></div>
+    <div class="ep"><div class="ep-date">Vietnam</div><div class="ep-head">$21.7B Gap</div><div class="ep-sub">60–62% of SME financing needs unmet. EuroCham BCI at 7-year high of 80.0 in Q4 2025.</div></div>
+  </div>
+
+</div><!-- /page A -->
+
+
+<!-- ═══════════════════════════════════════
+  CHART B — SME LENDING VOLUME
+════════════════════════════════════════ -->
+<div class="page" id="chart-b">
+
+  <div class="header">
+    <div>
+      <div class="kicker">KRV &amp; Co. — Private Market Pulse</div>
+      <div class="h-title">SME Lending Volume vs. Peers</div>
+      <div class="h-sub">SME Credit Share &amp; YoY Growth · Thailand vs. Philippines, Indonesia, Vietnam · 2019–2026</div>
+    </div>
+    <div>
+      <div class="h-stat-label">Thailand SME Loans · Q4 2025</div>
+      <div class="h-stat neg">−4.1%</div>
+      <div class="h-stat-sub">YoY contraction · post historic rate cut</div>
+    </div>
+  </div>
+
+  <div class="insight-bar">
+    <div class="ib-tag">The Paradox</div>
+    <div class="ib-text">
+      Across every ASEAN market, SME credit share has stagnated or contracted while total bank lending grew.
+      In Indonesia, MSME credit fell <strong>−0.06% YoY</strong> in February 2026 while total credit expanded <strong>9.37%</strong> — the sharpest divergence in recent history.
+      Banks have capital. They lack the data infrastructure to deploy it to SMEs at a positive spread.
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-label">Chart B · Part 1</div>
+      <div class="card-title">SME Loans as % of Total Bank Credit — Trend 2019–Q4 2025</div>
+      <div style="position:relative;height:300px;"><canvas id="chartB1"></canvas></div>
+      <div class="legend" style="margin-top:12px;">
+        <div class="li"><div class="li-line" style="background:var(--cream);"></div>Thailand</div>
+        <div class="li"><div class="li-line" style="background:var(--accent);"></div>Philippines</div>
+        <div class="li"><div class="li-line" style="background:var(--gold);"></div>Indonesia</div>
+        <div class="li"><div class="li-line" style="background:var(--cost3);"></div>Vietnam</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Chart B · Part 2</div>
+      <div class="card-title">SME Lending Growth YoY (%) — The Contraction</div>
+      <div style="position:relative;height:300px;"><canvas id="chartB2"></canvas></div>
+      <div class="legend" style="margin-top:12px;">
+        <div class="li"><div class="li-dot" style="background:var(--cream);"></div>Thailand</div>
+        <div class="li"><div class="li-dot" style="background:var(--accent);"></div>Philippines</div>
+        <div class="li"><div class="li-dot" style="background:var(--gold);"></div>Indonesia</div>
+        <div class="li"><div class="li-dot" style="background:var(--cost3);"></div>Vietnam</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page B -->
+
+
+<!-- ═══════════════════════════════════════
+  CHART D — CPA CAPACITY SPEEDOMETERS
+════════════════════════════════════════ -->
+<div class="page" id="chart-d">
+
+  <div class="header">
+    <div>
+      <div class="kicker">KRV &amp; Co. — Private Market Pulse</div>
+      <div class="h-title">The Accountancy Gap</div>
+      <div class="h-sub">Registered CPAs per 1,000 SMEs · ASEAN Country Comparison · 2024</div>
+    </div>
+    <div>
+      <div class="h-stat-label">Indonesia · Worst Ratio</div>
+      <div class="h-stat neg">0.3</div>
+      <div class="h-stat-sub">CPAs per 1,000 SMEs · 66M SMEs, ~20K CPAs</div>
+    </div>
+  </div>
+
+  <div class="insight-bar">
+    <div class="ib-tag">The Root Cause</div>
+    <div class="ib-text">
+      Without audited financial statements, no bank can underwrite — and no SME can access formal capital at any price.
+      The CPA-to-SME ratio is the single most underreported indicator of structural credit inaccessibility.
+      Every country in ASEAN sits in the <strong>critical zone</strong>. Developed-market benchmark is <strong>8–12 CPAs per 1,000 SMEs</strong>.
+      Technology-enabled accounting infrastructure is not optional. <strong>It is the prerequisite.</strong>
+    </div>
+  </div>
+
+  <div class="gauge-grid">
+    <div class="gauge-card">
+      <div class="gc-country">Thailand</div>
+      <div class="gc-wrap"><canvas id="gaugeA" width="160" height="90"></canvas><div class="gc-num">0.9<span class="gc-unit"> /1K</span></div></div>
+      <div class="gc-sub">CPAs per 1,000 registered SMEs</div>
+      <div class="gc-badge badge-r">Critical — Tech Needed</div>
+      <div class="gc-stats">
+        <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">3.2M</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs</div><div class="gc-val">~74,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">CPAs near retirement</div><div class="gc-val">&gt;60%</div></div>
+        <div class="gc-row"><div class="gc-lbl">SMEs with audited accounts</div><div class="gc-val">&lt;50%</div></div>
+      </div>
+    </div>
+    <div class="gauge-card">
+      <div class="gc-country">Philippines</div>
+      <div class="gc-wrap"><canvas id="gaugeB" width="160" height="90"></canvas><div class="gc-num">1.7<span class="gc-unit"> /1K</span></div></div>
+      <div class="gc-sub">CPAs per 1,000 registered SMEs</div>
+      <div class="gc-badge badge-r">Critical — Tech Needed</div>
+      <div class="gc-stats">
+        <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">1.24M</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs</div><div class="gc-val">~215,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">SME bank credit share</div><div class="gc-val">4.6%</div></div>
+        <div class="gc-row"><div class="gc-lbl">Legal mandate</div><div class="gc-val">10%</div></div>
+      </div>
+    </div>
+    <div class="gauge-card">
+      <div class="gc-country">Indonesia</div>
+      <div class="gc-wrap"><canvas id="gaugeC" width="160" height="90"></canvas><div class="gc-num">0.3<span class="gc-unit"> /1K</span></div></div>
+      <div class="gc-sub">CPAs per 1,000 registered SMEs</div>
+      <div class="gc-badge badge-r">Severe — Highest Priority</div>
+      <div class="gc-stats">
+        <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">66M</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs (est.)</div><div class="gc-val">~20,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">SME share of GDP</div><div class="gc-val">61%</div></div>
+        <div class="gc-row"><div class="gc-lbl">MSME credit YoY</div><div class="gc-val">−0.06%</div></div>
+      </div>
+    </div>
+    <div class="gauge-card">
+      <div class="gc-country">Vietnam</div>
+      <div class="gc-wrap"><canvas id="gaugeD" width="160" height="90"></canvas><div class="gc-num">1.2<span class="gc-unit"> /1K</span></div></div>
+      <div class="gc-sub">CPAs per 1,000 registered SMEs</div>
+      <div class="gc-badge badge-a">Elevated — Improvement Needed</div>
+      <div class="gc-stats">
+        <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">~800K</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs (est.)</div><div class="gc-val">~10,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">Funding gap</div><div class="gc-val">$21.7B</div></div>
+        <div class="gc-row"><div class="gc-lbl">Gap vs. SME needs</div><div class="gc-val">60–62%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scale-bar">
+    <div class="sb-label">Benchmark Scale</div>
+    <div class="sb-item"><div class="sb-dot" style="background:#8B2E2E;opacity:0.8;"></div><div class="sb-text">0–2.0 CPAs / 1,000 SMEs — Critical: technology intervention required</div></div>
+    <div class="sb-item"><div class="sb-dot" style="background:var(--gold);opacity:0.8;"></div><div class="sb-text">2.0–5.0 — Elevated: significant capacity gap</div></div>
+    <div class="sb-item"><div class="sb-dot" style="background:var(--accent);opacity:0.8;"></div><div class="sb-text">5.0+ — Adequate coverage</div></div>
+    <div class="sb-bench">Developed market benchmark: ~8–12 CPAs per 1,000 SMEs</div>
+  </div>
+
+</div><!-- /page D -->
+
+
+<!-- FOOTNOTE -->
+<div class="footnote">
+  <strong>Sources:</strong>
+  IFC MSME Finance Gap Report 2023; World Bank Financial Sector Data; ADB Asia SME Monitor 2024;
+  Bank of Thailand Financial Stability Review 2025; BOT Monetary Policy Report Q4 2025;
+  Bangko Sentral ng Pilipinas MSME Report Q3 2025; Bank Indonesia Financial Stability Data Feb 2026;
+  BIS Lending Rate Statistics 2015–2023; ADB Trade Finance Gap Survey 2023;
+  IFAC Global Accountancy Profession Report 2024; OSMEP Thailand SME Annual Report 2024;
+  Federation of Accounting Professions Thailand (FAP); DealFlow Market 2026 (citing BOT);
+  Asian Banking &amp; Finance Feb 2026. &nbsp;|&nbsp;
+  CPA-to-SME ratios are estimates derived from IFAC member body data and national SME registries.
+  SME lending growth data interpolated from central bank quarterly publications. &nbsp;|&nbsp;
+  <strong>KRV &amp; Co. Internal Research · Confidential · April 2026 · www.krv.co</strong>
+</div>
+
+
+<!-- ════════════════════════════
+  JAVASCRIPT
+════════════════════════════ -->
+<script>
+const SAN = "'articulat-cf','Inter',sans-serif";
+const SER = "'miller-display','Georgia',serif";
+const C = {
+  bg:'#0d1f17', card:'#142D23', card2:'#1a3829',
+  cream:'#F7F3E7', hi:'#E7F0EB', accent:'#4A8F7E',
+  cdim:'rgba(247,243,231,0.55)', cfaint:'rgba(247,243,231,0.12)',
+  gold:'#C49A2A', red:'#8B2E2E',
+  cost1:'#4A8F7E', cost2:'#2e8068', cost3:'#1e6b52', cost4:'#2a5040',
+  grid:'rgba(247,243,231,0.07)', tick:'rgba(247,243,231,0.45)'
+};
+
+Chart.defaults.font.family = SAN;
+Chart.defaults.font.size   = 11;
+Chart.defaults.color       = C.cdim;
+
+function tip(){
+  return {
+    backgroundColor:C.card, titleColor:C.cream,
+    bodyColor:C.cdim,
+    borderColor:'rgba(247,243,231,0.15)',borderWidth:1,padding:12
+  };
+}
+
+// ── CHART C1 — STACKED BAR ──────────────────────────────────────────────────
+new Chart(document.getElementById('chartC1'),{
+  type:'bar',
+  data:{
+    labels:['COST TO EXTEND','SME LOAN YIELD'],
+    datasets:[
+      {label:'Basel III Capital', data:[1.75,null],backgroundColor:'#2a5040', stack:'c'},
+      {label:'Cost of Funds',     data:[3.0,null], backgroundColor:'#1e6b52', stack:'c'},
+      {label:'Provisioning',      data:[3.25,null],backgroundColor:'#2e8068', stack:'c'},
+      {label:'Operating',         data:[3.5,null], backgroundColor:'#4A8F7E', stack:'c'},
+      {label:'SME Loan Yield',    data:[null,9.0], backgroundColor:'#E7F0EB', stack:'y'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    layout:{padding:{top:38,right:20}},
+    plugins:{
+      legend:{display:false}, tooltip:{...tip(),
+        callbacks:{label:ctx=>` ${ctx.dataset.label}: ${(ctx.raw||0).toFixed(2)}%`}},
+      annotation:{annotations:{
+        lbCost:{type:'label',xValue:'COST TO EXTEND',yValue:12.8,
+          content:['11.5%','mid-point'],color:C.cream,
+          font:[{size:16,family:SER},{size:9,family:SAN}],textAlign:'center'},
+        lbYield:{type:'label',xValue:'SME LOAN YIELD',yValue:10.6,
+          content:['9.0%','mid-point'],color:C.accent,
+          font:[{size:16,family:SER},{size:9,family:SAN}],textAlign:'center'},
+        dline:{type:'line',xMin:'SME LOAN YIELD',xMax:'COST TO EXTEND',
+          yMin:9,yMax:9,borderColor:'rgba(192,80,64,0.5)',borderWidth:1,borderDash:[4,3]},
+        dlbl:{type:'label',xValue:0.5,yValue:7.6,
+          content:['▼ NEGATIVE SPREAD','−1% to −5%'],color:'#c05040',
+          font:[{size:8,weight:'600',family:SAN},{size:14,family:SER}],textAlign:'center'}
+      }}
+    },
+    scales:{
+      x:{stacked:true,ticks:{color:C.tick,font:{size:10,weight:'600'}},
+        grid:{display:false},border:{color:C.cfaint}},
+      y:{stacked:true,min:0,max:16,
+        ticks:{color:C.tick,font:{size:10},callback:v=>v+'%',stepSize:3},
+        grid:{color:C.grid},border:{display:false}}
+    }
+  }
+});
+
+// ── CHART C2 — TIMELINE ────────────────────────────────────────────────────
+new Chart(document.getElementById('chartC2'),{
+  type:'line',
+  data:{
+    labels:['2019','2020','2021','2022','2023','2024','Q1 25','Q2 25','Q3 25','Q4 25','Feb 26'],
+    datasets:[
+      {label:'BOT Policy Rate (%)',
+        data:[1.75,0.50,0.50,0.50,1.50,2.50,2.50,2.50,2.25,2.00,1.00],
+        borderColor:C.accent,borderWidth:2.5,pointBackgroundColor:C.accent,
+        pointRadius:4,tension:0.3,fill:false,yAxisID:'y'},
+      {label:'SME NPL Ratio (%)',
+        data:[3.9,5.2,6.1,5.8,6.2,6.8,7.0,7.0,7.2,7.2,7.3],
+        borderColor:'#c05040',borderWidth:2.5,pointBackgroundColor:'#c05040',
+        pointRadius:4,tension:0.3,fill:false,yAxisID:'y'},
+      {label:'SME Loan Growth YoY (%)',
+        data:[4.5,1.2,0.8,2.1,1.5,-0.5,-1.2,-2.0,-3.1,-4.1,-4.5],
+        borderColor:C.gold,borderWidth:1.5,borderDash:[5,3],
+        pointBackgroundColor:C.gold,pointRadius:3,tension:0.3,fill:false,yAxisID:'y2'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{...tip(),callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw?.toFixed(1)}%`}},
+      annotation:{annotations:{
+        cutLine:{type:'line',xMin:'Feb 26',xMax:'Feb 26',
+          borderColor:'rgba(74,143,126,0.4)',borderWidth:1,borderDash:[3,3],
+          label:{display:true,content:'1.00% Historic Low',position:'start',
+            color:C.accent,font:{size:8,family:SAN,weight:'600'},
+            backgroundColor:'transparent',yAdjust:-6}},
+        zero:{type:'line',yMin:0,yMax:0,yScaleID:'y2',
+          borderColor:'rgba(196,154,42,0.2)',borderWidth:1}
+      }}
+    },
+    scales:{
+      x:{ticks:{color:C.tick,font:{size:9},maxRotation:0},
+        grid:{color:C.grid},border:{color:C.cfaint}},
+      y:{position:'left',min:0,max:10,
+        ticks:{color:C.tick,font:{size:9},callback:v=>v+'%',stepSize:2},
+        grid:{color:C.grid},border:{display:false},
+        title:{display:true,text:'Rate / NPL (%)',color:C.tick,font:{size:9}}},
+      y2:{position:'right',min:-7,max:7,
+        ticks:{color:C.gold,font:{size:9},callback:v=>v+'%',stepSize:2},
+        grid:{display:false},border:{display:false},
+        title:{display:true,text:'SME Loan Growth YoY (%)',color:C.gold,font:{size:9}}}
+    }
+  }
+});
+
+// ── CHART A — FUNDING GAP ──────────────────────────────────────────────────
+(function(){
+  const countries = ['EM Average','Thailand','Philippines','Indonesia','Vietnam','ASEAN Avg'];
+  const gaps      = [110, 50, 206, 200, 21.7, 90];
+  const gdpPct    = [7.4, 8.5, 14.2, 10.8, 5.1, 6.2];
+  const barColors = ['rgba(74,143,126,0.4)',C.accent,'#8B2E2E','#8B2E2E',C.gold,'rgba(74,143,126,0.6)'];
+
+  new Chart(document.getElementById('chartA'),{
+    data:{
+      labels:countries,
+      datasets:[
+        {type:'bar',label:'SME Funding Gap (USD Billions)',
+          data:gaps,backgroundColor:barColors,borderWidth:0,yAxisID:'y',order:2},
+        {type:'line',label:'Gap as % of GDP',
+          data:gdpPct,borderColor:C.gold,backgroundColor:'rgba(196,154,42,0.06)',
+          borderWidth:2,pointBackgroundColor:C.gold,pointRadius:5,
+          tension:0.35,fill:false,yAxisID:'y2',order:1}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{...tip(),callbacks:{label:ctx=>
+          ctx.datasetIndex===0?` Gap: USD ${ctx.raw}B`:` Gap as % of GDP: ${ctx.raw}%`}},
+        annotation:{annotations:{
+          emBench:{type:'line',yMin:7.4,yMax:7.4,
+            borderColor:'rgba(247,243,231,0.2)',borderWidth:1,borderDash:[4,3],
+            label:{display:true,content:'EM Avg: 7.4% GDP',position:'end',
+              color:C.cdim,font:{size:8,family:SAN},backgroundColor:'transparent'}}
+        }}
+      },
+      scales:{
+        x:{ticks:{color:C.tick,font:{size:10}},grid:{color:C.grid},border:{color:C.cfaint}},
+        y:{position:'left',min:0,max:250,
+          ticks:{color:C.tick,font:{size:10},callback:v=>'$'+v+'B'},
+          grid:{color:C.grid},border:{display:false},
+          title:{display:true,text:'USD Billions',color:C.tick,font:{size:9}}},
+        y2:{position:'right',min:0,max:18,
+          ticks:{color:C.gold,font:{size:10},callback:v=>v+'%'},
+          grid:{display:false},border:{display:false},
+          title:{display:true,text:'Gap as % of GDP',color:C.gold,font:{size:9}}}
+      }
+    }
+  });
+})();
+
+// ── CHART B1 — SME CREDIT SHARE ───────────────────────────────────────────
+new Chart(document.getElementById('chartB1'),{
+  type:'line',
+  data:{
+    labels:['2019','2020','2021','2022','2023','2024','Q1 25','Q2 25','Q3 25','Q4 25'],
+    datasets:[
+      {label:'Thailand',    data:[38,36,35,34,33,31,30.5,30,29.9,29.8],
+        borderColor:C.cream,borderWidth:2.5,pointBackgroundColor:C.cream,pointRadius:3,tension:0.3,fill:false},
+      {label:'Philippines', data:[8.1,7.8,7.2,6.9,6.5,5.8,5.2,4.9,4.7,4.45],
+        borderColor:C.accent,borderWidth:2.5,pointBackgroundColor:C.accent,pointRadius:3,tension:0.3,fill:false},
+      {label:'Indonesia',   data:[22,21,20.5,20,19.5,19,18.9,18.8,18.7,18.7],
+        borderColor:C.gold,borderWidth:2.5,pointBackgroundColor:C.gold,pointRadius:3,tension:0.3,fill:false},
+      {label:'Vietnam',     data:[18,17.5,17.8,18.2,17.5,17,16.9,16.8,16.6,16.5],
+        borderColor:C.cost3,borderWidth:2.5,pointBackgroundColor:C.cost3,pointRadius:3,tension:0.3,fill:false},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{...tip(),callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}%`}}
+    },
+    scales:{
+      x:{ticks:{color:C.tick,font:{size:9}},grid:{color:C.grid},border:{color:C.cfaint}},
+      y:{min:0,max:45,ticks:{color:C.tick,font:{size:9},callback:v=>v+'%'},
+        grid:{color:C.grid},border:{display:false},
+        title:{display:true,text:'SME Credit / Total Bank Credit (%)',color:C.tick,font:{size:9}}}
+    }
+  }
+});
+
+// ── CHART B2 — LENDING GROWTH ─────────────────────────────────────────────
+new Chart(document.getElementById('chartB2'),{
+  type:'bar',
+  data:{
+    labels:['2020','2021','2022','2023','2024','Q1 25','Q2 25','Q3 25','Q4 25'],
+    datasets:[
+      {label:'Thailand',    data:[-2.1,0.8,2.1,1.5,-0.5,-1.2,-2.0,-3.1,-4.1],
+        backgroundColor:'rgba(247,243,231,0.75)'},
+      {label:'Philippines', data:[3.2,2.1,4.5,3.2,-1.1,-2.1,-3.5,-5.0,-5.5],
+        backgroundColor:'rgba(74,143,126,0.75)'},
+      {label:'Indonesia',   data:[1.5,0.4,3.0,2.1,-0.2,-0.5,-0.8,-0.1,-0.06],
+        backgroundColor:'rgba(196,154,42,0.75)'},
+      {label:'Vietnam',     data:[8.5,9.2,10.1,8.4,5.2,3.1,2.0,1.5,1.0],
+        backgroundColor:'rgba(139,46,46,0.75)'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{...tip(),callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}%`}},
+      annotation:{annotations:{
+        zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(247,243,231,0.25)',borderWidth:1}
+      }}
+    },
+    scales:{
+      x:{ticks:{color:C.tick,font:{size:9}},grid:{color:C.grid},border:{color:C.cfaint}},
+      y:{ticks:{color:C.tick,font:{size:9},callback:v=>v+'%'},
+        grid:{color:C.grid},border:{display:false},
+        title:{display:true,text:'YoY Growth (%)',color:C.tick,font:{size:9}}}
+    }
+  }
+});
+
+// ── GAUGES ─────────────────────────────────────────────────────────────────
+function drawGauge(id, value, colorZone){
+  const canvas = document.getElementById(id);
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W=160, H=90, cx=80, cy=86, r=66;
+  ctx.clearRect(0,0,W,H);
+
+  // Track
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,Math.PI,0,false);
+  ctx.lineWidth=13;ctx.strokeStyle='rgba(247,243,231,0.08)';ctx.stroke();
+
+  // Zone coloring
+  function zoneArc(from,to,col){
+    const max=12;
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,Math.PI+(from/max)*Math.PI,Math.PI+(to/max)*Math.PI,false);
+    ctx.lineWidth=13;ctx.strokeStyle=col;ctx.stroke();
+  }
+  zoneArc(0,2,'rgba(139,46,46,0.22)');
+  zoneArc(2,5,'rgba(196,154,42,0.22)');
+  zoneArc(5,12,'rgba(74,143,126,0.22)');
+
+  // Value arc
+  const fillCol = colorZone==='red'?'#8B2E2E':colorZone==='amber'?'#C49A2A':'#4A8F7E';
+  const endAng = Math.PI+(Math.min(value,12)/12)*Math.PI;
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,Math.PI,endAng,false);
+  ctx.lineWidth=13;ctx.strokeStyle=fillCol;ctx.lineCap='round';ctx.stroke();
+
+  // Needle
+  const na = Math.PI+(Math.min(value,12)/12)*Math.PI;
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(na);
+  ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(r-16,0);
+  ctx.lineWidth=2;ctx.strokeStyle=C.cream;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,5,0,Math.PI*2);
+  ctx.fillStyle=C.cream;ctx.fill();
+  ctx.restore();
+
+  // Tick labels
+  [0,2,5,10].forEach(t=>{
+    const ang=Math.PI+(t/12)*Math.PI;
+    const lx=cx+(r+18)*Math.cos(ang), ly=cy+(r+18)*Math.sin(ang)+3;
+    ctx.font='8px articulat-cf,Inter,sans-serif';
+    ctx.fillStyle='rgba(247,243,231,0.4)';
+    ctx.textAlign='center';ctx.fillText(t,lx,ly);
+  });
+}
+
+window.addEventListener('load',function(){
+  drawGauge('gaugeA',0.9,'red');
+  drawGauge('gaugeB',1.7,'red');
+  drawGauge('gaugeC',0.3,'red');
+  drawGauge('gaugeD',1.2,'amber');
+});
+</script>
+</body>
+</html>
