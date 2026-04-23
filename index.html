@@ -199,6 +199,55 @@ body{
 .sb-text{font-size:11px;font-weight:300;color:var(--cream-dim);}
 .sb-bench{font-size:10px;font-weight:300;color:var(--cream-dim);font-style:italic;font-family:var(--serif);margin-left:auto;}
 
+/* ── ATTRIBUTION FOOTER ── */
+.attr-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  background:#0d1f17;
+  border-top:1px solid rgba(247,243,231,0.08);
+  padding:36px 48px;
+}
+.attr-col{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.attr-col:last-child{
+  align-items:flex-end;
+}
+.attr-col:nth-child(2){
+  align-items:center;
+}
+.attr-label{
+  font-family:var(--sans);
+  font-size:10px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.25em;
+  color:rgba(247,243,231,0.45);
+}
+.attr-link{
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:600;
+  color:var(--cream);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-color:rgba(247,243,231,0.45);
+  letter-spacing:0.02em;
+}
+.attr-link:hover{
+  color:var(--accent);
+  text-decoration-color:var(--accent);
+}
+.attr-brand{
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:700;
+  color:var(--cream);
+  letter-spacing:0.04em;
+}
+
 /* ── FOOTNOTE ── */
 .footnote{
   padding:24px 48px 48px;
@@ -524,10 +573,26 @@ body{
   <strong>KRV &amp; Co. Internal Research · Confidential · April 2026 · www.krv.co</strong>
 </div>
 
+<!-- ATTRIBUTION FOOTER -->
+<div class="attr-footer">
+  <div class="attr-col">
+    <div class="attr-label">Live Data</div>
+    <a href="https://pulse.krv.co" class="attr-link">pulse.krv.co</a>
+  </div>
+  <div class="attr-col">
+    <div class="attr-label">Research</div>
+    <a href="https://www.krv.co" class="attr-link">www.krv.co</a>
+  </div>
+  <div class="attr-col">
+    <div class="attr-label">Powered By</div>
+    <div class="attr-brand">KRAiON</div>
+  </div>
+</div>
 
-<!-- ════════════════════════════
+
+<!-- ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠
   JAVASCRIPT
-════════════════════════════ -->
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠ -->
 <script>
 const SAN = "'articulat-cf','Inter',sans-serif";
 const SER = "'miller-display','Georgia',serif";
