@@ -204,24 +204,25 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   gap:48px;
 }
 /* Symmetry rule, MCR-defined:                                          */
-/*   TITLE (left) ↔ STAT (right)  — top baseline kiss                 */
-/*   SUB    (left) ↔ SUB   (right) — bottom baseline kiss              */
+/*   TITLE (left) ↔ STAT (right)  — top cap-height kiss                */
+/*   SUB   (left) ↔ SUB-STAT (right) — bottom baseline kiss             */
 /* Implementation: both columns are flex-column, justify-content:       */
-/* space-between. Top item pins to top, bottom item pins to bottom.     */
-.header > div { display:flex; flex-direction:column; justify-content:space-between; }
+/* space-between. Kickers share identical metrics so titles start on    */
+/* the same y. Stat font is sized so its cap-height matches title's.    */
+.header > div { display:flex; flex-direction:column; justify-content:space-between; min-height:0; }
 .header > div:last-child { align-items:flex-end; }
 .header > div:last-child .h-stat-sub {
   margin-top: 0;  /* parent justify-content handles the spacing */
 }
-.kicker{
+.kicker, .h-stat-label{
   font-family:var(--sans);font-size:10px;font-weight:500;
   text-transform:uppercase;letter-spacing:0.2em;
-  color:var(--accent);margin-bottom:8px;
+  color:var(--accent);margin-bottom:10px;line-height:1;
 }
 .h-title{
   font-family:var(--serif);font-style:italic;
   font-size:44px;font-weight:400;
-  color:var(--cream);line-height:1.05;margin-bottom:6px;
+  color:var(--cream);line-height:1;margin-bottom:6px;
   letter-spacing:-0.005em;
 }
 /* h-deck — KRV canon sidekick lockup. Pairs with .h-title. */
@@ -242,14 +243,15 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   color:var(--cream-dim);letter-spacing:0.03em;
 }
 .h-stat-label{
-  font-size:10px;font-weight:500;
-  text-transform:uppercase;letter-spacing:0.18em;
-  color:var(--accent);margin-bottom:4px;text-align:right;
+  text-align:right;
 }
 .h-stat{
   font-family:var(--serif);font-style:italic;
-  font-size:60px;font-weight:400;
+  font-size:54px;font-weight:400;
   line-height:1;text-align:right;
+  /* cap-height nudge: serif italic at 54px sits ~6px below its top  */
+  /* line-box edge; pull up so cap-height kisses the title's top.   */
+  margin-top:-6px;
 }
 /* h-stat-sub unified with .h-sub typography — dim line matches dim line. */
 .h-stat-sub{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--cream-dim);letter-spacing:0.03em;margin-top:3px;text-align:right;line-height:1.25;}
