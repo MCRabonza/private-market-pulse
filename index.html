@@ -198,6 +198,20 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   font-family:var(--serif);font-style:italic;
   font-size:44px;font-weight:400;
   color:var(--cream);line-height:1.05;margin-bottom:6px;
+  letter-spacing:-0.005em;
+}
+/* h-deck — KRV canon sidekick lockup. Pairs with .h-title. */
+/* Pattern: Miller Display Italic hero + Articulat CF Bold sidekick. */
+/* Used across all section heroes, panel titles, manifesto, JEs, credit notes. */
+.h-deck{
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.25;
+  color:var(--cream);
+  letter-spacing:0.005em;
+  margin-top:2px;
+  max-width:780px;
 }
 .h-sub{
   font-size:12px;font-weight:300;
@@ -396,7 +410,7 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 @media (max-width:980px){ .two-col{ grid-template-columns:1fr; } }
 
 /* ═════════════════════════════════════════════════════════════ */
-/* SECTION 01 · K-OPP · The Premium for Being Unseen (the Vader)     */
+/* SECTION 01 · K-OPP · The Price of Being Unseen (the Vader)        */
 /* ═════════════════════════════════════════════════════════════ */
 #section-kopp .h-meta {
   font-family:var(--sans);
@@ -576,7 +590,7 @@ html{ scroll-behavior:smooth; }
 <header class="topbar" role="banner">
   <div class="topbar-left">
     <div class="tb-line-1"><span class="roman">KRV &amp; Co.</span><span class="slash">/</span><span class="ital">Private Market Pulse</span></div>
-    <div class="tb-line-2">Section 01 · The Premium for Being Unseen · May 2026</div>
+    <div class="tb-line-2">Section 01 · The Price of Being Unseen · May 2026</div>
   </div>
   <div class="topbar-right">
     <div class="tb-line-2">As of <strong>9 May 2026</strong></div>
@@ -710,14 +724,15 @@ html{ scroll-behavior:smooth; }
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════ -->
-<!-- SECTION 01 · K-OPP · The Premium for Being Unseen  (the Vader / North Star) -->
+<!-- SECTION 01 · K-OPP · The Price of Being Unseen  (the Vader / North Star) -->
 <!-- ═══════════════════════════════════════════════════════════════════ -->
 <div class="page" id="section-kopp">
 
   <div class="header">
     <div>
       <div class="kicker">Section 01 · The K-OPP Index · January 2026</div>
-      <h1 class="h-title">The Premium for Being Unseen</h1>
+      <h1 class="h-title">The Price of Being Unseen</h1>
+      <div class="h-deck">The premium that rate cuts cannot reach</div>
     </div>
     <div>
       <div class="h-stat-label">ASEAN-4 SME · vs Corporate</div>
@@ -1120,6 +1135,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">The Gap, Country by Country.</div>
+      <div class="h-deck">Where ASEAN-4 small businesses borrow, and at what cost</div>
       <div class="h-sub">ASEAN Country vs. Emerging Market Average · Absolute &amp; GDP-Normalized · 2024–2025</div>
     </div>
     <div>
@@ -1166,6 +1182,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">Why Banks Cannot Lend.</div>
+      <div class="h-deck">Capital, compliance, and the economics of underwriting the unreadable</div>
       <div class="h-sub">Thailand SME Lending Economics · Cost Anatomy vs. Yield · 2024–2026</div>
     </div>
     <div>
@@ -1265,6 +1282,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">The Pattern Repeats.</div>
+      <div class="h-deck">Thailand’s SME book, and the four banks that mostly do not hold it</div>
       <div class="h-sub">SME Credit Share &amp; YoY Growth · Thailand vs. Philippines, Indonesia, Vietnam · 2019–2026</div>
     </div>
     <div>
@@ -1320,6 +1338,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">The Capital That Can&rsquo;t Reach.</div>
+      <div class="h-deck">Why fintech, private credit and DFIs route around, not through</div>
       <div class="h-sub">Asia private credit by 2030 &middot; against the ASEAN-4 SME funding gap that exists today &middot; a gap only widening</div>
     </div>
     <div>
@@ -1360,6 +1379,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">The Inheritance Cliff.</div>
+      <div class="h-deck">The succession problem no spreadsheet has priced</div>
       <div class="h-sub">Generational survival of family enterprises in Asia · 30 / 12 / 3 · the largest intergenerational transfer in recorded history</div>
     </div>
     <div>
@@ -1390,6 +1410,7 @@ html{ scroll-behavior:smooth; }
     <div>
       <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
       <div class="h-title">The Accountancy Gap is the Credit Gap.</div>
+      <div class="h-deck">Why the missing ledger is the missing loan</div>
       <div class="h-sub">Registered CPAs per 1,000 SMEs · ASEAN Country Comparison · 2024</div>
     </div>
     <div>
