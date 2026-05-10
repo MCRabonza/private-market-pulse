@@ -414,6 +414,12 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   border-bottom:1px solid var(--border);
   margin-bottom: 28px;
 }
+#section-kopp .lede.lede-fw {
+  display:block; padding: 22px 0 30px;
+}
+#section-kopp .lede.lede-fw .lede-body {
+  max-width: 980px; font-size:18px; line-height:1.6;
+}
 #section-kopp .lede-stat .lbl {
   font-family:var(--sans);
   font-size:9.5px; font-weight:500;
@@ -713,21 +719,15 @@ html{ scroll-behavior:smooth; }
       <div class="kicker">Section 01 · The K-OPP Index · January 2026</div>
       <h1 class="h-title">The Spread No One Quotes</h1>
     </div>
-    <div class="h-meta">
-      <span>Index ·</span><strong>K-OPP&nbsp;01.26</strong>
-      <span>Reading ·</span><strong>395&nbsp;bps</strong>
-      <span>Cadence ·</span><strong>Monthly</strong>
-      <span>Region ·</span><strong>ASEAN-4</strong>
+    <div>
+      <div class="h-stat-label">ASEAN-4 SME · vs Corporate</div>
+      <div class="h-stat" style="color:var(--accent);">395 bps</div>
+      <div class="h-stat-sub">simple-mean spread · January 2026 · monthly cadence</div>
     </div>
   </div>
 
-  <!-- LEDE · the headline stat + thesis -->
-  <div class="lede">
-    <div class="lede-stat">
-      <div class="lbl">ASEAN-4 SME · vs corporate</div>
-      <div class="num">395<span class="unit">bps</span></div>
-      <div class="cap">simple-mean spread<br>January 2026 · KRV &amp; Co.</div>
-    </div>
+  <!-- LEDE · thesis (full-width, no stat column — stat now lives in header h-stat) -->
+  <div class="lede lede-fw">
     <div class="lede-body">
       Across Thailand, the Philippines, Indonesia and Vietnam, the small business borrows at <em>three hundred and ninety-five basis points</em> over the listed corporate — for sitting in the same currency, the same macro, the same year. Two and a half times the EM Corporate spread. Four and a half times the Asia EM Corporate spread. The premium is not <strong>risk</strong>. It is <em>opacity</em>. <strong>Compress the labour, compress the spread.</strong>
     </div>
@@ -857,8 +857,8 @@ html{ scroll-behavior:smooth; }
             <text x="430" y="42" text-anchor="middle">500</text>
           </g>
           <text class="axis-label" x="305" y="28" text-anchor="middle">basis points</text>
-          <line x1="377.5" y1="50" x2="377.5" y2="262" stroke="#4A8F7E" stroke-width="1" stroke-dasharray="3 3" opacity="0.55" />
-          <text x="377.5" y="278" text-anchor="middle" font-family="miller-display" font-style="italic" font-size="9.5" fill="#4A8F7E" opacity="0.9">ASEAN-4 mean · 395 bps</text>
+          <line x1="377.5" y1="50" x2="377.5" y2="315" stroke="#4A8F7E" stroke-width="1" stroke-dasharray="3 3" opacity="0.55" />
+          <text x="377.5" y="310" text-anchor="middle" font-family="miller-display" font-style="italic" font-size="9.5" fill="#4A8F7E" opacity="0.9">ASEAN-4 mean · 395 bps</text>
 
           <!-- Philippines · 540 · country palette: cream -->
           <g>
@@ -893,19 +893,19 @@ html{ scroll-behavior:smooth; }
             <text class="axis-label" x="335" y="196" font-style="italic" fill="#7a8d83">priority-cap distorted</text>
           </g>
 
-          <!-- benchmark strip -->
-          <line x1="180" y1="295" x2="430" y2="295" stroke="#7a8d83" stroke-opacity="0.22" />
-          <text class="axis-label" x="172" y="311" text-anchor="end" fill="#F7F3E7" style="font-style:normal">Benchmarks</text>
-          <text class="axis-label" x="172" y="323" text-anchor="end">legible markets</text>
+          <!-- benchmark strip · shifted +30 to align bottom baseline with Panels 1 & 2 -->
+          <line x1="180" y1="325" x2="430" y2="325" stroke="#7a8d83" stroke-opacity="0.22" />
+          <text class="axis-label" x="172" y="341" text-anchor="end" fill="#F7F3E7" style="font-style:normal">Benchmarks</text>
+          <text class="axis-label" x="172" y="353" text-anchor="end">legible markets</text>
 
-          <rect x="180" y="306" width="44" height="5" fill="#7fb8a4" opacity="0.8" />
-          <text x="230" y="311" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7fb8a4" opacity="0.85" alignment-baseline="middle">Asia EM Corp · 88</text>
+          <rect x="180" y="336" width="44" height="5" fill="#7fb8a4" opacity="0.8" />
+          <text x="230" y="341" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7fb8a4" opacity="0.85" alignment-baseline="middle">Asia EM Corp · 88</text>
 
-          <rect x="180" y="319" width="76" height="5" fill="#F7F3E7" opacity="0.55" />
-          <text x="262" y="324" font-family="articulat-cf" font-size="9" font-style="italic" fill="#F7F3E7" opacity="0.7" alignment-baseline="middle">EM Corporate · 152</text>
+          <rect x="180" y="349" width="76" height="5" fill="#F7F3E7" opacity="0.55" />
+          <text x="262" y="354" font-family="articulat-cf" font-size="9" font-style="italic" fill="#F7F3E7" opacity="0.7" alignment-baseline="middle">EM Corporate · 152</text>
 
-          <rect x="180" y="332" width="99" height="5" fill="#7a8d83" opacity="0.85" />
-          <text x="285" y="337" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7a8d83" alignment-baseline="middle">US HY-IG · 198</text>
+          <rect x="180" y="362" width="99" height="5" fill="#7a8d83" opacity="0.85" />
+          <text x="285" y="367" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7a8d83" alignment-baseline="middle">US HY-IG · 198</text>
         </svg>
       </div>
       <div class="panel-source"><strong>Source</strong>BoT FM_RT_001_S3 Jan 2026; BSP Weekly Lending Rates wk-ending 31 Dec 2025; BI SEKI I.26 Jan 2026 + OJK MSME premium; VNBA Mar 2026. Latest available print per market.</div>
