@@ -36,13 +36,13 @@
   --sans:  'articulat-cf', 'Inter', sans-serif;
 
   /* ── chrome ─────────────────────────────────────────────── */
-  --topbar-h: 56px;
+  --topbar-h: 44px;
   --ribbon-h: 32px;
-  --chrome-h: 88px; /* topbar + ribbon */
+  --chrome-h: 76px; /* topbar (44) + ribbon (32) */
 }
 
 /* In deck mode, the ribbon is hidden and the chrome height collapses */
-body.mode-deck { --ribbon-h: 0px; --chrome-h: 56px; }
+body.mode-deck { --ribbon-h: 0px; --chrome-h: 44px; }
 html{scroll-behavior:smooth;}
 body{
   background:var(--bg);
@@ -74,18 +74,31 @@ body{
   padding: 0 28px;
   z-index:50;
 }
-.topbar-left  { display:flex; flex-direction:column; gap:4px; }
-.topbar-right { display:flex; flex-direction:column; gap:4px; align-items:flex-end; }
+/* Topbar: single row — masthead + section + meta, all separated by accent slashes ("/") */
+.topbar-left  { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; min-width:0; }
+.topbar-right { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; }
 .tb-line-1 {
   font-family:var(--serif); font-style:italic;
   font-size:14px; color:var(--cream); line-height:1;
+  white-space:nowrap;
 }
-.tb-line-1 .slash { color:var(--accent); margin: 0 6px; font-style:normal; }
+.tb-line-1 .slash { color:var(--accent); margin: 0 8px; font-style:normal; font-family:var(--sans); font-weight:300; }
 .tb-line-1 .ital   { font-style:italic; }
 .tb-line-1 .roman  { font-family:var(--sans); font-style:normal; font-weight:500; letter-spacing:0.04em; }
+/* Section / meta segment that lives on the same row as the masthead */
+.tb-seg {
+  font-family:var(--sans); font-size:9px; font-weight:500;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--cream-dim);
+  white-space:nowrap;
+  position:relative; top:-1px; /* visual baseline kiss against italic serif */
+}
+.tb-seg strong { color:var(--cream); font-weight:600; }
+.tb-seg .accent { color:var(--accent); }
+/* legacy class kept as alias so older sections still render */
 .tb-line-2 {
   font-family:var(--sans); font-size:9px; font-weight:500;
   letter-spacing:0.18em; text-transform:uppercase; color:var(--cream-dim);
+  white-space:nowrap;
 }
 .tb-line-2 strong { color:var(--cream); font-weight:600; }
 .tb-line-2 .accent { color:var(--accent); }
@@ -184,11 +197,14 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 
 /* ── HEADER ── */
 .header{
-  display:flex;justify-content:space-between;align-items:flex-start;
+  display:flex;justify-content:space-between;align-items:flex-end;
   margin-bottom:32px;
   border-bottom:none;
   padding-bottom:24px;
+  gap:48px;
 }
+/* Inside .header, the right column carries kicker → stat → sub. */
+/* align-items:flex-end on parent baselines the bottom dim line of both columns. */
 .kicker{
   font-family:var(--sans);font-size:10px;font-weight:500;
   text-transform:uppercase;letter-spacing:0.2em;
@@ -227,7 +243,8 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   font-size:60px;font-weight:400;
   line-height:1;text-align:right;
 }
-.h-stat-sub{font-size:11px;font-weight:300;color:var(--cream-dim);margin-top:3px;text-align:right;}
+/* h-stat-sub unified with .h-sub typography — dim line matches dim line. */
+.h-stat-sub{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--cream-dim);letter-spacing:0.03em;margin-top:3px;text-align:right;line-height:1.25;}
 .h-stat.neg{color:#c05040;}
 .h-stat.pos{color:var(--accent);}
 
@@ -456,12 +473,22 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   letter-spacing:0.18em; text-transform:uppercase;
   color:var(--cream-dim); margin-top:14px; line-height:1.6;
 }
+/* Body voice: Articulat CF (sans). Italic serif is reserved for hero claims */
+/* and inline emphasis (em / strong) only. Body should not compete with hero. */
 #section-kopp .lede-body {
-  font-family:var(--serif); font-style:italic;
-  font-size:17px; line-height:1.6; color:var(--cream);
+  font-family:var(--sans); font-style:normal;
+  font-size:17px; line-height:1.55; color:var(--cream);
+  font-weight:400;
 }
-#section-kopp .lede-body em { color:var(--accent); font-style:italic; font-weight:500; }
-#section-kopp .lede-body strong { color:var(--gold); font-style:italic; font-weight:500; }
+/* Inline emphasis stays italic serif — system signal: "this is a hero phrase landing in body" */
+#section-kopp .lede-body em {
+  color:var(--accent); font-family:var(--serif);
+  font-style:italic; font-weight:400;
+}
+#section-kopp .lede-body strong {
+  color:var(--gold); font-family:var(--serif);
+  font-style:italic; font-weight:400;
+}
 
 #section-kopp .grid3 {
   display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px;
@@ -590,11 +617,13 @@ html{ scroll-behavior:smooth; }
 <header class="topbar" role="banner">
   <div class="topbar-left">
     <div class="tb-line-1"><span class="roman">KRV &amp; Co.</span><span class="slash">/</span><span class="ital">Private Market Pulse</span></div>
-    <div class="tb-line-2">Section 01 · The Price of Being Unseen · May 2026</div>
+    <span class="tb-line-1"><span class="slash">/</span></span>
+    <div class="tb-seg">Section 01 · The Price of Being Unseen · May 2026</div>
   </div>
   <div class="topbar-right">
-    <div class="tb-line-2">As of <strong>9 May 2026</strong></div>
-    <div class="tb-line-2">Live · <span class="accent">pulse.krv.co</span></div>
+    <div class="tb-seg">As of <strong>9 May 2026</strong></div>
+    <span class="tb-line-1"><span class="slash">/</span></span>
+    <div class="tb-seg">Live · <span class="accent">pulse.krv.co</span></div>
   </div>
 </header>
 
