@@ -1037,7 +1037,8 @@ html{ scroll-behavior:smooth; }
     <div class="legend" style="margin-top:14px;">
       <div class="li"><div class="li-dot" style="background:var(--accent);"></div>ASEAN / EM Average</div>
       <div class="li"><div class="li-dot" style="background:var(--accent);"></div>Country (USD Billions, left axis)</div>
-      <div class="li"><div class="li-dot" style="background:#8B2E2E;"></div>Highest gap countries</div>
+      <div class="li"><div class="li-dot" style="background:rgba(247,243,231,0.78);"></div>Philippines &middot; highest gap</div>
+      <div class="li"><div class="li-dot" style="background:rgba(196,154,42,0.85);"></div>Indonesia &middot; structural gap</div>
       <div class="li"><div class="li-line" style="background:var(--gold);"></div>Gap as % of GDP (right axis)</div>
     </div>
   </div>
@@ -1517,7 +1518,8 @@ new Chart(document.getElementById('chartC2'),{
   const countries = ['EM Average','Thailand','Philippines','Indonesia','Vietnam','ASEAN Avg'];
   const gaps      = [110, 50, 206, 200, 21.7, 90];
   const gdpPct    = [7.4, 8.5, 14.2, 10.8, 5.1, 6.2];
-  const barColors = ['rgba(74,143,126,0.4)',C.accent,'#8B2E2E','#8B2E2E',C.gold,'rgba(74,143,126,0.6)'];
+  // Light-touch unification: PH/ID red → country palette (cream/gold). TH=accent, VN=gold preserved.
+  const barColors = ['rgba(74,143,126,0.4)',C.accent,'rgba(247,243,231,0.78)','rgba(196,154,42,0.85)',C.gold,'rgba(74,143,126,0.6)'];
 
   new Chart(document.getElementById('chartA'),{
     data:{
@@ -1605,7 +1607,7 @@ new Chart(document.getElementById('chartB2'),{
       {label:'Indonesia',   data:[1.5,0.4,3.0,2.1,-0.2,-0.5,-0.8,-0.1,-0.06],
         backgroundColor:'rgba(196,154,42,0.75)'},
       {label:'Vietnam',     data:[8.5,9.2,10.1,8.4,5.2,3.1,2.0,1.5,1.0],
-        backgroundColor:'rgba(139,46,46,0.75)'},
+        backgroundColor:'rgba(111,179,158,0.75)'},  /* unified: red → accent-lt (no semantic stress) */
     ]
   },
   options:{
