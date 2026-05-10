@@ -799,8 +799,8 @@ html{ scroll-behavior:smooth; }
     <!-- PANEL 2 · TREND LANE (19 months) -->
     <div class="panel">
       <div class="panel-head">View · 02 / Trend</div>
-      <div class="panel-title">ASEAN-4 SMEs sit alone — and have for nineteen months</div>
-      <div class="panel-sub">Spread over benchmark · basis points · monthly · Jul 2024 — Jan 2026</div>
+      <div class="panel-title">Fed cuts 169 bps. ASEAN-4 SME spread moves eleven.</div>
+      <div class="panel-sub">Spread (bps · left) vs. Fed Funds Effective (% · right) · monthly · Jul 2024 — Jan 2026</div>
       <div class="chart-wrap">
         <svg viewBox="0 0 460 380" preserveAspectRatio="xMidYMid meet" id="laneSvg">
           <g class="grid">
@@ -826,11 +826,13 @@ html{ scroll-behavior:smooth; }
             <text x="330" y="368" text-anchor="middle">Jan ’26</text>
           </g>
           <text class="axis-label" x="14" y="200" transform="rotate(-90 14 200)">basis points</text>
+          <text class="axis-label" x="452" y="200" transform="rotate(-90 452 200)" fill="#C49A2A" opacity="0.85">Fed Funds Effective (%)</text>
+          <g id="rightAxis"></g>
           <g id="seriesGroup"></g>
           <g id="endLabels"></g>
         </svg>
       </div>
-      <div class="panel-source"><strong>Source</strong>BoT FM_RT_001_S3 (TH); BSP weekly LTP (PH); BI SEKI I.26 + OJK (ID); VNBA / SBV (VN); ICE BofA OAS series via FRED (US HY-IG, EM Corp, Asia EM Corp). KRV simple-mean.</div>
+      <div class="panel-source"><strong>Source</strong>BoT FM_RT_001_S3 (TH); BSP weekly LTP (PH); BI SEKI I.26 + OJK (ID); VNBA / SBV (VN); ICE BofA OAS series via FRED (US HY-IG, EM Corp, Asia EM Corp); Federal Funds Effective Rate (FEDFUNDS) via FRED. KRV simple-mean.</div>
     </div>
 
     <!-- PANEL 3 · COUNTRY LADDER -->
@@ -938,15 +940,34 @@ html{ scroll-behavior:smooth; }
     us_hyig: [223,237,230,207,189,196,190,189,225,292,239,225,208,211,202,214,225,209,198],
     em_corp: [188,197,196,173,167,170,169,165,172,209,188,176,162,156,150,156,159,157,152],
     asia_em: [118,124,125,108,102,104,103,97,100,131,116,105,95,89,85,84,87,90,88],
+    // Fed Funds Effective Rate, monthly avg, FRED FEDFUNDS
+    fedfunds:[5.33,5.33,5.13,4.83,4.64,4.48,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.13,4.08,3.83,3.72,3.64],
   };
   const x0=60, x1=330;
   const xStep = (x1 - x0) / (months.length - 1);
   const yMax = 500, yTop = 50, yBot = 350;
   const y = v => yBot - (v / yMax) * (yBot - yTop);
   const x = i => x0 + i * xStep;
+  // Right axis: Fed Funds 3.0% — 5.5%, mapped to same vertical plot area
+  const ffMin = 3.0, ffMax = 5.5;
+  const yRight = v => yBot - ((v - ffMin) / (ffMax - ffMin)) * (yBot - yTop);
   const pathFor = arr => arr.map((v,i) => (i ? "L" : "M") + x(i).toFixed(2) + " " + y(v).toFixed(2)).join(" ");
+  // Step path (square shoulders) for monthly central-bank rate
+  const stepPathFor = (arr, yScale) => {
+    let d = "";
+    arr.forEach((v,i) => {
+      const xi = x(i).toFixed(2), yi = yScale(v).toFixed(2);
+      if (i === 0) { d += "M" + xi + " " + yi; }
+      else {
+        const xPrev = x(i-1).toFixed(2);
+        d += " L" + xi + " " + yScale(arr[i-1]).toFixed(2) + " L" + xi + " " + yi;
+      }
+    });
+    return d;
+  };
   const seriesGroup = document.getElementById("seriesGroup");
   const endLabels   = document.getElementById("endLabels");
+  const rightAxis   = document.getElementById("rightAxis");
   if (!seriesGroup || !endLabels) return;
   const series = [
     { key:"asean4",  color:"#4A8F7E", width:2.4, dash:null,  label:"ASEAN-4 SME",  labelW:700, labelDy:0  },
@@ -955,6 +976,93 @@ html{ scroll-behavior:smooth; }
     { key:"asia_em", color:"#7fb8a4", width:1.0, dash:"1 2", label:"Asia EM Corp", labelW:500, labelDy:0,  opacity:0.65 },
   ];
   const NS = "http://www.w3.org/2000/svg";
+
+  // ── Right-axis ticks + Fed Funds step line (drawn behind spread series) ──
+  if (rightAxis) {
+    // Right-axis ticks: 3.5–4.5% only — above 4.5% collides with ASEAN-4 SME label band
+    const ticks = [3.5, 4.0, 4.5];
+    ticks.forEach(t => {
+      const yt = yRight(t);
+      // small tick mark on right edge of plot
+      const mark = document.createElementNS(NS, "line");
+      mark.setAttribute("x1", 340); mark.setAttribute("x2", 343);
+      mark.setAttribute("y1", yt); mark.setAttribute("y2", yt);
+      mark.setAttribute("stroke", "#C49A2A"); mark.setAttribute("opacity", "0.55");
+      mark.setAttribute("stroke-width", "0.8");
+      rightAxis.appendChild(mark);
+      const tick = document.createElementNS(NS, "text");
+      tick.setAttribute("x", 422);
+      tick.setAttribute("y", yt + 3);
+      tick.setAttribute("text-anchor", "end");
+      tick.setAttribute("font-family", "articulat-cf");
+      tick.setAttribute("font-size", "8.5");
+      tick.setAttribute("fill", "#C49A2A");
+      tick.setAttribute("opacity", "0.6");
+      tick.textContent = t.toFixed(1) + "%";
+      rightAxis.appendChild(tick);
+    });
+    // Fed Funds step line
+    const ff = document.createElementNS(NS, "path");
+    ff.setAttribute("d", stepPathFor(data.fedfunds, yRight));
+    ff.setAttribute("fill", "none");
+    ff.setAttribute("stroke", "#C49A2A");
+    ff.setAttribute("stroke-width", "1.4");
+    ff.setAttribute("stroke-dasharray", "5 3");
+    ff.setAttribute("opacity", "0.85");
+    ff.setAttribute("stroke-linejoin", "miter");
+    rightAxis.appendChild(ff);
+    // Inline label on Fed Funds line — placed mid-step, away from end-of-line cluster
+    // Anchor on the long flat plateau at 4.33% (months 6–13, x ≈ 145–250)
+    const ffPlateauX = 175;
+    const ffPlateauY = yRight(4.33) - 6;
+    const ffMid = document.createElementNS(NS, "text");
+    ffMid.setAttribute("x", ffPlateauX);
+    ffMid.setAttribute("y", ffPlateauY);
+    ffMid.setAttribute("font-family", "articulat-cf");
+    ffMid.setAttribute("font-size", "9.5");
+    ffMid.setAttribute("font-weight", "600");
+    ffMid.setAttribute("font-style", "italic");
+    ffMid.setAttribute("fill", "#C49A2A");
+    ffMid.setAttribute("opacity", "0.95");
+    ffMid.textContent = "Fed Funds Effective";
+    rightAxis.appendChild(ffMid);
+    // Terminal endpoint dot only — value lives in ribbon, prevents EM Corp collision
+    const ffLast = data.fedfunds[data.fedfunds.length - 1];
+    const ffXEnd = x(data.fedfunds.length - 1);
+    const ffYEnd = yRight(ffLast);
+    const ffEndDot = document.createElementNS(NS, "circle");
+    ffEndDot.setAttribute("cx", ffXEnd); ffEndDot.setAttribute("cy", ffYEnd);
+    ffEndDot.setAttribute("r", "2.4"); ffEndDot.setAttribute("fill", "#C49A2A");
+    rightAxis.appendChild(ffEndDot);
+    // Asymmetry annotation ribbon — top-left of plot
+    const ribbonG = document.createElementNS(NS, "g");
+    ribbonG.setAttribute("transform", "translate(60, 60)");
+    const ribbonR = document.createElementNS(NS, "rect");
+    ribbonR.setAttribute("x", 0); ribbonR.setAttribute("y", 0);
+    ribbonR.setAttribute("width", 222); ribbonR.setAttribute("height", 30);
+    ribbonR.setAttribute("fill", "#0d1f17"); ribbonR.setAttribute("opacity", "0.85");
+    ribbonR.setAttribute("stroke", "#C49A2A"); ribbonR.setAttribute("stroke-opacity", "0.45");
+    ribbonR.setAttribute("stroke-width", "0.6");
+    ribbonG.appendChild(ribbonR);
+    const ribbonT1 = document.createElementNS(NS, "text");
+    ribbonT1.setAttribute("x", 8); ribbonT1.setAttribute("y", 12);
+    ribbonT1.setAttribute("font-family", "articulat-cf");
+    ribbonT1.setAttribute("font-size", "8.5");
+    ribbonT1.setAttribute("font-weight", "600");
+    ribbonT1.setAttribute("fill", "#C49A2A");
+    ribbonT1.textContent = "Δ Jul ’24 → Jan ’26";
+    ribbonG.appendChild(ribbonT1);
+    const ribbonT2 = document.createElementNS(NS, "text");
+    ribbonT2.setAttribute("x", 8); ribbonT2.setAttribute("y", 24);
+    ribbonT2.setAttribute("font-family", "articulat-cf");
+    ribbonT2.setAttribute("font-size", "9");
+    ribbonT2.setAttribute("fill", "#F7F3E7");
+    ribbonT2.setAttribute("opacity", "0.9");
+    ribbonT2.innerHTML = '<tspan fill="#C49A2A">Fed −169 bps</tspan>  ·  <tspan fill="#4A8F7E" font-weight="700">ASEAN-4 SME −11 bps</tspan>  ·  <tspan fill="#F7F3E7" opacity="0.7">latest 3.64%</tspan>';
+    ribbonG.appendChild(ribbonT2);
+    rightAxis.appendChild(ribbonG);
+  }
+
   series.forEach(s => {
     const arr = data[s.key];
     const p = document.createElementNS(NS, "path");
