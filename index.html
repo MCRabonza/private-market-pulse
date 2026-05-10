@@ -197,14 +197,22 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 
 /* ── HEADER ── */
 .header{
-  display:flex;justify-content:space-between;align-items:flex-end;
+  display:flex;justify-content:space-between;align-items:stretch;
   margin-bottom:32px;
   border-bottom:none;
   padding-bottom:24px;
   gap:48px;
 }
-/* Inside .header, the right column carries kicker → stat → sub. */
-/* align-items:flex-end on parent baselines the bottom dim line of both columns. */
+/* Symmetry rule, MCR-defined:                                          */
+/*   TITLE (left) ↔ STAT (right)  — top baseline kiss                 */
+/*   SUB    (left) ↔ SUB   (right) — bottom baseline kiss              */
+/* Implementation: both columns are flex-column, justify-content:       */
+/* space-between. Top item pins to top, bottom item pins to bottom.     */
+.header > div { display:flex; flex-direction:column; justify-content:space-between; }
+.header > div:last-child { align-items:flex-end; }
+.header > div:last-child .h-stat-sub {
+  margin-top: 0;  /* parent justify-content handles the spacing */
+}
 .kicker{
   font-family:var(--sans);font-size:10px;font-weight:500;
   text-transform:uppercase;letter-spacing:0.2em;
@@ -617,8 +625,6 @@ html{ scroll-behavior:smooth; }
 <header class="topbar" role="banner">
   <div class="topbar-left">
     <div class="tb-line-1"><span class="roman">KRV &amp; Co.</span><span class="slash">/</span><span class="ital">Private Market Pulse</span></div>
-    <span class="tb-line-1"><span class="slash">/</span></span>
-    <div class="tb-seg">Section 01 · The Price of Being Unseen · May 2026</div>
   </div>
   <div class="topbar-right">
     <div class="tb-seg">As of <strong>9 May 2026</strong></div>
