@@ -506,7 +506,11 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 }
 #section-kopp .panel {
   background:var(--card); padding: 22px 24px 24px;
+  display:flex; flex-direction:column;
 }
+/* Push the SOURCE row to the bottom of every panel so all three panels */
+/* share a common bottom baseline regardless of chart content height.    */
+#section-kopp .panel .panel-source { margin-top:auto; }
 #section-kopp .panel-head {
   font-family:var(--sans);
   font-size:9.5px; font-weight:600;
@@ -895,12 +899,12 @@ html{ scroll-behavior:smooth; }
       <div class="chart-wrap">
         <svg viewBox="0 0 500 380" preserveAspectRatio="xMidYMid meet">
           <g class="grid">
-            <line x1="180" y1="50"  x2="180" y2="262" />
-            <line x1="230" y1="50"  x2="230" y2="262" />
-            <line x1="280" y1="50"  x2="280" y2="262" />
-            <line x1="330" y1="50"  x2="330" y2="262" />
-            <line x1="380" y1="50"  x2="380" y2="262" />
-            <line x1="430" y1="50"  x2="430" y2="262" />
+            <line x1="180" y1="50"  x2="180" y2="250" />
+            <line x1="230" y1="50"  x2="230" y2="250" />
+            <line x1="280" y1="50"  x2="280" y2="250" />
+            <line x1="330" y1="50"  x2="330" y2="250" />
+            <line x1="380" y1="50"  x2="380" y2="250" />
+            <line x1="430" y1="50"  x2="430" y2="250" />
           </g>
           <g class="axis">
             <text x="180" y="42" text-anchor="middle">0</text>
@@ -911,55 +915,59 @@ html{ scroll-behavior:smooth; }
             <text x="430" y="42" text-anchor="middle">500</text>
           </g>
           <text class="axis-label" x="305" y="28" text-anchor="middle">basis points</text>
-          <line x1="377.5" y1="50" x2="377.5" y2="315" stroke="#4A8F7E" stroke-width="1" stroke-dasharray="3 3" opacity="0.55" />
-          <text x="377.5" y="310" text-anchor="middle" font-family="miller-display" font-style="italic" font-size="9.5" fill="#4A8F7E" opacity="0.9">ASEAN-4 mean · 395 bps</text>
+          <line x1="377.5" y1="50" x2="377.5" y2="250" stroke="#4A8F7E" stroke-width="1" stroke-dasharray="3 3" opacity="0.55" />
+          <text x="377.5" y="263" text-anchor="middle" font-family="miller-display" font-style="italic" font-size="9.5" fill="#4A8F7E" opacity="0.9">ASEAN-4 mean · 395 bps</text>
+
+          <!-- Country bars: thicker (26→34), more breathing room (stride 40→52).   -->
+          <!-- Bands: PH 60-94, TH 112-146, ID 164-198, VN 216-250.                        -->
 
           <!-- Philippines · 540 · country palette: cream -->
           <g>
-            <text class="series-label" x="172" y="65" text-anchor="end" fill="#F7F3E7">Philippines</text>
-            <text class="axis-label" x="172" y="78" text-anchor="end">BSP weekly · SME effective</text>
-            <rect x="180" y="58" width="270" height="26" fill="#F7F3E7" opacity="0.78" />
-            <text x="456" y="76" font-family="articulat-cf" font-size="12" font-weight="700" fill="#F7F3E7">540</text>
+            <text class="series-label" x="172" y="72" text-anchor="end" fill="#F7F3E7">Philippines</text>
+            <text class="axis-label" x="172" y="86" text-anchor="end">BSP weekly · SME effective</text>
+            <rect x="180" y="60" width="270" height="34" fill="#F7F3E7" opacity="0.78" />
+            <text x="456" y="82" font-family="articulat-cf" font-size="12" font-weight="700" fill="#F7F3E7">540</text>
           </g>
 
           <!-- Thailand · 476 · country palette: accent -->
           <g>
-            <text class="series-label" x="172" y="105" text-anchor="end" fill="#F7F3E7">Thailand</text>
-            <text class="axis-label" x="172" y="118" text-anchor="end">BoT FM_RT_001_S3 · by contract size</text>
-            <rect x="180" y="98" width="238" height="26" fill="#4A8F7E" />
-            <text x="424" y="116" font-family="articulat-cf" font-size="12" font-weight="700" fill="#4A8F7E">476</text>
+            <text class="series-label" x="172" y="124" text-anchor="end" fill="#F7F3E7">Thailand</text>
+            <text class="axis-label" x="172" y="138" text-anchor="end">BoT FM_RT_001_S3 · by contract size</text>
+            <rect x="180" y="112" width="238" height="34" fill="#4A8F7E" />
+            <text x="424" y="134" font-family="articulat-cf" font-size="12" font-weight="700" fill="#4A8F7E">476</text>
           </g>
 
           <!-- Indonesia · 335 · country palette: gold -->
           <g>
-            <text class="series-label" x="172" y="145" text-anchor="end" fill="#F7F3E7">Indonesia</text>
-            <text class="axis-label" x="172" y="158" text-anchor="end">BI SEKI I.26 + OJK MSME premium</text>
-            <rect x="180" y="138" width="167.5" height="26" fill="#C49A2A" opacity="0.85" />
-            <text x="354" y="156" font-family="articulat-cf" font-size="12" font-weight="700" fill="#C49A2A">335</text>
+            <text class="series-label" x="172" y="176" text-anchor="end" fill="#F7F3E7">Indonesia</text>
+            <text class="axis-label" x="172" y="190" text-anchor="end">BI SEKI I.26 + OJK MSME premium</text>
+            <rect x="180" y="164" width="167.5" height="34" fill="#C49A2A" opacity="0.85" />
+            <text x="354" y="186" font-family="articulat-cf" font-size="12" font-weight="700" fill="#C49A2A">335</text>
           </g>
 
           <!-- Vietnam · 230 · country palette: accent-lt (priority-cap distorted) -->
           <g>
-            <text class="series-label" x="172" y="185" text-anchor="end" fill="#F7F3E7">Vietnam</text>
-            <text class="axis-label" x="172" y="198" text-anchor="end">VNBA / SBV · top–bottom of range</text>
-            <rect x="180" y="178" width="115" height="26" fill="#6FB39E" opacity="0.75" />
-            <text x="302" y="196" font-family="articulat-cf" font-size="12" font-weight="700" fill="#6FB39E">230</text>
-            <text class="axis-label" x="335" y="196" font-style="italic" fill="#7a8d83">priority-cap distorted</text>
+            <text class="series-label" x="172" y="228" text-anchor="end" fill="#F7F3E7">Vietnam</text>
+            <text class="axis-label" x="172" y="242" text-anchor="end">VNBA / SBV · top–bottom of range</text>
+            <rect x="180" y="216" width="115" height="34" fill="#6FB39E" opacity="0.75" />
+            <text x="302" y="238" font-family="articulat-cf" font-size="12" font-weight="700" fill="#6FB39E">230</text>
+            <text class="axis-label" x="335" y="238" font-style="italic" fill="#7a8d83">priority-cap distorted</text>
           </g>
 
-          <!-- benchmark strip · shifted +30 to align bottom baseline with Panels 1 & 2 -->
-          <line x1="180" y1="325" x2="430" y2="325" stroke="#7a8d83" stroke-opacity="0.22" />
-          <text class="axis-label" x="172" y="341" text-anchor="end" fill="#F7F3E7" style="font-style:normal">Benchmarks</text>
-          <text class="axis-label" x="172" y="353" text-anchor="end">legible markets</text>
+          <!-- benchmark strip · pulled up tighter to bars (was y=325, now y=275).        -->
+          <!-- Removes ~50px of dead air between Vietnam bar (ends y=250) and benchmarks. -->
+          <line x1="180" y1="275" x2="430" y2="275" stroke="#7a8d83" stroke-opacity="0.22" />
+          <text class="axis-label" x="172" y="291" text-anchor="end" fill="#F7F3E7" style="font-style:normal">Benchmarks</text>
+          <text class="axis-label" x="172" y="303" text-anchor="end">legible markets</text>
 
-          <rect x="180" y="336" width="44" height="5" fill="#7fb8a4" opacity="0.8" />
-          <text x="230" y="341" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7fb8a4" opacity="0.85" alignment-baseline="middle">Asia EM Corp · 88</text>
+          <rect x="180" y="286" width="44" height="5" fill="#7fb8a4" opacity="0.8" />
+          <text x="230" y="291" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7fb8a4" opacity="0.85" alignment-baseline="middle">Asia EM Corp · 88</text>
 
-          <rect x="180" y="349" width="76" height="5" fill="#F7F3E7" opacity="0.55" />
-          <text x="262" y="354" font-family="articulat-cf" font-size="9" font-style="italic" fill="#F7F3E7" opacity="0.7" alignment-baseline="middle">EM Corporate · 152</text>
+          <rect x="180" y="299" width="76" height="5" fill="#F7F3E7" opacity="0.55" />
+          <text x="262" y="304" font-family="articulat-cf" font-size="9" font-style="italic" fill="#F7F3E7" opacity="0.7" alignment-baseline="middle">EM Corporate · 152</text>
 
-          <rect x="180" y="362" width="99" height="5" fill="#7a8d83" opacity="0.85" />
-          <text x="285" y="367" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7a8d83" alignment-baseline="middle">US HY-IG · 198</text>
+          <rect x="180" y="312" width="99" height="5" fill="#7a8d83" opacity="0.85" />
+          <text x="285" y="317" font-family="articulat-cf" font-size="9" font-style="italic" fill="#7a8d83" alignment-baseline="middle">US HY-IG · 198</text>
         </svg>
       </div>
       <div class="panel-source"><strong>Source</strong>BoT FM_RT_001_S3 Jan 2026; BSP Weekly Lending Rates wk-ending 31 Dec 2025; BI SEKI I.26 Jan 2026 + OJK MSME premium; VNBA Mar 2026. Latest available print per market.</div>
