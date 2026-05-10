@@ -71,7 +71,9 @@ body{
   background:var(--bg);
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
-  padding: 0 28px;
+  /* Padding matches body .page padding (48px) so masthead and meta */
+  /* sit on the same vertical rails as page content. Symmetry rule. */
+  padding: 0 48px;
   z-index:50;
 }
 /* Topbar: single row — masthead + section + meta, all separated by accent slashes ("/") */
@@ -121,7 +123,7 @@ body.mode-deck .ribbon { display:none; }
   font-family:var(--sans);
   font-size:10px; letter-spacing:1.4px; text-transform:uppercase;
   color:var(--cream-dim);
-  padding-left:28px;
+  padding-left:48px; /* match body .page padding for left-rail alignment */
 }
 .ribbon-track > span { display:inline-flex; align-items:center; gap:10px; }
 .ribbon-track > span::before {
@@ -539,14 +541,19 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 #section-kopp .panel-legend .sw {
   width:10px; height:10px; flex-shrink:0;
 }
+/* SOURCE rows are footnote-grade, not body-grade.                       */
+/* Sans, light, small. Italic Miller is reserved for hero claims and     */
+/* inline emphasis. Citations are small print, not the center of focus.  */
 #section-kopp .panel-source {
-  font-family:var(--serif); font-style:italic;
-  font-size:10px; color:var(--cream-dim);
-  line-height:1.55; margin-top:14px;
+  font-family:var(--sans); font-style:normal;
+  font-size:9.5px; font-weight:300;
+  color:rgba(247,243,231,0.40); /* between dim (.55) and faint (.15) */
+  line-height:1.5; margin-top:14px;
   padding-top:14px;
   border-top:1px solid rgba(247,243,231,0.05);
+  letter-spacing:0.01em;
 }
-#section-kopp .panel-source strong { color:var(--cream-dim); font-weight:500; font-style:normal; font-family:var(--sans); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; margin-right:8px; }
+#section-kopp .panel-source strong { color:var(--cream-dim); font-weight:500; font-style:normal; font-family:var(--sans); font-size:8.5px; letter-spacing:0.16em; text-transform:uppercase; margin-right:8px; }
 
 #section-kopp .interp {
   background:rgba(196,154,42,0.06);
