@@ -198,25 +198,24 @@ body.mode-deck #ribbonToggle { display:none; }
 body.mode-deck .ribbon { display:none; }
 body.mode-no-ribbon .ribbon { display:none; }
 
-/* Tiny mode glyph — 24x24 corner square, single letter, monospace.            */
-/* Visible in BOTH modes so the keyboard hint is always discoverable; in        */
-/* terminal mode it sits inside the topbar bleed; in deck mode it becomes the   */
-/* only chrome on screen.                                                       */
+/* Tiny mode glyph — anchored to the dot-rail column, sits directly above the   */
+/* first bullet hole. Same X-position as .deck-nav for visual column alignment. */
 .mode-glyph{
-  position:fixed; top:14px; right:14px; z-index:9999;
-  width:24px; height:24px;
+  width:14px; height:14px;
   display:inline-flex; align-items:center; justify-content:center;
-  background:rgba(20,45,35,0.0);
-  border:1px solid rgba(247,243,231,0.18);
+  background:transparent;
+  border:none;
   font-family:var(--sans);
-  font-size:11px; font-weight:600;
-  letter-spacing:0;
+  font-size:9px; font-weight:600;
+  letter-spacing:0; line-height:1;
   color:var(--cream-dim);
   cursor:pointer; user-select:none;
-  padding:0;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  padding:0; margin:0 0 6px 0;
+  pointer-events:auto;
+  transition: color 0.15s ease;
+  align-self:center;
 }
-.mode-glyph:hover { color:var(--cream); border-color:var(--accent); background:rgba(20,45,35,0.6); }
+.mode-glyph:hover { color:var(--cream); }
 .mode-glyph .mg-letter { line-height:1; }
 .mode-glyph .mg-d { display:inline; }
 .mode-glyph .mg-t { display:none; }
@@ -792,10 +791,7 @@ html{ scroll-behavior:smooth; }
  </div>
 </header>
 
-<!-- Tiny corner glyph: D in terminal mode (press to enter deck), T in deck mode (press to exit). -->
-<button class="mode-glyph" id="modeGlyph" type="button" aria-label="Toggle mode" title="D = Deck · T = Terminal">
-  <span class="mg-letter mg-d">D</span><span class="mg-letter mg-t">T</span>
-</button>
+<!-- Mode glyph is now injected as the first child of .deck-nav (dot-rail) for column alignment. -->
 
 <div class="meta-strip" aria-label="Issue metadata">
  <div class="meta-strip-inner">
@@ -944,8 +940,14 @@ html{ scroll-behavior:smooth; }
   if (chip) chip.addEventListener('click', toggleMode);
   var inlineToggle = document.getElementById('modeToggleInline');
   if (inlineToggle) inlineToggle.addEventListener('click', toggleMode);
-  var glyphBtn = document.getElementById('modeGlyph');
-  if (glyphBtn) glyphBtn.addEventListener('click', toggleMode);
+  // Glyph button is injected by the dot-rail script later; attach a delegated handler.
+  document.addEventListener('click', function(ev){
+    var t = ev.target;
+    while (t && t !== document) {
+      if (t.id === 'modeGlyph') { toggleMode(); return; }
+      t = t.parentNode;
+    }
+  });
 
   // Ribbon on/off toggle (independent of terminal/deck)
   var RIBBON_KEY = 'krv-pulse-ribbon';
@@ -2108,6 +2110,15 @@ window.addEventListener('load',function(){
   // Build the indicator rail
   var nav = document.createElement('div');
   nav.className = 'deck-nav';
+  // Mode glyph rides above the first dot, same column.
+  var glyphEl = document.createElement('button');
+  glyphEl.className = 'mode-glyph';
+  glyphEl.id = 'modeGlyph';
+  glyphEl.type = 'button';
+  glyphEl.setAttribute('aria-label','Toggle mode');
+  glyphEl.setAttribute('title','D = Deck · T = Terminal');
+  glyphEl.innerHTML = '<span class="mg-letter mg-d">D</span><span class="mg-letter mg-t">T</span>';
+  nav.appendChild(glyphEl);
   pages.forEach(function(){
     var d = document.createElement('div');
     d.className = 'dn-dot';
