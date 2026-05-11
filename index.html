@@ -198,23 +198,30 @@ body.mode-deck #ribbonToggle { display:none; }
 body.mode-deck .ribbon { display:none; }
 body.mode-no-ribbon .ribbon { display:none; }
 
-/* Floating EXIT DECK chip — appears only in deck mode, top-right corner */
-.deck-exit{
-  display:none;
-  position:fixed; top:18px; right:18px; z-index:9999;
-  align-items:center; gap:8px;
-  background:rgba(20,45,35,0.92);
-  border:1px solid var(--border);
-  padding:6px 12px;
-  font-family:var(--sans); font-size:9px; font-weight:600;
-  letter-spacing:0.18em; text-transform:uppercase;
+/* Tiny mode glyph — 24x24 corner square, single letter, monospace.            */
+/* Visible in BOTH modes so the keyboard hint is always discoverable; in        */
+/* terminal mode it sits inside the topbar bleed; in deck mode it becomes the   */
+/* only chrome on screen.                                                       */
+.mode-glyph{
+  position:fixed; top:14px; right:14px; z-index:9999;
+  width:24px; height:24px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:rgba(20,45,35,0.0);
+  border:1px solid rgba(247,243,231,0.18);
+  font-family:var(--sans);
+  font-size:11px; font-weight:600;
+  letter-spacing:0;
   color:var(--cream-dim);
   cursor:pointer; user-select:none;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  padding:0;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
-.deck-exit:hover { color:var(--cream); border-color:var(--accent); }
-.deck-exit .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; }
-body.mode-deck .deck-exit { display:inline-flex; }
+.mode-glyph:hover { color:var(--cream); border-color:var(--accent); background:rgba(20,45,35,0.6); }
+.mode-glyph .mg-letter { line-height:1; }
+.mode-glyph .mg-d { display:inline; }
+.mode-glyph .mg-t { display:none; }
+body.mode-deck .mode-glyph .mg-d { display:none; }
+body.mode-deck .mode-glyph .mg-t { display:inline; color:var(--accent); }
 .ribbon-track{
   display:flex; gap:48px; white-space:nowrap;
   animation: ribbon-scroll 90s linear infinite;
@@ -323,6 +330,13 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
   font-family:var(--sans);font-size:10px;font-weight:500;
   text-transform:uppercase;letter-spacing:0.2em;
   color:var(--accent);margin-bottom:10px;line-height:1;
+}
+/* Section sub-kicker (e.g. 'Section 01 · The K-OPP Index · January 2026' under */
+/* the canonical 'KRV & Co. / Private Market Pulse' header on Section 01).        */
+.kicker.kicker-sub{
+  color:var(--cream-dim);
+  margin-top:-4px;
+  margin-bottom:14px;
 }
 .h-title{
   font-family:var(--serif);font-style:italic;
@@ -778,22 +792,22 @@ html{ scroll-behavior:smooth; }
  </div>
 </header>
 
-<button class="deck-exit" id="deckExit" type="button" aria-label="Exit deck mode">
-  <span class="dot"></span><span>Deck</span><span style="opacity:0.5;margin:0 4px;">→</span><span>Terminal</span>
+<!-- Tiny corner glyph: D in terminal mode (press to enter deck), T in deck mode (press to exit). -->
+<button class="mode-glyph" id="modeGlyph" type="button" aria-label="Toggle mode" title="D = Deck · T = Terminal">
+  <span class="mg-letter mg-d">D</span><span class="mg-letter mg-t">T</span>
 </button>
 
 <div class="meta-strip" aria-label="Issue metadata">
  <div class="meta-strip-inner">
-  <div class="ms-seg"><strong>Private Market Pulse</strong></div>
   <div class="ms-seg ms-controls">
-    <button class="ms-toggle" id="modeToggleInline" type="button" aria-label="Toggle terminal / deck mode">
+    <button class="ms-toggle" id="modeToggleInline" type="button" aria-label="Switch to deck mode" title="Press D for Deck">
       <span class="ms-toggle-label-terminal">Terminal</span><span class="ms-toggle-label-deck">Deck</span>
     </button>
-    <button class="ms-toggle" id="ribbonToggle" type="button" aria-label="Toggle ribbon">
+    <button class="ms-toggle" id="ribbonToggle" type="button" aria-label="Toggle ticker" title="Press K to toggle ticker">
       <span class="ms-toggle-label-on">Ticker · On</span><span class="ms-toggle-label-off">Ticker · Off</span>
     </button>
-    <span class="ms-slash">/</span><strong>WK20 · MAY 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span>
   </div>
+  <div class="ms-seg"><strong>WK20 · MAY 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
  </div>
 </div>
 
@@ -875,11 +889,14 @@ html{ scroll-behavior:smooth; }
 
 <div class="kbd-help" id="kbdHelp" aria-hidden="true">
   <h3>Keyboard · Pulse Terminal</h3>
-  <div class="kbd-help-row"><span class="desc">Toggle ticker</span><kbd>T</kbd></div>
+  <div class="kbd-help-row"><span class="desc">Enter Terminal mode</span><kbd>T</kbd></div>
+  <div class="kbd-help-row"><span class="desc">Enter Deck mode</span><kbd>D</kbd></div>
+  <div class="kbd-help-row"><span class="desc">Toggle Ticker</span><kbd>K</kbd></div>
   <div class="kbd-help-row"><span class="desc">Next section</span><kbd>↓</kbd></div>
   <div class="kbd-help-row"><span class="desc">Previous section</span><kbd>↑</kbd></div>
   <div class="kbd-help-row"><span class="desc">Jump to top</span><kbd>Home</kbd></div>
   <div class="kbd-help-row"><span class="desc">Jump to end</span><kbd>End</kbd></div>
+  <div class="kbd-help-row"><span class="desc">Exit Deck · Hide help</span><kbd>Esc</kbd></div>
   <div class="kbd-help-row"><span class="desc">This help</span><kbd>?</kbd></div>
 </div>
 
@@ -927,8 +944,8 @@ html{ scroll-behavior:smooth; }
   if (chip) chip.addEventListener('click', toggleMode);
   var inlineToggle = document.getElementById('modeToggleInline');
   if (inlineToggle) inlineToggle.addEventListener('click', toggleMode);
-  var deckExitBtn = document.getElementById('deckExit');
-  if (deckExitBtn) deckExitBtn.addEventListener('click', toggleMode);
+  var glyphBtn = document.getElementById('modeGlyph');
+  if (glyphBtn) glyphBtn.addEventListener('click', toggleMode);
 
   // Ribbon on/off toggle (independent of terminal/deck)
   var RIBBON_KEY = 'krv-pulse-ribbon';
@@ -960,12 +977,22 @@ html{ scroll-behavior:smooth; }
     var k = e.key;
     if (k === 't' || k === 'T'){
       e.preventDefault();
-      toggleMode();
+      applyMode('terminal');
+    } else if (k === 'd' || k === 'D'){
+      e.preventDefault();
+      applyMode('deck');
+    } else if (k === 'k' || k === 'K'){
+      e.preventDefault();
+      applyRibbon(body.classList.contains('mode-no-ribbon') ? 'on' : 'off');
     } else if (k === '?' || (k === '/' && e.shiftKey)){
       e.preventDefault();
       flashHelp();
     } else if (k === 'Escape'){
-      if (help) help.classList.remove('visible');
+      if (body.classList.contains('mode-deck')) {
+        applyMode('terminal');
+      } else if (help) {
+        help.classList.remove('visible');
+      }
     }
   });
 
@@ -981,7 +1008,8 @@ html{ scroll-behavior:smooth; }
 
   <div class="header">
     <div>
-      <div class="kicker">Section 01 · The K-OPP Index · January 2026</div>
+      <div class="kicker">KRV &amp; Co. / Private Market Pulse</div>
+      <div class="kicker kicker-sub">Section 01 · The K-OPP Index · January 2026</div>
       <h1 class="h-title">The Price of Being Unseen</h1>
       <div class="h-deck">The premium that rate cuts cannot reach</div>
     </div>
