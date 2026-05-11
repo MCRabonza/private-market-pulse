@@ -312,6 +312,7 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 }
 .ib-text{font-size:12px;font-weight:300;color:var(--cream-dim);line-height:1.65;}
 .ib-text strong{color:var(--cream);font-weight:600;}
+.ib-text .src,.gc-lbl .src{font-size:0.82em;font-style:italic;color:var(--cream-faint);letter-spacing:0.04em;margin-left:4px;}
 
 /* ── GRID ── */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
@@ -336,7 +337,8 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 .anat-sw{width:3px;flex-shrink:0;}
 .anat-body{flex:1;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
 .anat-lbl{font-size:11px;font-weight:300;color:var(--cream-dim);line-height:1.4;}
-.anat-lbl strong{display:block;font-size:12px;font-weight:600;color:var(--cream);margin-bottom:1px;}
+.anat-lbl > strong{display:block;font-size:12px;font-weight:600;color:var(--cream);margin-bottom:1px;}
+.anat-lbl .why strong{font-weight:600;color:var(--cream);}
 .anat-lbl .why{font-size:10px;color:var(--accent);font-style:italic;font-family:var(--serif);}
 .anat-val{
   font-family:var(--serif);font-style:italic;
@@ -708,42 +710,75 @@ html{ scroll-behavior:smooth; }
   <div class="ms-seg">As of <strong>9 May 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
 </div>
 
-<div class="ribbon" aria-label="Live market ticker">
-  <!-- The track is duplicated for seamless infinite scroll -->
-  <div class="ribbon-track">
-    <span><span class="lbl">THB / USD</span> <span class="lvl">31.45</span> <span class="delta up">▲ +1.2% MoM</span></span>
-    <span><span class="lbl">PHP / USD</span> <span class="lvl">61.57</span> <span class="delta down">▼ −0.4% MoM</span></span>
-    <span><span class="lbl">IDR / USD</span> <span class="lvl">17,449</span> <span class="delta down">▼ −2.1% MoM</span></span>
-    <span><span class="lbl">VND / USD</span> <span class="lvl">25,510</span> <span class="delta down">▼ −0.6% MoM</span></span>
-    <span><span class="lbl">SET</span> <span class="lvl">1,500.36</span> <span class="delta down">▼ −2.4% MoM</span></span>
-    <span><span class="lbl">PSEi</span> <span class="lvl">5,949.14</span> <span class="delta down">▼ −7.4% MoM</span></span>
-    <span><span class="lbl">JCI</span> <span class="lvl">6,969.40</span> <span class="delta down">▼ −4.6% MoM</span></span>
-    <span><span class="lbl">VN-Index</span> <span class="lvl">1,261.85</span> <span class="delta up">▲ +0.9% MoM</span></span>
-    <span><span class="lbl">BoT</span> <span class="lvl">1.00%</span> <span class="delta down">▼ −25 bps</span></span>
-    <span><span class="lbl">BSP</span> <span class="lvl">4.25%</span> <span class="delta down">▼ −25 bps</span></span>
-    <span><span class="lbl">BI</span> <span class="lvl">4.75%</span> <span class="delta flat">— flat</span></span>
-    <span><span class="lbl">SBV</span> <span class="lvl">4.50%</span> <span class="delta flat">— flat</span></span>
-    <span><span class="lbl">US 10Y</span> <span class="lvl">4.31%</span> <span class="delta down">▼ −12 bps</span></span>
-    <span><span class="lbl">DXY</span> <span class="lvl">98.74</span> <span class="delta down">▼ −1.8% MoM</span></span>
-    <span><span class="lbl">EM Corp OAS</span> <span class="lvl">152 bps</span> <span class="delta up">▲ −5 bps</span></span>
-    <!-- duplicate set for seamless scroll -->
-    <span><span class="lbl">THB / USD</span> <span class="lvl">31.45</span> <span class="delta up">▲ +1.2% MoM</span></span>
-    <span><span class="lbl">PHP / USD</span> <span class="lvl">61.57</span> <span class="delta down">▼ −0.4% MoM</span></span>
-    <span><span class="lbl">IDR / USD</span> <span class="lvl">17,449</span> <span class="delta down">▼ −2.1% MoM</span></span>
-    <span><span class="lbl">VND / USD</span> <span class="lvl">25,510</span> <span class="delta down">▼ −0.6% MoM</span></span>
-    <span><span class="lbl">SET</span> <span class="lvl">1,500.36</span> <span class="delta down">▼ −2.4% MoM</span></span>
-    <span><span class="lbl">PSEi</span> <span class="lvl">5,949.14</span> <span class="delta down">▼ −7.4% MoM</span></span>
-    <span><span class="lbl">JCI</span> <span class="lvl">6,969.40</span> <span class="delta down">▼ −4.6% MoM</span></span>
-    <span><span class="lbl">VN-Index</span> <span class="lvl">1,261.85</span> <span class="delta up">▲ +0.9% MoM</span></span>
-    <span><span class="lbl">BoT</span> <span class="lvl">1.00%</span> <span class="delta down">▼ −25 bps</span></span>
-    <span><span class="lbl">BSP</span> <span class="lvl">4.25%</span> <span class="delta down">▼ −25 bps</span></span>
-    <span><span class="lbl">BI</span> <span class="lvl">4.75%</span> <span class="delta flat">— flat</span></span>
-    <span><span class="lbl">SBV</span> <span class="lvl">4.50%</span> <span class="delta flat">— flat</span></span>
-    <span><span class="lbl">US 10Y</span> <span class="lvl">4.31%</span> <span class="delta down">▼ −12 bps</span></span>
-    <span><span class="lbl">DXY</span> <span class="lvl">98.74</span> <span class="delta down">▼ −1.8% MoM</span></span>
-    <span><span class="lbl">EM Corp OAS</span> <span class="lvl">152 bps</span> <span class="delta up">▲ −5 bps</span></span>
+<div class="ribbon" aria-label="Live market ticker" data-last-refreshed="">
+  <!-- Track is rendered from data/ribbon-data.json by initRibbon() below.
+       Fallback static content kept inside for SEO + no-JS graceful degradation. -->
+  <div class="ribbon-track" id="ribbonTrack">
+    <span><span class="lbl">LIVE</span> <span class="lvl">Loading ribbon…</span></span>
   </div>
 </div>
+
+<script>
+(function initRibbon() {
+  const TRACK = document.getElementById('ribbonTrack');
+  if (!TRACK) return;
+
+  function fmtDelta(item) {
+    if (typeof item.delta_bps === 'number') {
+      if (item.delta_bps === 0) return { cls: 'flat', text: '— flat' };
+      const arrow = item.delta_bps > 0 ? '▲' : '▼';
+      const cls = item.delta_bps > 0 ? 'up' : 'down';
+      return { cls, text: `${arrow} ${item.delta_bps > 0 ? '+' : '−'}${Math.abs(item.delta_bps)} bps` };
+    }
+    if (typeof item.delta_pct === 'number') {
+      if (item.delta_pct === 0) return { cls: 'flat', text: '— flat' };
+      const arrow = item.delta_pct > 0 ? '▲' : '▼';
+      const cls = item.delta_pct > 0 ? 'up' : 'down';
+      const sign = item.delta_pct > 0 ? '+' : '−';
+      return { cls, text: `${arrow} ${sign}${Math.abs(item.delta_pct).toFixed(1)}% ${item.delta_unit || 'MoM'}` };
+    }
+    return { cls: 'flat', text: '' };
+  }
+
+  function render(items, refreshedLabel) {
+    const segments = items.map(it => {
+      const d = fmtDelta(it);
+      return `<span><span class="lbl">${it.label}</span> <span class="lvl">${it.value}</span> <span class="delta ${d.cls}">${d.text}</span></span>`;
+    }).join('\n    ');
+    // Duplicate the segment block for seamless infinite scroll
+    TRACK.innerHTML = segments + '\n    <!-- duplicate set for seamless scroll -->\n    ' + segments;
+    if (refreshedLabel) {
+      TRACK.parentElement.setAttribute('data-last-refreshed', refreshedLabel);
+      TRACK.parentElement.setAttribute('title', `Last refreshed: ${refreshedLabel}`);
+    }
+  }
+
+  fetch('data/ribbon-data.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => render(data.items || [], data.last_refreshed_label))
+    .catch(err => {
+      console.warn('[ribbon] fetch failed, using static fallback', err);
+      // Inline fallback so the ribbon never goes blank if JSON 404s
+      render([
+        { label: 'THB / USD', value: '31.45', delta_pct: 1.2, delta_unit: 'MoM' },
+        { label: 'PHP / USD', value: '61.57', delta_pct: -0.4, delta_unit: 'MoM' },
+        { label: 'IDR / USD', value: '17,449', delta_pct: -2.1, delta_unit: 'MoM' },
+        { label: 'VND / USD', value: '25,510', delta_pct: -0.6, delta_unit: 'MoM' },
+        { label: 'SET', value: '1,500.36', delta_pct: -2.4, delta_unit: 'MoM' },
+        { label: 'PSEi', value: '5,949.14', delta_pct: -7.4, delta_unit: 'MoM' },
+        { label: 'JCI', value: '6,969.40', delta_pct: -4.6, delta_unit: 'MoM' },
+        { label: 'VN-Index', value: '1,261.85', delta_pct: 0.9, delta_unit: 'MoM' },
+        { label: 'BoT', value: '1.00%', delta_bps: -25 },
+        { label: 'BSP', value: '4.25%', delta_bps: -25 },
+        { label: 'BI', value: '4.75%', delta_bps: 0 },
+        { label: 'SBV', value: '4.50%', delta_bps: 0 },
+        { label: 'US 10Y', value: '4.31%', delta_bps: -12 },
+        { label: 'DXY', value: '98.74', delta_pct: -1.8, delta_unit: 'MoM' },
+        { label: 'EM Corp OAS', value: '152 bps', delta_bps: -5 }
+      ], 'static fallback');
+    });
+})();
+</script>
 
 <button class="mode-chip" id="modeChip" type="button" aria-label="Toggle terminal / deck mode">
   <span class="dot"></span>
@@ -1253,9 +1288,9 @@ html{ scroll-behavior:smooth; }
       <div class="h-sub">ASEAN Country vs. Emerging Market Average · Absolute &amp; GDP-Normalized · 2024–2025</div>
     </div>
     <div>
-      <div class="h-stat-label">ASEAN Combined Gap</div>
+      <div class="h-stat-label">ASEAN Combined Gap <span class="src">(KRV-derived)</span></div>
       <div class="h-stat pos">$450B+</div>
-      <div class="h-stat-sub">Thailand · Philippines · Indonesia · Vietnam</div>
+      <div class="h-stat-sub">Thailand · Philippines · Indonesia · Vietnam · sum of country-level IFC/SME Finance Forum series</div>
     </div>
   </div>
 
@@ -1284,7 +1319,7 @@ html{ scroll-behavior:smooth; }
   <div class="events" style="margin-top:20px;">
     <div class="ep"><div class="ep-date">Philippines</div><div class="ep-head">$206B Gap</div><div class="ep-sub">Bank compliance 4.45% vs. 10% legal mandate. Largest gap relative to banking system size.</div></div>
     <div class="ep"><div class="ep-date">Indonesia</div><div class="ep-head">$165–234B Gap</div><div class="ep-sub">MSME credit −0.06% YoY while total bank credit grew 9.37% (Feb 2026).</div></div>
-    <div class="ep"><div class="ep-date">Thailand</div><div class="ep-head">~$50B Est. Gap</div><div class="ep-sub">SME loans −4.1% YoY in Q4 2025, even after BOT cut rates to historic low.</div></div>
+    <div class="ep"><div class="ep-date">Thailand</div><div class="ep-head">~$50B Est. Gap <span class="src">(KRV est.)</span></div><div class="ep-sub">IFC 2017 base USD 40.7B, updated for gap growth. SME loans −4.1% YoY in Q4 2025, even after BOT cut rates to historic low.</div></div>
     <div class="ep"><div class="ep-date">Vietnam</div><div class="ep-head">$21.7B Gap</div><div class="ep-sub">60–62% of SME financing needs unmet. EuroCham BCI at 7-year high of 80.0 in Q4 2025.</div></div>
   </div>
 
@@ -1332,7 +1367,7 @@ html{ scroll-behavior:smooth; }
       <div class="anat-row">
         <div class="anat-sw" style="background:#2e8068;"></div>
         <div class="anat-body">
-          <div class="anat-lbl"><strong>Provisioning &amp; Credit Loss</strong>NPL reserve · Stage 2 migration · write-offs<div class="why">SME NPL ratio at 7.2%; Stage 2 loans at 11.7% of book (BOT FS Review, Q3 2025).</div></div>
+          <div class="anat-lbl"><strong>Provisioning &amp; Credit Loss</strong>NPL reserve · Stage 2 migration · write-offs<div class="why">System Stage 2 (SICR): <strong>7.2%</strong>; SME Stage 3 NPL: <strong>9.35%</strong>; Stage 2 loans at 11.7% of book (BOT FS Review, Q3 2025).</div></div>
           <div class="anat-val">2.5–4.0<span class="u">%</span></div>
         </div>
       </div>
@@ -1351,14 +1386,14 @@ html{ scroll-behavior:smooth; }
         </div>
       </div>
       <div class="sum-row"><div class="sum-lbl">Total Cost to Extend</div><div class="sum-val">9.5–13.5%</div></div>
-      <div class="yield-row"><div class="yield-lbl">SME Loan Portfolio Yield</div><div class="yield-val">8–10%</div></div>
+      <div class="yield-row"><div class="yield-lbl">SME Loan Portfolio Yield <span class="src">(all-in yield · incl. fees, non-bank channels)</span></div><div class="yield-val">8–10%</div></div>
       <div class="gap-row"><div class="gap-lbl">▼ Negative Spread (Loss Per Loan)</div><div class="gap-val">−1% to −5%</div></div>
     </div>
 
     <!-- RIGHT: stacked bar -->
     <div class="card">
       <div class="card-label">Visual Anatomy</div>
-      <div class="card-title">Cost stack vs. SME yield — where the loss is made</div>
+      <div class="card-title">Cost stack vs. SME yield — where the loss is made <span class="src">(KRV analysis · BOT FS Review Q3 2025, Basel III risk weights)</span></div>
       <div style="position:relative;height:320px;"><canvas id="chartC1"></canvas></div>
       <div class="legend">
         <div class="li"><div class="li-dot" style="background:#4A8F7E;"></div>Operating &amp; Origination (highest cost)</div>
@@ -1383,7 +1418,7 @@ html{ scroll-behavior:smooth; }
     <div class="events">
       <div class="ep"><div class="ep-date">Feb 2026</div><div class="ep-head">BOT cuts to 1.00%</div><div class="ep-sub">Historic all-time low</div></div>
       <div class="ep"><div class="ep-date">Q4 2025</div><div class="ep-head">SME loans −4.1% YoY</div><div class="ep-sub">Banks contracted further post-cut</div></div>
-      <div class="ep"><div class="ep-date">Q3 2025</div><div class="ep-head">NPL 7.2% · Stage 2: 11.7%</div><div class="ep-sub">Provisioning surge forces retreat</div></div>
+      <div class="ep"><div class="ep-date">Q3 2025</div><div class="ep-head">Stage 2 (SICR) 7.2% · SME NPL 9.35%</div><div class="ep-sub">Provisioning surge forces retreat</div></div>
       <div class="ep"><div class="ep-date">Basel III · Ongoing</div><div class="ep-head">85–100% risk weight</div><div class="ep-sub">vs. 20% for AA-rated corporates</div></div>
     </div>
   </div>
@@ -1537,9 +1572,8 @@ html{ scroll-behavior:smooth; }
   <div class="insight-bar">
     <div class="ib-tag">The Root Cause</div>
     <div class="ib-text">
-      Without audited financial statements, no bank can underwrite — and no SME can access formal capital at any price.
-      The CPA-to-SME ratio is the single most underreported indicator of structural credit inaccessibility.
-      Every country in ASEAN sits in the <strong>critical zone</strong>. Developed-market benchmark is <strong>8–12 CPAs per 1,000 SMEs</strong>.
+      There are <strong>850 listed companies</strong> in Thailand. There are <strong>3.2 million SMEs</strong>. The same profession is asked to serve both. <em>It cannot, and rationally does not.</em>
+      Every country in ASEAN sits in the <strong>critical zone</strong>. Developed-market benchmark is <strong>8&ndash;12 CPAs per 1,000 SMEs</strong> <span class="src">(KRV estimate)</span>.
       Technology-enabled accounting infrastructure is not optional. <strong>It is the prerequisite.</strong>
     </div>
   </div>
@@ -1552,9 +1586,9 @@ html{ scroll-behavior:smooth; }
       <div class="gc-badge badge-r">Critical — Tech Needed</div>
       <div class="gc-stats">
         <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">3.2M</div></div>
-        <div class="gc-row"><div class="gc-lbl">Licensed CPAs</div><div class="gc-val">~74,000</div></div>
-        <div class="gc-row"><div class="gc-lbl">CPAs near retirement</div><div class="gc-val">&gt;60%</div></div>
-        <div class="gc-row"><div class="gc-lbl">SMEs with audited accounts</div><div class="gc-val">&lt;50%</div></div>
+        <div class="gc-row"><div class="gc-lbl">TFAC members <span class="src">(KRV est.)</span></div><div class="gc-val">80,000+</div></div>
+        <div class="gc-row"><div class="gc-lbl">CPAs near retirement <span class="src">(KRV est.)</span></div><div class="gc-val">&gt;60%</div></div>
+        <div class="gc-row"><div class="gc-lbl">SMEs with audited accounts <span class="src">(KRV est.)</span></div><div class="gc-val">&lt;50%</div></div>
       </div>
     </div>
     <div class="gauge-card">
@@ -1564,7 +1598,7 @@ html{ scroll-behavior:smooth; }
       <div class="gc-badge badge-r">Critical — Tech Needed</div>
       <div class="gc-stats">
         <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">1.24M</div></div>
-        <div class="gc-row"><div class="gc-lbl">Licensed CPAs</div><div class="gc-val">~215,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs <span class="src">(KRV est.)</span></div><div class="gc-val">~215,000</div></div>
         <div class="gc-row"><div class="gc-lbl">SME bank credit share</div><div class="gc-val">4.6%</div></div>
         <div class="gc-row"><div class="gc-lbl">Legal mandate</div><div class="gc-val">10%</div></div>
       </div>
@@ -1576,7 +1610,7 @@ html{ scroll-behavior:smooth; }
       <div class="gc-badge badge-r">Severe — Highest Priority</div>
       <div class="gc-stats">
         <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">66M</div></div>
-        <div class="gc-row"><div class="gc-lbl">Licensed CPAs (est.)</div><div class="gc-val">~20,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs <span class="src">(KRV est.)</span></div><div class="gc-val">~20,000</div></div>
         <div class="gc-row"><div class="gc-lbl">SME share of GDP</div><div class="gc-val">61%</div></div>
         <div class="gc-row"><div class="gc-lbl">MSME credit YoY</div><div class="gc-val">−0.06%</div></div>
       </div>
@@ -1585,10 +1619,10 @@ html{ scroll-behavior:smooth; }
       <div class="gc-country">Vietnam</div>
       <div class="gc-wrap"><canvas id="gaugeD" width="160" height="90"></canvas><div class="gc-num">1.2<span class="gc-unit"> /1K</span></div></div>
       <div class="gc-sub">CPAs per 1,000 registered SMEs</div>
-      <div class="gc-badge badge-a">Elevated — Improvement Needed</div>
+      <div class="gc-badge badge-r">Critical — Tech Needed</div>
       <div class="gc-stats">
         <div class="gc-row"><div class="gc-lbl">Registered SMEs</div><div class="gc-val">~800K</div></div>
-        <div class="gc-row"><div class="gc-lbl">Licensed CPAs (est.)</div><div class="gc-val">~10,000</div></div>
+        <div class="gc-row"><div class="gc-lbl">Licensed CPAs <span class="src">(KRV est.)</span></div><div class="gc-val">~10,000</div></div>
         <div class="gc-row"><div class="gc-lbl">Funding gap</div><div class="gc-val">$21.7B</div></div>
         <div class="gc-row"><div class="gc-lbl">Gap vs. SME needs</div><div class="gc-val">60–62%</div></div>
       </div>
@@ -1926,7 +1960,7 @@ window.addEventListener('load',function(){
   drawGauge('gaugeA',0.9,'red');
   drawGauge('gaugeB',1.7,'red');
   drawGauge('gaugeC',0.3,'red');
-  drawGauge('gaugeD',1.2,'amber');
+  drawGauge('gaugeD',1.2,'red');
 });
 </script>
 
