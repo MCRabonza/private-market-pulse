@@ -201,23 +201,30 @@ body.mode-no-ribbon .ribbon { display:none; }
 /* Tiny mode glyph — anchored to the dot-rail column, sits directly above the   */
 /* first bullet hole. Same X-position as .deck-nav for visual column alignment. */
 .mode-glyph{
-  /* Box matches dot width (7px) so glyph centerline = dot centerline. */
-  width:7px; height:10px;
+  /* Box centered on the dot column. Slightly larger to read as a pressable */
+  /* affordance, but quiet enough not to compete with the dot rail.         */
+  width:16px; height:16px;
   display:flex; align-items:center; justify-content:center;
-  background:transparent;
-  border:none;
+  background:rgba(247,243,231,0.04);
+  border:1px solid rgba(247,243,231,0.22);
+  border-radius:2px;
   font-family:var(--sans);
   font-size:9px; font-weight:600;
   letter-spacing:0; line-height:1;
   color:var(--cream-dim);
   cursor:pointer; user-select:none;
-  padding:0; margin:0 0 8px 0;
+  padding:0; margin:0 0 10px 0;
   pointer-events:auto;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
   align-self:center;
   overflow:visible;
+  box-sizing:border-box;
 }
-.mode-glyph:hover { color:var(--cream); }
+.mode-glyph:hover {
+  color:var(--cream);
+  border-color:var(--accent);
+  background:rgba(74,143,126,0.16);
+}
 .mode-glyph .mg-letter { line-height:1; }
 .mode-glyph .mg-d { display:inline; }
 .mode-glyph .mg-t { display:none; }
@@ -724,7 +731,8 @@ html{ scroll-behavior:smooth; }
 /* Section indicator — small dot rail on right edge */
 .deck-nav{
   position:fixed;right:18px;top:50%;transform:translateY(-50%);
-  z-index:9998;display:flex;flex-direction:column;gap:10px;
+  z-index:9998;display:flex;flex-direction:column;align-items:center;gap:10px;
+  width:16px; /* lock column width so dots stay axis-locked when glyph is wider */
   pointer-events:none;
 }
 .deck-nav .dn-dot{
