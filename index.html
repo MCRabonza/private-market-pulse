@@ -56,7 +56,10 @@ body{
 }
 
 /* ── PAGE STRUCTURE ── */
-.page{padding:44px 48px 72px;}
+/* Rails match krv.co .container: 80px desktop, 40px tablet. */
+/* max-width 1440px so ultra-wide displays center the page.   */
+.page{padding:44px 80px 72px; max-width:1440px; margin:0 auto;}
+@media (max-width:768px){ .page{padding:44px 40px 72px;} }
 .page+.page{
   border-top:none;
   padding-top:56px;
@@ -71,11 +74,12 @@ body{
   background:var(--bg);
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
-  /* Padding matches body .page padding (48px) so masthead and meta */
-  /* sit on the same vertical rails as page content. Symmetry rule. */
-  padding: 0 48px;
+  /* Padding matches body .page padding so masthead and meta sit on  */
+  /* the same vertical rails as page content. krv.co parity: 80px.   */
+  padding: 0 80px;
   z-index:50;
 }
+@media (max-width:768px){ .topbar{ padding:0 40px; } }
 /* Topbar: single row — masthead + section + meta, all separated by accent slashes ("/") */
 .topbar-left  { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; min-width:0; }
 .topbar-right { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; }
@@ -123,8 +127,9 @@ body.mode-deck .ribbon { display:none; }
   font-family:var(--sans);
   font-size:10px; letter-spacing:1.4px; text-transform:uppercase;
   color:var(--cream-dim);
-  padding-left:48px; /* match body .page padding for left-rail alignment */
+  padding-left:80px; /* match body .page padding for left-rail alignment */
 }
+@media (max-width:768px){ .ribbon-track{ padding-left:40px; } }
 .ribbon-track > span { display:inline-flex; align-items:center; gap:10px; }
 .ribbon-track > span::before {
   content:'·'; color:var(--accent); margin-right:4px; font-size:14px;
