@@ -144,7 +144,12 @@ body{
   display:flex; align-items:center; justify-content:space-between;
 }
 @media (max-width:768px){ .meta-strip-inner{ padding:0 24px; } }
+/* Deck mode: hide the entire top chrome (topbar + meta-strip + ribbon) for a   */
+/* clean investor-facing slide register. The floating .deck-exit chip remains   */
+/* visible so the viewer can return to Terminal mode.                            */
+body.mode-deck .topbar     { display:none; }
 body.mode-deck .meta-strip { display:none; }
+body.mode-deck { padding-top:0 !important; }
 .ms-seg {
   font-family:var(--sans); font-size:9px; font-weight:500;
   letter-spacing:0.18em; text-transform:uppercase;
@@ -176,6 +181,9 @@ body.mode-deck     #modeToggleInline .ms-toggle-label-deck     { display:inline;
 body.mode-no-ribbon #ribbonToggle    .ms-toggle-label-on  { display:none; }
 body.mode-no-ribbon #ribbonToggle    .ms-toggle-label-off { display:inline; color:var(--red); }
 
+/* Hide TICKER toggle when ribbon is already hidden by deck mode (avoid confusion) */
+body.mode-deck #ribbonToggle { display:none; }
+
 /* Ribbon ticker (32px) · hidden in deck mode via body.mode-deck */
 .ribbon{
   position:fixed; top:calc(var(--topbar-h) + var(--meta-h)); left:0; right:0;
@@ -188,6 +196,25 @@ body.mode-no-ribbon #ribbonToggle    .ms-toggle-label-off { display:inline; colo
   transition: opacity 0.2s ease;
 }
 body.mode-deck .ribbon { display:none; }
+body.mode-no-ribbon .ribbon { display:none; }
+
+/* Floating EXIT DECK chip — appears only in deck mode, top-right corner */
+.deck-exit{
+  display:none;
+  position:fixed; top:18px; right:18px; z-index:9999;
+  align-items:center; gap:8px;
+  background:rgba(20,45,35,0.92);
+  border:1px solid var(--border);
+  padding:6px 12px;
+  font-family:var(--sans); font-size:9px; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--cream-dim);
+  cursor:pointer; user-select:none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.deck-exit:hover { color:var(--cream); border-color:var(--accent); }
+.deck-exit .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; }
+body.mode-deck .deck-exit { display:inline-flex; }
 .ribbon-track{
   display:flex; gap:48px; white-space:nowrap;
   animation: ribbon-scroll 90s linear infinite;
@@ -454,12 +481,16 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 
 /* ── ATTRIBUTION FOOTER ── */
 .attr-footer{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
   background:#0d1f17;
   border-top:none;
-  padding:36px 48px;
 }
+.attr-footer-inner{
+  max-width:var(--page-max); margin:0 auto;
+  padding:36px var(--rail);
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+}
+@media (max-width:768px){ .attr-footer-inner{ padding:36px 24px; } }
 .attr-col{
   display:flex;
   flex-direction:column;
@@ -503,12 +534,14 @@ body.mode-deck .mode-chip .label-terminal { display:none; }
 
 /* ── FOOTNOTE ── */
 .footnote{
-  padding:24px 48px 48px;
+  max-width:var(--page-max); margin:0 auto;
+  padding:24px var(--rail) 48px;
   border-top:none;
   font-size:10px;font-weight:300;
   color:rgba(247,243,231,0.4);
   line-height:1.8;
 }
+@media (max-width:768px){ .footnote{ padding:24px 24px 48px; } }
 .footnote strong{color:var(--accent);font-weight:500;}
 
 /* ── Two-column dual-panel exhibits (Section IV) ── */
@@ -745,17 +778,21 @@ html{ scroll-behavior:smooth; }
  </div>
 </header>
 
+<button class="deck-exit" id="deckExit" type="button" aria-label="Exit deck mode">
+  <span class="dot"></span><span>Deck</span><span style="opacity:0.5;margin:0 4px;">→</span><span>Terminal</span>
+</button>
+
 <div class="meta-strip" aria-label="Issue metadata">
  <div class="meta-strip-inner">
-  <div class="ms-seg"><strong>Private Market Pulse</strong><span class="ms-slash">/</span>Issue 0·1 · Q2 2026</div>
+  <div class="ms-seg"><strong>Private Market Pulse</strong></div>
   <div class="ms-seg ms-controls">
     <button class="ms-toggle" id="modeToggleInline" type="button" aria-label="Toggle terminal / deck mode">
       <span class="ms-toggle-label-terminal">Terminal</span><span class="ms-toggle-label-deck">Deck</span>
     </button>
     <button class="ms-toggle" id="ribbonToggle" type="button" aria-label="Toggle ribbon">
-      <span class="ms-toggle-label-on">Ribbon · On</span><span class="ms-toggle-label-off">Ribbon · Off</span>
+      <span class="ms-toggle-label-on">Ticker · On</span><span class="ms-toggle-label-off">Ticker · Off</span>
     </button>
-    <span class="ms-slash">/</span>As of <strong>9 May 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span>
+    <span class="ms-slash">/</span><strong>WK20 · MAY 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span>
   </div>
  </div>
 </div>
@@ -890,6 +927,8 @@ html{ scroll-behavior:smooth; }
   if (chip) chip.addEventListener('click', toggleMode);
   var inlineToggle = document.getElementById('modeToggleInline');
   if (inlineToggle) inlineToggle.addEventListener('click', toggleMode);
+  var deckExitBtn = document.getElementById('deckExit');
+  if (deckExitBtn) deckExitBtn.addEventListener('click', toggleMode);
 
   // Ribbon on/off toggle (independent of terminal/deck)
   var RIBBON_KEY = 'krv-pulse-ribbon';
@@ -1707,6 +1746,7 @@ html{ scroll-behavior:smooth; }
 </div><!-- /page D -->
 
 <div class="attr-footer">
+ <div class="attr-footer-inner">
   <div class="attr-col">
     <div class="attr-label">Live Data</div>
     <a href="https://pulse.krv.co" class="attr-link">pulse.krv.co</a>
@@ -1719,6 +1759,7 @@ html{ scroll-behavior:smooth; }
     <div class="attr-label">Powered By</div>
     <div class="attr-brand">KRAiON</div>
   </div>
+ </div>
 </div>
 
 <!-- FOOTNOTE -->
@@ -1733,7 +1774,7 @@ html{ scroll-behavior:smooth; }
   Asian Banking &amp; Finance Feb 2026. &nbsp;|&nbsp;
   CPA-to-SME ratios are estimates derived from IFAC member body data and national SME registries.
   SME lending growth data interpolated from central bank quarterly publications. &nbsp;|&nbsp;
-  <strong>KRV &amp; Co. Internal Research · Confidential · April 2026 · www.krv.co</strong>
+  <strong>KRV &amp; Co. Internal Research · Confidential · www.krv.co</strong>
 </div>
 
 <!-- ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠
