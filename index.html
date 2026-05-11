@@ -58,10 +58,13 @@ body{
 }
 
 /* ── PAGE STRUCTURE ── */
-/* Rails match krv.co .container: 80px desktop, 40px tablet. */
-/* max-width 1440px so ultra-wide displays center the page.   */
-.page{padding:44px 80px 72px; max-width:1440px; margin:0 auto;}
-@media (max-width:768px){ .page{padding:44px 40px 72px;} }
+/* Rails: clamp(40px, 5vw, 80px) — mirrors Webflow's 5% .container rule on krv.co */
+/* max-width 1440px so ultra-wide displays center the page.                       */
+/* Inner shells inside .topbar / .meta-strip / .ribbon use the same rule so the   */
+/* wordmark left-edge always aligns with the body left-edge.                      */
+:root{ --rail: clamp(40px, 5vw, 80px); --page-max: 1440px; }
+.page{padding:44px var(--rail) 72px; max-width:var(--page-max); margin:0 auto;}
+@media (max-width:768px){ .page{padding:44px 24px 72px;} }
 .page+.page{
   border-top:none;
   padding-top:56px;
@@ -77,11 +80,16 @@ body{
   height:var(--topbar-h);
   background:var(--bg);
   border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 0 80px;
   z-index:50;
 }
-@media (max-width:768px){ .topbar{ padding:0 40px; } }
+.topbar-inner{
+  height:100%;
+  max-width:var(--page-max);
+  margin:0 auto;
+  padding: 0 var(--rail);
+  display:flex; align-items:center; justify-content:space-between;
+}
+@media (max-width:768px){ .topbar-inner{ padding:0 24px; } }
 .topbar-left,
 .topbar-right { display:flex; align-items:center; gap:0; flex-wrap:nowrap; }
 
@@ -126,11 +134,16 @@ body{
   height:var(--meta-h);
   background:var(--bg);
   border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 0 80px;
   z-index:49;
 }
-@media (max-width:768px){ .meta-strip{ padding:0 40px; } }
+.meta-strip-inner{
+  height:100%;
+  max-width:var(--page-max);
+  margin:0 auto;
+  padding: 0 var(--rail);
+  display:flex; align-items:center; justify-content:space-between;
+}
+@media (max-width:768px){ .meta-strip-inner{ padding:0 24px; } }
 body.mode-deck .meta-strip { display:none; }
 .ms-seg {
   font-family:var(--sans); font-size:9px; font-weight:500;
@@ -141,6 +154,27 @@ body.mode-deck .meta-strip { display:none; }
 .ms-seg strong { color:var(--cream); font-weight:600; }
 .ms-seg .accent { color:var(--accent); }
 .ms-slash { color:var(--accent); margin: 0 10px; font-family:var(--sans); font-weight:300; }
+
+/* Inline controls inside meta-strip — visible TERMINAL/DECK + RIBBON toggles */
+.ms-controls { display:flex; align-items:center; gap:0; }
+.ms-toggle {
+  font-family:var(--sans); font-size:9px; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--cream-dim);
+  background:transparent;
+  border:1px solid var(--border);
+  padding:4px 10px;
+  margin-right:8px;
+  cursor:pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.ms-toggle:hover { color:var(--cream); border-color:var(--accent); }
+.ms-toggle .ms-toggle-label-deck,
+.ms-toggle .ms-toggle-label-off { display:none; }
+body.mode-deck     #modeToggleInline .ms-toggle-label-terminal { display:none; }
+body.mode-deck     #modeToggleInline .ms-toggle-label-deck     { display:inline; color:var(--accent); }
+body.mode-no-ribbon #ribbonToggle    .ms-toggle-label-on  { display:none; }
+body.mode-no-ribbon #ribbonToggle    .ms-toggle-label-off { display:inline; color:var(--red); }
 
 /* Ribbon ticker (32px) · hidden in deck mode via body.mode-deck */
 .ribbon{
@@ -160,9 +194,12 @@ body.mode-deck .ribbon { display:none; }
   font-family:var(--sans);
   font-size:10px; letter-spacing:1.4px; text-transform:uppercase;
   color:var(--cream-dim);
-  padding-left:80px; /* match body .page padding for left-rail alignment */
+  /* Left rail = body rail + ultra-wide centering offset, so the first ticker  */
+  /* item appears under the wordmark on any viewport ≤ or > 1440px.            */
+  padding-left: calc( max(0px, (100vw - var(--page-max)) / 2) + var(--rail) );
 }
-@media (max-width:768px){ .ribbon-track{ padding-left:40px; } }
+@media (max-width:768px){ .ribbon-track{ padding-left: calc( max(0px, (100vw - var(--page-max)) / 2) + 24px ); } }
+body.mode-no-ribbon .ribbon { display:none; }
 .ribbon-track > span { display:inline-flex; align-items:center; gap:10px; }
 .ribbon-track > span::before {
   content:'·'; color:var(--accent); margin-right:4px; font-size:14px;
@@ -180,8 +217,9 @@ body.mode-deck .ribbon { display:none; }
 
 /* Mode-toggle chip · lower-right */
 .mode-chip{
+  display:none !important; /* superseded by inline .ms-toggle in meta-strip */
   position:fixed; right:18px; bottom:18px; z-index:9999;
-  display:flex; align-items:center; gap:8px;
+  align-items:center; gap:8px;
   background:rgba(20,45,35,0.92);
   border:1px solid var(--border);
   padding:7px 12px;
@@ -676,6 +714,7 @@ html{ scroll-behavior:smooth; }
 <!-- CHROME · sticky topbar + ticker ribbon · toggleable via T / chip / ?mode=deck -->
 <!-- ═════════════════════════════════════════════════════════════ -->
 <header class="topbar" role="banner">
+ <div class="topbar-inner">
   <div class="topbar-left">
     <a class="tb-wordmark" href="https://krv.co" aria-label="KRV&amp;Co. — home">
       <img src="assets/krv-wordmark-white.png" alt="KRV&amp;Co.">
@@ -703,11 +742,22 @@ html{ scroll-behavior:smooth; }
       </svg>
     </a>
   </div>
+ </div>
 </header>
 
 <div class="meta-strip" aria-label="Issue metadata">
+ <div class="meta-strip-inner">
   <div class="ms-seg"><strong>Private Market Pulse</strong><span class="ms-slash">/</span>Issue 0·1 · Q2 2026</div>
-  <div class="ms-seg">As of <strong>9 May 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
+  <div class="ms-seg ms-controls">
+    <button class="ms-toggle" id="modeToggleInline" type="button" aria-label="Toggle terminal / deck mode">
+      <span class="ms-toggle-label-terminal">Terminal</span><span class="ms-toggle-label-deck">Deck</span>
+    </button>
+    <button class="ms-toggle" id="ribbonToggle" type="button" aria-label="Toggle ribbon">
+      <span class="ms-toggle-label-on">Ribbon · On</span><span class="ms-toggle-label-off">Ribbon · Off</span>
+    </button>
+    <span class="ms-slash">/</span>As of <strong>9 May 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span>
+  </div>
+ </div>
 </div>
 
 <div class="ribbon" aria-label="Live market ticker" data-last-refreshed="">
@@ -835,9 +885,26 @@ html{ scroll-behavior:smooth; }
   var initial = readUrlMode() || readStoredMode() || 'terminal';
   applyMode(initial);
 
-  // Chip click
+  // Chip click (legacy, hidden) + inline meta-strip toggle
   var chip = document.getElementById('modeChip');
   if (chip) chip.addEventListener('click', toggleMode);
+  var inlineToggle = document.getElementById('modeToggleInline');
+  if (inlineToggle) inlineToggle.addEventListener('click', toggleMode);
+
+  // Ribbon on/off toggle (independent of terminal/deck)
+  var RIBBON_KEY = 'krv-pulse-ribbon';
+  function applyRibbon(state){
+    if (state === 'off') body.classList.add('mode-no-ribbon');
+    else body.classList.remove('mode-no-ribbon');
+    try { localStorage.setItem(RIBBON_KEY, state); } catch(_){}
+  }
+  var ribbonInitial = 'on';
+  try { var rs = localStorage.getItem(RIBBON_KEY); if (rs === 'off') ribbonInitial = 'off'; } catch(_){}
+  applyRibbon(ribbonInitial);
+  var ribbonBtn = document.getElementById('ribbonToggle');
+  if (ribbonBtn) ribbonBtn.addEventListener('click', function(){
+    applyRibbon(body.classList.contains('mode-no-ribbon') ? 'on' : 'off');
+  });
 
   // Keyboard: T toggles, ? flashes help
   var help = document.getElementById('kbdHelp');
