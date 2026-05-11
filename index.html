@@ -201,8 +201,9 @@ body.mode-no-ribbon .ribbon { display:none; }
 /* Tiny mode glyph — anchored to the dot-rail column, sits directly above the   */
 /* first bullet hole. Same X-position as .deck-nav for visual column alignment. */
 .mode-glyph{
-  width:14px; height:14px;
-  display:inline-flex; align-items:center; justify-content:center;
+  /* Box matches dot width (7px) so glyph centerline = dot centerline. */
+  width:7px; height:10px;
+  display:flex; align-items:center; justify-content:center;
   background:transparent;
   border:none;
   font-family:var(--sans);
@@ -210,10 +211,11 @@ body.mode-no-ribbon .ribbon { display:none; }
   letter-spacing:0; line-height:1;
   color:var(--cream-dim);
   cursor:pointer; user-select:none;
-  padding:0; margin:0 0 6px 0;
+  padding:0; margin:0 0 8px 0;
   pointer-events:auto;
   transition: color 0.15s ease;
   align-self:center;
+  overflow:visible;
 }
 .mode-glyph:hover { color:var(--cream); }
 .mode-glyph .mg-letter { line-height:1; }
