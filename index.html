@@ -36,13 +36,15 @@
   --sans:  'articulat-cf', 'Inter', sans-serif;
 
   /* ── chrome ─────────────────────────────────────────────── */
-  --topbar-h: 44px;
+  /* Unified KRV.co-style chrome: nav (72) + meta strip (28) + ribbon (32) = 132 */
+  --topbar-h: 72px;
+  --meta-h:   28px;
   --ribbon-h: 32px;
-  --chrome-h: 76px; /* topbar (44) + ribbon (32) */
+  --chrome-h: 132px;
 }
 
-/* In deck mode, the ribbon is hidden and the chrome height collapses */
-body.mode-deck { --ribbon-h: 0px; --chrome-h: 44px; }
+/* In deck mode, ribbon + meta strip are hidden; only the nav remains */
+body.mode-deck { --ribbon-h: 0px; --meta-h: 0px; --chrome-h: 72px; }
 html{scroll-behavior:smooth;}
 body{
   background:var(--bg);
@@ -68,50 +70,81 @@ body{
 /* ═════════════════════════════════════════════════════════════ */
 /* CHROME · KRV OS-style topbar + ribbon ticker (Bloomberg / FT register) */
 /* ═════════════════════════════════════════════════════════════ */
+/* ── Unified KRV.co nav · dark-mode inversion ─────────────── */
+/* Full-bleed fixed bar; padding 80px matches body .page rails. */
 .topbar{
   position:fixed; top:0; left:0; right:0;
   height:var(--topbar-h);
   background:var(--bg);
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
-  /* Padding matches body .page padding so masthead and meta sit on  */
-  /* the same vertical rails as page content. krv.co parity: 80px.   */
   padding: 0 80px;
   z-index:50;
 }
 @media (max-width:768px){ .topbar{ padding:0 40px; } }
-/* Topbar: single row — masthead + section + meta, all separated by accent slashes ("/") */
-.topbar-left  { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; min-width:0; }
-.topbar-right { display:flex; align-items:baseline; gap:0; flex-wrap:nowrap; }
-.tb-line-1 {
-  font-family:var(--serif); font-style:italic;
-  font-size:14px; color:var(--cream); line-height:1;
+.topbar-left,
+.topbar-right { display:flex; align-items:center; gap:0; flex-wrap:nowrap; }
+
+/* Wordmark · user-provided KRV&Co. asset, recolored pure white */
+.tb-wordmark { display:inline-flex; align-items:center; line-height:0; }
+.tb-wordmark img { display:block; height:22px; width:auto; }
+
+/* Primary nav links */
+.tb-nav { display:flex; align-items:center; gap:32px; }
+.tb-nav a {
+  font-family:var(--sans); font-size:11px; font-weight:500;
+  letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--cream); text-decoration:none;
+  transition: color 0.15s ease;
   white-space:nowrap;
 }
-.tb-line-1 .slash { color:var(--accent); margin: 0 8px; font-style:normal; font-family:var(--sans); font-weight:300; }
-.tb-line-1 .ital   { font-style:italic; }
-.tb-line-1 .roman  { font-family:var(--sans); font-style:normal; font-weight:500; letter-spacing:0.04em; }
-/* Section / meta segment that lives on the same row as the masthead */
-.tb-seg {
+.tb-nav a:hover { color:var(--accent-lt); }
+.tb-nav a.is-active { color:var(--accent); }
+.tb-nav a.is-active:hover { color:var(--accent); }
+
+/* Vertical divider between nav and icon cluster */
+.tb-divider {
+  width:1px; height:18px;
+  background: rgba(247,243,231,0.18);
+  margin: 0 24px;
+}
+
+/* Search / Account icons */
+.tb-icon {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:32px; height:32px;
+  color:var(--cream);
+  text-decoration:none;
+  transition: color 0.15s ease;
+}
+.tb-icon:hover { color:var(--accent-lt); }
+.tb-icon svg { display:block; width:16px; height:16px; }
+
+/* ── Meta strip (issue + as-of) · sits below nav, above ribbon ── */
+.meta-strip{
+  position:fixed; top:var(--topbar-h); left:0; right:0;
+  height:var(--meta-h);
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 80px;
+  z-index:49;
+}
+@media (max-width:768px){ .meta-strip{ padding:0 40px; } }
+body.mode-deck .meta-strip { display:none; }
+.ms-seg {
   font-family:var(--sans); font-size:9px; font-weight:500;
-  letter-spacing:0.18em; text-transform:uppercase; color:var(--cream-dim);
-  white-space:nowrap;
-  position:relative; top:-1px; /* visual baseline kiss against italic serif */
-}
-.tb-seg strong { color:var(--cream); font-weight:600; }
-.tb-seg .accent { color:var(--accent); }
-/* legacy class kept as alias so older sections still render */
-.tb-line-2 {
-  font-family:var(--sans); font-size:9px; font-weight:500;
-  letter-spacing:0.18em; text-transform:uppercase; color:var(--cream-dim);
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--cream-dim);
   white-space:nowrap;
 }
-.tb-line-2 strong { color:var(--cream); font-weight:600; }
-.tb-line-2 .accent { color:var(--accent); }
+.ms-seg strong { color:var(--cream); font-weight:600; }
+.ms-seg .accent { color:var(--accent); }
+.ms-slash { color:var(--accent); margin: 0 10px; font-family:var(--sans); font-weight:300; }
 
 /* Ribbon ticker (32px) · hidden in deck mode via body.mode-deck */
 .ribbon{
-  position:fixed; top:var(--topbar-h); left:0; right:0;
+  position:fixed; top:calc(var(--topbar-h) + var(--meta-h)); left:0; right:0;
   height:var(--ribbon-h);
   background:var(--card);
   border-bottom:1px solid var(--border);
@@ -642,14 +675,38 @@ html{ scroll-behavior:smooth; }
 <!-- ═════════════════════════════════════════════════════════════ -->
 <header class="topbar" role="banner">
   <div class="topbar-left">
-    <div class="tb-line-1"><span class="roman">KRV &amp; Co.</span><span class="slash">/</span><span class="ital">Private Market Pulse</span></div>
+    <a class="tb-wordmark" href="https://krv.co" aria-label="KRV&amp;Co. — home">
+      <img src="assets/krv-wordmark-white.png" alt="KRV&amp;Co.">
+    </a>
   </div>
   <div class="topbar-right">
-    <div class="tb-seg">As of <strong>9 May 2026</strong></div>
-    <span class="tb-line-1"><span class="slash">/</span></span>
-    <div class="tb-seg">Live · <span class="accent">pulse.krv.co</span></div>
+    <nav class="tb-nav" aria-label="Primary">
+      <a href="https://krv.co/about">About</a>
+      <a href="https://krv.co/services">Services</a>
+      <a href="https://pulse.krv.co" class="is-active" aria-current="page">Private Market Pulse</a>
+      <a href="https://krv.co/resources">Resources</a>
+      <a href="https://krv.co/contact">Contact</a>
+    </nav>
+    <div class="tb-divider" aria-hidden="true"></div>
+    <a class="tb-icon" href="https://krv.co" aria-label="Search" title="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </a>
+    <a class="tb-icon" href="#" aria-label="Account — KRV OS Dashboard (under construction)" title="KRV OS Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </a>
   </div>
 </header>
+
+<div class="meta-strip" aria-label="Issue metadata">
+  <div class="ms-seg"><strong>Private Market Pulse</strong><span class="ms-slash">/</span>Issue 0·1 · Q2 2026</div>
+  <div class="ms-seg">As of <strong>9 May 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
+</div>
 
 <div class="ribbon" aria-label="Live market ticker">
   <!-- The track is duplicated for seamless infinite scroll -->

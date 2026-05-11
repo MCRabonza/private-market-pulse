@@ -1,0 +1,77 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>PMP · Section 01 + Light Touch · Diff Review</title>
+<style>
+  body{margin:0;background:#0d1f17;color:#F7F3E7;font-family:system-ui,-apple-system,Helvetica,sans-serif;padding:32px;}
+  h1{font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:32px;margin:0 0 6px;color:#F7F3E7;}
+  .sub{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa9a3;margin-bottom:32px;}
+  h2{font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:22px;margin:36px 0 8px;color:#F7F3E7;}
+  .lab{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9aa9a3;margin-bottom:6px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .col h3{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;margin:0 0 8px;color:#4A8F7E;}
+  .col img{width:100%;display:block;border:1px solid rgba(247,243,231,0.08);}
+  .new{grid-column:1/-1;}
+  .new img{width:100%;border:2px solid #4A8F7E;}
+  .note{background:rgba(196,154,42,0.08);border-left:2px solid #C49A2A;padding:10px 14px;font-size:13px;line-height:1.55;color:#cfc6b0;font-style:italic;margin:8px 0 18px;}
+  code{background:rgba(247,243,231,0.06);padding:1px 5px;border-radius:2px;font-size:12px;color:#cfc6b0;}
+</style></head>
+<body>
+
+<h1>Private Market Pulse · Section 01 K-OPP + Light Touch</h1>
+<div class="sub">Branch · unified-design-section-01 · 2 commits · Awaiting MCR approval</div>
+
+<div class="note">
+  <strong>What changed:</strong> Two surgical interventions only.<br>
+  &nbsp;1. New Section 01 inserted at top: K-OPP Index ("The Spread No One Quotes") with 3-panel grid, 19-month trend lane, country ladder, gold-rule interpretation, and section closer.<br>
+  &nbsp;2. Sections 02–07 light-touch unify: PH/ID/VN red bars swapped to country palette (cream / gold / accent-lt). All semantic red (negative spread, critical CPA zones) preserved.<br>
+  Chrome (sticky topbar + ticker + mode chip + <code>?mode=deck</code> toggle + <code>T</code> keyboard) untouched in this diff but live in both modes shown below.
+</div>
+
+<h2>Section 01 · NEW · The K-OPP Index</h2>
+<div class="lab">Terminal mode (default · ticker visible)</div>
+<div class="row"><div class="col new"><img src="diff_section-kopp.png" alt=""></div></div>
+<div class="lab">Deck mode (clean · no ticker)</div>
+<div class="row"><div class="col new"><img src="diff_section-kopp_deck.png" alt=""></div></div>
+
+<h2>Section 02 · The Gap, Country by Country (Chart A)</h2>
+<div class="note"><strong>Light touch:</strong> Philippines bar <code>#8B2E2E</code> (red) → cream <code>#F7F3E7</code>. Indonesia <code>#8B2E2E</code> → gold <code>#C49A2A</code>. Legend updated: split "Highest gap countries" into "Philippines · highest gap" and "Indonesia · structural gap".</div>
+<div class="row">
+  <div class="col"><h3>Before · Live</h3><img src="../../pulse-live/section_0.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_chart-a.png" alt=""></div>
+</div>
+
+<h2>Section 03 · Why Banks Cannot Lend (Chart C)</h2>
+<div class="note">No code changes. Renders identically — included only for visual continuity check.</div>
+<div class="row">
+  <div class="col"><h3>Before</h3><img src="../../pulse-live/section_1.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_chart-c.png" alt=""></div>
+</div>
+
+<h2>Section 04 · The Pattern Repeats (Chart B)</h2>
+<div class="note"><strong>Light touch:</strong> Chart B Part 2 Vietnam bars <code>rgba(139,46,46,0.75)</code> (red) → <code>rgba(111,179,158,0.75)</code> (accent-lt). Vietnam now reads as a country, not a stress signal.</div>
+<div class="row">
+  <div class="col"><h3>Before</h3><img src="../../pulse-live/section_2.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_chart-b.png" alt=""></div>
+</div>
+
+<h2>Section 05 · The Capital That Can't Reach</h2>
+<div class="note">No code changes.</div>
+<div class="row">
+  <div class="col"><h3>Before</h3><img src="../../pulse-live/section_3.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_section-capital.png" alt=""></div>
+</div>
+
+<h2>Section 06 · The Inheritance Cliff</h2>
+<div class="note">No code changes.</div>
+<div class="row">
+  <div class="col"><h3>Before</h3><img src="../../pulse-live/section_4.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_section-cliff.png" alt=""></div>
+</div>
+
+<h2>Section 07 · The Accountancy Gap (Chart D)</h2>
+<div class="note">No code changes. Red gauges (CPA-to-SME critical zone) preserved — semantic red is correct here.</div>
+<div class="row">
+  <div class="col"><h3>Before</h3><img src="../../pulse-live/section_5.png" alt=""></div>
+  <div class="col"><h3>After</h3><img src="diff_chart-d.png" alt=""></div>
+</div>
+
+</body></html>

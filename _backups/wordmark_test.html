@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://use.typekit.net/lso5kkg.css">
+<style>
+  body { background:#0D1F17; color:#F7F3E7; font-family:'miller-display',serif; margin:0; padding:60px; }
+  .row { display:flex; align-items:center; gap:60px; margin-bottom:40px; padding:20px; background:#142D23; }
+  .label { font-family:'articulat-cf',sans-serif; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#4A8F7E; min-width:240px; }
+  .wm { font-family:'miller-display',serif; color:#F7F3E7; line-height:1; }
+  .wm-roman { font-weight:400; font-style:normal; }
+  .wm-medium { font-weight:500; font-style:normal; }
+  .wm-bold { font-weight:700; font-style:normal; }
+  .wm-italic { font-style:italic; }
+  .size-32 { font-size:32px; }
+  .size-40 { font-size:40px; }
+  .size-48 { font-size:48px; }
+  /* Variant: sans KRV + serif &Co. — try to match the actual logo */
+  .wm-mixed-sans { display:inline; }
+  .wm-mixed-sans .krv { font-family:'articulat-cf',sans-serif; font-weight:500; letter-spacing:-0.01em; }
+  .wm-mixed-sans .co { font-family:'miller-display',serif; font-weight:400; }
+  .wm-mixed-serif-roman { display:inline; }
+  .wm-mixed-serif-roman .krv { font-family:'miller-display',serif; font-weight:400; font-style:normal; }
+  .wm-mixed-serif-roman .co { font-family:'miller-display',serif; font-weight:400; font-style:normal; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="label">A · Miller Roman 400</div><div class="wm wm-roman size-40">KRV&amp;Co.</div></div>
+  <div class="row"><div class="label">B · Miller Medium 500</div><div class="wm wm-medium size-40">KRV&amp;Co.</div></div>
+  <div class="row"><div class="label">C · Miller Bold 700</div><div class="wm wm-bold size-40">KRV&amp;Co.</div></div>
+  <div class="row"><div class="label">D · Mixed: sans KRV + Miller &amp;Co.</div><div class="wm size-40 wm-mixed-sans"><span class="krv">KRV</span><span class="co">&amp;Co.</span></div></div>
+  <div class="row"><div class="label">E · Mixed: Miller Roman both</div><div class="wm size-40 wm-mixed-serif-roman"><span class="krv">KRV</span><span class="co">&amp;Co.</span></div></div>
+</body>
+</html>
