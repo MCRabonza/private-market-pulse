@@ -1,30 +1,114 @@
 {
-  "schema_version": "1.0",
-  "last_refreshed_utc": "2026-05-11T07:00:00Z",
-  "last_refreshed_label": "11 May 2026 · 14:00 ICT",
+  "schema_version": "1.1",
+  "last_refreshed_utc": "2026-05-13T11:05:37Z",
+  "last_refreshed_label": "13 May 2026 \u00b7 18:05 ICT",
   "items": [
-    { "id": "thb",     "label": "THB / USD",     "value": "31.45",    "delta_pct": 1.2,  "delta_unit": "MoM" },
-    { "id": "php",     "label": "PHP / USD",     "value": "61.57",    "delta_pct": -0.4, "delta_unit": "MoM" },
-    { "id": "idr",     "label": "IDR / USD",     "value": "17,449",   "delta_pct": -2.1, "delta_unit": "MoM" },
-    { "id": "vnd",     "label": "VND / USD",     "value": "25,510",   "delta_pct": -0.6, "delta_unit": "MoM" },
-    { "id": "set",     "label": "SET",           "value": "1,500.36", "delta_pct": -2.4, "delta_unit": "MoM" },
-    { "id": "psei",    "label": "PSEi",          "value": "5,949.14", "delta_pct": -7.4, "delta_unit": "MoM" },
-    { "id": "jci",     "label": "JCI",           "value": "6,969.40", "delta_pct": -4.6, "delta_unit": "MoM" },
-    { "id": "vnindex", "label": "VN-Index",      "value": "1,261.85", "delta_pct": 0.9,  "delta_unit": "MoM" },
-    { "id": "bot",     "label": "BoT",           "value": "1.00%",    "delta_bps": -25,  "delta_unit": "bps" },
-    { "id": "bsp",     "label": "BSP",           "value": "4.25%",    "delta_bps": -25,  "delta_unit": "bps" },
-    { "id": "bi",      "label": "BI",            "value": "4.75%",    "delta_bps": 0,    "delta_unit": "bps" },
-    { "id": "sbv",     "label": "SBV",           "value": "4.50%",    "delta_bps": 0,    "delta_unit": "bps" },
-    { "id": "us10y",   "label": "US 10Y",        "value": "4.31%",    "delta_bps": -12,  "delta_unit": "bps" },
-    { "id": "dxy",     "label": "DXY",           "value": "98.74",    "delta_pct": -1.8, "delta_unit": "MoM" },
-    { "id": "emcorp",  "label": "EM Corp OAS",   "value": "152 bps",  "delta_bps": -5,   "delta_unit": "bps" }
+    {
+      "id": "thb",
+      "label": "THB / USD",
+      "value": "32.34",
+      "delta_pct": 1.0,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "php",
+      "label": "PHP / USD",
+      "value": "61.36",
+      "delta_pct": 2.1,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "idr",
+      "label": "IDR / USD",
+      "value": "17,460",
+      "delta_pct": 2.2,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "vnd",
+      "label": "VND / USD",
+      "value": "26,299",
+      "delta_pct": -0.1,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "set",
+      "label": "SET",
+      "value": "1,517.26",
+      "delta_pct": 3.6,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "jci",
+      "label": "JCI",
+      "value": "6,723.32",
+      "delta_pct": -10.4,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "bot",
+      "label": "BoT",
+      "value": "1.00%",
+      "delta_bps": -25,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "bsp",
+      "label": "BSP",
+      "value": "4.25%",
+      "delta_bps": -25,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "bi",
+      "label": "BI",
+      "value": "4.75%",
+      "delta_bps": 0,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "sbv",
+      "label": "SBV",
+      "value": "4.50%",
+      "delta_bps": 0,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "us10y",
+      "label": "US 10Y",
+      "value": "4.46%",
+      "delta_bps": 17,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "dxy",
+      "label": "DXY",
+      "value": "98.48",
+      "delta_pct": 0.4,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "cemb",
+      "label": "EM CORP",
+      "value": "45.68",
+      "delta_pct": 0.2,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "hyem",
+      "label": "EM HY",
+      "value": "20.11",
+      "delta_pct": 0.5,
+      "delta_unit": "MoM"
+    }
   ],
   "sources": {
-    "fx": "Bank of Thailand / BSP / BI / SBV reference rates + Yahoo Finance fallback",
-    "indices": "SET / PSE / IDX / HOSE official close",
-    "policy_rates": "BoT MPC / BSP MB / BI / SBV official releases",
-    "us10y": "FRED DGS10",
-    "dxy": "ICE U.S. Dollar Index",
-    "emcorp": "FRED BAMLEMCBPIOAS"
+    "fx": "Yahoo Finance",
+    "indices": "Yahoo Finance (^SET.BK, ^JKSE)",
+    "policy_rates": "BoT MPC / BSP MB / BI / SBV official releases (agent-maintained on MPC dates)",
+    "us10y": "Yahoo Finance ^TNX",
+    "dxy": "Yahoo Finance DX-Y.NYB",
+    "emcorp": "Yahoo Finance CEMB (iShares JPM EM Corporate Bond ETF)",
+    "emhy": "Yahoo Finance HYEM (VanEck EM High Yield Bond ETF)"
   }
 }
