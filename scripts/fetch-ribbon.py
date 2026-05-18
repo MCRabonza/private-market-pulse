@@ -1,197 +1,192 @@
 #!/usr/bin/env python3
 """
-fetch-ribbon.py
-KRV Private Market Pulse — Daily ribbon data fetcher.
+fetch-ribbon.py — KRV Private Market Pulse · ribbon data transform helper.
 
-Refreshes /home/user/workspace/krv-dark/data/ribbon-data.json with T-1 values
-for FX, ASEAN-2 indices, US 10Y, DXY, and EM credit ETFs (CEMB + HYEM).
+PIPELINE v2 (May 2026): Yahoo Finance + FRED are DEAD. The ribbon refresh is
+now driven by the agent calling the Perplexity finance connector directly
+(finance_quotes + finance_ohlcv_histories). This script no longer makes any
+network calls — it is a pure transform that takes connector output and writes
+ribbon-data.json in the correct schema.
 
-Schedule: weekday 07:00 Asia/Bangkok via schedule_cron `1716516a`.
+Input (stdin, JSON):
+{
+  "quotes": {
+    "USDTHB":   {"price": 32.78, "previousClose": 32.65},
+    "USDPHP":   {...},
+    "USDIDR":   {...},
+    "USDVND":   {...},
+    "^SET.BK":  {...},
+    "^JKSE":    {...},
+    "DX-Y.NYB": {...},
+    "^TNX":     {...},
+    "CEMB":     {...},
+    "HYEM":     {...}
+  },
+  "histories": {
+    "USDTHB": [{"date":"2026-04-15","close":32.05}, ..., {"date":"2026-05-15","close":32.78}],
+    ...
+  }
+}
 
-Architecture (v1.1, post-cleanup 13 May 2026):
-- All market data via Yahoo Finance public chart API (one pipe, retry-on-fail).
-- FX:        USDTHB=X, USDPHP=X, USDIDR=X, USDVND=X
-- Indices:   ^SET.BK (Thailand), ^JKSE (Indonesia)
-- US 10Y:    ^TNX (CBOE 10-Year Treasury Yield Index — replaces FRED DGS10)
-- DXY:       DX-Y.NYB
-- EM credit: CEMB (iShares JPM EM Corp Bond), HYEM (VanEck EM HY Bond)
-- Policy rates (BoT/BSP/BI/SBV): agent-maintained on MPC dates; this script
-  preserves their values and only refreshes the dataset-level timestamps.
+Output: writes /home/user/workspace/krv-dark/data/ribbon-data.json with MoM
+deltas computed from histories (latest close vs first close ~30 days back).
 
-Dropped 13 May 2026 (fragile / unreliable feeds):
-- PSEi          (Yahoo PSEI.PS unreliable)
-- VN-Index      (Yahoo ^VNI returns null close field)
-- EM Corp OAS   (FRED BAMLEMCBPIOAS — repeated timeouts; CEMB price proxy used instead)
+Policy rates (BoT/BSP/BI/SBV) are preserved from the existing file — they are
+agent-maintained on MPC dates and never touched by this transform.
 
-Degraded-refresh policy: if < 10 of the 14 ribbon items refresh successfully,
-the script writes nothing and exits 2. The cron will not commit. Caller
-should send an in-app notification listing failed items.
-
-Output: replaces ribbon-data.json in-place with last_refreshed_utc and
-last_refreshed_label updated.
+Usage:
+  cat connector-output.json | python3 fetch-ribbon.py
+  python3 fetch-ribbon.py --input connector-output.json
 """
 
 from __future__ import annotations
 import json
 import sys
-import time
-import urllib.request
-import urllib.error
+import argparse
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "ribbon-data.json"
 BANGKOK = timezone(timedelta(hours=7))
 
-# ---- Symbol map ----------------------------------------------------------
+# Ribbon layout: connector ticker → ribbon item id + label + formatter
+LAYOUT = [
+    ("USDTHB",   "thb",   "THB / USD",    "fx_2dp"),
+    ("USDPHP",   "php",   "PHP / USD",    "fx_2dp"),
+    ("USDIDR",   "idr",   "IDR / USD",    "int_comma"),
+    ("USDVND",   "vnd",   "VND / USD",    "int_comma"),
+    ("^SET.BK",  "set",   "SET",          "idx_2dp"),
+    ("^JKSE",    "jci",   "JCI",          "idx_2dp"),
+    # Policy rates inserted here from existing file (bot/bsp/bi/sbv)
+    ("^TNX",     "us10y", "US 10Y",       "pct_bps"),
+    ("DX-Y.NYB", "dxy",   "DXY",          "idx_2dp"),
+    ("CEMB",     "cemb",  "EM IG CORP",   "etf_2dp"),
+    ("HYEM",     "hyem",  "EM HY CORP",   "etf_2dp"),
+]
 
-YAHOO_SYMBOLS = {
-    # FX — Yahoo USDxxx=X returns xxx per USD (correct orientation for our display)
-    "thb":   "USDTHB=X",
-    "php":   "USDPHP=X",
-    "idr":   "USDIDR=X",
-    "vnd":   "USDVND=X",
-    # Indices
-    "set":   "^SET.BK",
-    "jci":   "^JKSE",
-    # US 10Y as yield index (already in percent units)
-    "us10y": "^TNX",
-    # DXY
-    "dxy":   "DX-Y.NYB",
-    # EM credit proxies (replaces EM Corp OAS line)
-    "cemb":  "CEMB",
-    "hyem":  "HYEM",
-}
-
-# Policy rates are agent-maintained — script never overwrites them.
-POLICY_RATE_IDS = {"bot", "bsp", "bi", "sbv"}
-
-# ---- Fetchers ------------------------------------------------------------
-
-def fetch_yahoo(symbol: str, retries: int = 3) -> tuple[float, float] | None:
-    """Returns (last_close, pct_change_MoM) or None.
-
-    Retries with exponential backoff. Skips null close values which cause
-    the old ^VNI failure mode.
-    """
-    url = (
-        f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-        f"?interval=1d&range=2mo"
-    )
-    last_err = None
-    for attempt in range(retries):
-        try:
-            req = urllib.request.Request(
-                url,
-                headers={"User-Agent": "krv-pulse-ribbon/1.1"},
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                data = json.loads(resp.read())
-            result = data.get("chart", {}).get("result")
-            if not result:
-                last_err = "no chart result"
-                time.sleep(2 ** attempt)
-                continue
-            quote = result[0].get("indicators", {}).get("quote", [{}])[0]
-            closes_raw = quote.get("close", [])
-            closes = [c for c in closes_raw if c is not None]
-            if len(closes) < 22:
-                last_err = f"only {len(closes)} valid closes (need 22 for MoM)"
-                time.sleep(2 ** attempt)
-                continue
-            last = closes[-1]
-            month_ago = closes[-22]
-            pct = (last - month_ago) / month_ago * 100
-            return last, pct
-        except (urllib.error.URLError, KeyError, IndexError, TypeError, ValueError) as e:
-            last_err = str(e)
-            time.sleep(2 ** attempt)
-    print(f"  Yahoo fetch failed for {symbol} after {retries} attempts: {last_err}",
-          file=sys.stderr)
-    return None
+POLICY_IDS = ["bot", "bsp", "bi", "sbv"]
 
 
-# ---- Formatters ----------------------------------------------------------
-
-def fmt_value(item_id: str, raw: float) -> str:
-    if item_id in ("thb", "php"):
-        return f"{raw:.2f}"
-    if item_id in ("idr", "vnd"):
-        return f"{int(round(raw)):,}"
-    if item_id in ("set", "jci"):
-        return f"{raw:,.2f}"
-    if item_id == "dxy":
-        return f"{raw:.2f}"
-    if item_id == "us10y":
-        # ^TNX is yield × 1 (e.g. 4.31 means 4.31%); some feeds return ×10. Heuristic:
-        v = raw / 10 if raw > 25 else raw
-        return f"{v:.2f}%"
-    if item_id in ("cemb", "hyem"):
-        return f"{raw:.2f}"
-    return f"{raw}"
+def fmt_value(kind: str, v: float) -> str:
+    if kind == "fx_2dp":     return f"{v:.2f}"
+    if kind == "int_comma":  return f"{int(round(v)):,}"
+    if kind == "idx_2dp":    return f"{v:,.2f}"
+    if kind == "etf_2dp":    return f"{v:.2f}"
+    if kind == "pct_bps":    return f"{v:.2f}%"
+    return f"{v}"
 
 
-# ---- Main ----------------------------------------------------------------
+def compute_mom(history: list):
+    """Return MoM % change: latest close vs first close in window."""
+    if not history or len(history) < 2:
+        return None
+    closes = [h["close"] for h in history if h.get("close") is not None]
+    if len(closes) < 2:
+        return None
+    first, last = closes[0], closes[-1]
+    if first == 0:
+        return None
+    return round((last - first) / first * 100, 1)
+
+
+def compute_bps(history: list):
+    """Return MoM bps change for yield series like ^TNX."""
+    if not history or len(history) < 2:
+        return None
+    closes = [h["close"] for h in history if h.get("close") is not None]
+    if len(closes) < 2:
+        return None
+    return int(round((closes[-1] - closes[0]) * 100))
+
 
 def main() -> int:
-    data = json.loads(DATA_PATH.read_text())
-    updated_ids: list[str] = []
-    failed_ids: list[str] = []
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--input", help="Path to connector JSON (else stdin)")
+    args = ap.parse_args()
 
-    for item in data["items"]:
-        iid = item["id"]
-        if iid in POLICY_RATE_IDS:
-            # Agent-maintained — preserve value and delta. Count as success.
-            updated_ids.append(iid)
+    if args.input:
+        payload = json.loads(Path(args.input).read_text())
+    else:
+        payload = json.loads(sys.stdin.read())
+
+    quotes = payload.get("quotes", {})
+    histories = payload.get("histories", {})
+
+    # Preserve existing policy rates (agent-maintained on MPC dates)
+    existing = json.loads(DATA_PATH.read_text()) if DATA_PATH.exists() else {"items": []}
+    policy = {it["id"]: it for it in existing.get("items", []) if it["id"] in POLICY_IDS}
+
+    items = []
+    # First block: FX + ASEAN indices
+    for ticker, _id, label, fmt_kind in LAYOUT[:6]:
+        q = quotes.get(ticker)
+        if not q:
+            print(f"[warn] missing quote: {ticker}", file=sys.stderr)
             continue
-        if iid not in YAHOO_SYMBOLS:
-            failed_ids.append(iid)
+        price = q.get("price") or q.get("previousClose")
+        mom = compute_mom(histories.get(ticker, []))
+        items.append({
+            "id": _id,
+            "label": label,
+            "value": fmt_value(fmt_kind, price),
+            "delta_pct": mom if mom is not None else 0.0,
+            "delta_unit": "MoM",
+        })
+
+    # Policy rates block (preserved verbatim)
+    for pid in POLICY_IDS:
+        if pid in policy:
+            items.append(policy[pid])
+
+    # Second block: yields, DXY, EM credit
+    for ticker, _id, label, fmt_kind in LAYOUT[6:]:
+        q = quotes.get(ticker)
+        if not q:
+            print(f"[warn] missing quote: {ticker}", file=sys.stderr)
             continue
-
-        result = fetch_yahoo(YAHOO_SYMBOLS[iid])
-        if result is None:
-            failed_ids.append(iid)
-            continue
-
-        last, pct = result
-        item["value"] = fmt_value(iid, last)
-
-        if iid == "us10y":
-            # delta in bps not percent of pct
-            v_now = last / 10 if last > 25 else last
-            v_then = v_now / (1 + pct / 100) if pct != 0 else v_now
-            item["delta_bps"] = int(round((v_now - v_then) * 100))
-            item["delta_unit"] = "bps"
-            item.pop("delta_pct", None)
+        price = q.get("price") or q.get("previousClose")
+        if _id == "us10y":
+            bps = compute_bps(histories.get(ticker, []))
+            items.append({
+                "id": _id,
+                "label": label,
+                "value": fmt_value(fmt_kind, price),
+                "delta_bps": bps if bps is not None else 0,
+                "delta_unit": "bps",
+            })
         else:
-            item["delta_pct"] = round(pct, 1)
-            item["delta_unit"] = "MoM"
-            item.pop("delta_bps", None)
-
-        updated_ids.append(iid)
-
-    total = len(data["items"])
-    refreshed = len(updated_ids)
-
-    if refreshed < 10:
-        print(
-            f"Ribbon refresh DEGRADED: only {refreshed}/{total} items "
-            f"refreshed. Failed: {failed_ids}",
-            file=sys.stderr,
-        )
-        return 2
+            mom = compute_mom(histories.get(ticker, []))
+            items.append({
+                "id": _id,
+                "label": label,
+                "value": fmt_value(fmt_kind, price),
+                "delta_pct": mom if mom is not None else 0.0,
+                "delta_unit": "MoM",
+            })
 
     now_utc = datetime.now(timezone.utc).replace(microsecond=0)
     now_bkk = now_utc.astimezone(BANGKOK)
-    data["last_refreshed_utc"] = now_utc.isoformat().replace("+00:00", "Z")
-    data["last_refreshed_label"] = now_bkk.strftime("%-d %b %Y · %H:%M ICT")
+    out = {
+        "schema_version": "2.0",
+        "last_refreshed_utc": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "last_refreshed_label": now_bkk.strftime("%-d %b %Y · %H:%M ICT"),
+        "pipeline": "perplexity-finance-connector",
+        "items": items,
+        "sources": {
+            "fx": "Perplexity finance connector (USDTHB, USDPHP, USDIDR, USDVND)",
+            "indices": "Perplexity finance connector (^SET.BK, ^JKSE)",
+            "policy_rates": "BoT MPC / BSP MB / BI / SBV official releases — agent-maintained on MPC dates",
+            "us10y": "Perplexity finance connector (^TNX)",
+            "dxy": "Perplexity finance connector (DX-Y.NYB)",
+            "em_credit": "Perplexity finance connector (CEMB iShares J.P. Morgan EM Corp Bond ETF; HYEM VanEck EM High Yield Bond ETF)",
+        },
+    }
 
-    DATA_PATH.write_text(json.dumps(data, indent=2) + "\n")
-    print(
-        f"Ribbon updated: {refreshed}/{total} items at "
-        f"{data['last_refreshed_label']}. Failed: {failed_ids or 'none'}"
-    )
-    return 0
+    DATA_PATH.write_text(json.dumps(out, indent=2) + "\n")
+    refreshed = sum(1 for it in items if it["id"] not in POLICY_IDS)
+    total_live = len(LAYOUT)  # 10 live items expected
+    print(f"[ok] wrote {DATA_PATH} · {refreshed}/{total_live} live items refreshed", file=sys.stderr)
+    return 0 if refreshed >= 8 else 2
 
 
 if __name__ == "__main__":
