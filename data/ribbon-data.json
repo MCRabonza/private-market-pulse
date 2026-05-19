@@ -1,28 +1,112 @@
 {
   "schema_version": "2.0",
-  "last_refreshed_utc": "2026-05-18T00:00:00Z",
-  "last_refreshed_label": "18 May 2026 · 07:00 ICT",
+  "last_refreshed_utc": "2026-05-19T00:03:37Z",
+  "last_refreshed_label": "19 May 2026 \u00b7 07:03 ICT",
   "pipeline": "perplexity-finance-connector",
   "items": [
-    { "id": "thb",     "label": "THB / USD",     "value": "32.78",    "delta_pct": 2.3,  "delta_unit": "MoM" },
-    { "id": "php",     "label": "PHP / USD",     "value": "61.70",    "delta_pct": 2.8,  "delta_unit": "MoM" },
-    { "id": "idr",     "label": "IDR / USD",     "value": "17,491",   "delta_pct": 1.9,  "delta_unit": "MoM" },
-    { "id": "vnd",     "label": "VND / USD",     "value": "26,350",   "delta_pct": 0.2,  "delta_unit": "MoM" },
-    { "id": "set",     "label": "SET",           "value": "1,517.95", "delta_pct": 1.9,  "delta_unit": "MoM" },
-    { "id": "jci",     "label": "JCI",           "value": "6,723.32", "delta_pct": -10.4,"delta_unit": "MoM" },
-    { "id": "bot",     "label": "BoT",           "value": "1.00%",    "delta_bps": -25,  "delta_unit": "bps" },
-    { "id": "bsp",     "label": "BSP",           "value": "4.25%",    "delta_bps": -25,  "delta_unit": "bps" },
-    { "id": "bi",      "label": "BI",            "value": "4.75%",    "delta_bps": 0,    "delta_unit": "bps" },
-    { "id": "sbv",     "label": "SBV",           "value": "4.50%",    "delta_bps": 0,    "delta_unit": "bps" },
-    { "id": "us10y",   "label": "US 10Y",        "value": "4.59%",    "delta_bps": 31,   "delta_unit": "bps" },
-    { "id": "dxy",     "label": "DXY",           "value": "99.31",    "delta_pct": 1.3,  "delta_unit": "MoM" },
-    { "id": "cemb",    "label": "EM IG CORP",    "value": "45.50",    "delta_pct": -0.5, "delta_unit": "MoM" },
-    { "id": "hyem",    "label": "EM HY CORP",    "value": "20.03",    "delta_pct": -0.05,"delta_unit": "MoM" }
+    {
+      "id": "thb",
+      "label": "THB / USD",
+      "value": "32.51",
+      "delta_pct": 1.4,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "php",
+      "label": "PHP / USD",
+      "value": "61.56",
+      "delta_pct": 2.9,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "idr",
+      "label": "IDR / USD",
+      "value": "17,661",
+      "delta_pct": 3.1,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "vnd",
+      "label": "VND / USD",
+      "value": "26,327",
+      "delta_pct": -0.0,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "set",
+      "label": "SET",
+      "value": "1,517.74",
+      "delta_pct": 1.9,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "jci",
+      "label": "JCI",
+      "value": "6,599.24",
+      "delta_pct": -14.0,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "bot",
+      "label": "BoT",
+      "value": "1.00%",
+      "delta_bps": -25,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "bsp",
+      "label": "BSP",
+      "value": "4.25%",
+      "delta_bps": -25,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "bi",
+      "label": "BI",
+      "value": "4.75%",
+      "delta_bps": 0,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "sbv",
+      "label": "SBV",
+      "value": "4.50%",
+      "delta_bps": 0,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "us10y",
+      "label": "US 10Y",
+      "value": "4.62%",
+      "delta_bps": 36,
+      "delta_unit": "bps"
+    },
+    {
+      "id": "dxy",
+      "label": "DXY",
+      "value": "98.92",
+      "delta_pct": 0.8,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "cemb",
+      "label": "EM IG CORP",
+      "value": "45.41",
+      "delta_pct": -0.7,
+      "delta_unit": "MoM"
+    },
+    {
+      "id": "hyem",
+      "label": "EM HY CORP",
+      "value": "19.98",
+      "delta_pct": -0.1,
+      "delta_unit": "MoM"
+    }
   ],
   "sources": {
     "fx": "Perplexity finance connector (USDTHB, USDPHP, USDIDR, USDVND)",
     "indices": "Perplexity finance connector (^SET.BK, ^JKSE)",
-    "policy_rates": "BoT MPC / BSP MB / BI / SBV official releases — agent-maintained on MPC dates",
+    "policy_rates": "BoT MPC / BSP MB / BI / SBV official releases \u2014 agent-maintained on MPC dates",
     "us10y": "Perplexity finance connector (^TNX)",
     "dxy": "Perplexity finance connector (DX-Y.NYB)",
     "em_credit": "Perplexity finance connector (CEMB iShares J.P. Morgan EM Corp Bond ETF; HYEM VanEck EM High Yield Bond ETF)"
