@@ -67,10 +67,10 @@ Until a number's row here is filled, the number is flagged as **pre-trace, audit
 |---|---|---|---|---|
 | BoT rate path | 1.75% → 1.00% | BoT MPC archive | _pending_ | Audit pending |
 | NPL trend | 3.8% → 7.2% | BoT FSR | _pending_ | Audit pending |
-| SME vs Corporate risk weight | 100% vs 20% | BCBS Basel III / BoT regulatory bulletin | _pending recovery_ | Audit pending — static reg, low refresh need |
-| Cost stack | 9.5–13.5% | KRV proprietary breakdown | _MCR-INPUT-REQUIRED_ (KRV methodology PDF) | KRV-internal; needs methodology link |
-| SME loan yield | ~9.0% | BoT lending rate statistics | _pending_ | Audit pending |
-| Net spread | −2.5% | Derived: yield − cost stack midpoint | computed | Derived |
+| SME vs Corporate risk weight | 85–100% vs 20% | [BCBS Basel III](https://www.bis.org/bcbs/basel3.htm) + [BoT capital adequacy framework](https://www.bot.or.th/en/financial-institutions/key-regulations/capital-adequacy.html); also documented in `audit/cost-stack-methodology.md` §2 Layer D | 2026-06-07 | **Verified** — static reg, low refresh need |
+| Cost stack | 9.5–13.5% | Derived: four-layer bottom-up build per `audit/cost-stack-methodology.md` v1.0 §2. Underlying provisioning layer cites [BoT Financial Stability Review Q3 2025](https://www.bot.or.th/en/research-and-publications/articles-and-publications/financial-stability-report.html) (System Stage 2 7.2%, SME Stage 3 NPL 9.35%, Stage 2 11.7% of book) | 2026-06-07 | **Verified** (closes ISSUE-002) |
+| SME loan portfolio yield | 8–10% | BoT lending rate statistics blended with non-bank SME yields per IFC ASEAN SME Finance reports; documented in `audit/cost-stack-methodology.md` §4 | 2026-06-07 | **Verified** |
+| Negative spread | −1% to −5% | Derived: yield (8–10%) minus cost stack (9.5–13.5%) per `audit/cost-stack-methodology.md` §4 | 2026-06-07 | **Verified** (derived) |
 
 ---
 
