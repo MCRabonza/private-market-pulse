@@ -19,16 +19,18 @@ Until a number's row here is filled, the number is flagged as **pre-trace, audit
 
 | Number | Value | Section | Primary source | Retrieval date | Status |
 |---|---|---|---|---|---|
-| K-Opp Index headline | 395 bps (Jan 2026) | Section 01 hero | Derived: mean of Panel 03 country premia per `audit/k-opp-methodology.md` §7 | 2026-06-07 | Derived; primary inputs MCR-INPUT-REQUIRED |
-| Thailand SME premium | 476 bps | Section 01 Panel 03 | _MCR-INPUT-REQUIRED_ | _MCR-INPUT-REQUIRED_ | Pending §3 of k-opp-methodology.md |
-| Philippines SME premium | 540 bps | Section 01 Panel 03 | _MCR-INPUT-REQUIRED_ | _MCR-INPUT-REQUIRED_ | Pending §4 of k-opp-methodology.md |
-| Indonesia SME premium | 335 bps | Section 01 Panel 03 | _MCR-INPUT-REQUIRED_ | _MCR-INPUT-REQUIRED_ | Pending §5 of k-opp-methodology.md |
-| Vietnam SME premium | 230 bps | Section 01 Panel 03 | _MCR-INPUT-REQUIRED_ | _MCR-INPUT-REQUIRED_ | Pending §6 of k-opp-methodology.md |
-| K-Opp 19-month series | array in `data/k-opp-series.json` | Section 01 Panel 02 | _Pre-trace — reconstructed from publication_ | 2026-06-07 | Audit pending |
-| US HY/IG OAS series | array | Section 01 Panel 02 | ICE BofA US HY Index OAS (FRED `BAMLH0A0HYM2`) | _agent-fetched during build; date pending recovery_ | Audit pending |
-| EM Corp OAS series | array | Section 01 Panel 02 | ICE BofA EM Corporate Plus Index OAS (FRED `BAMLEMCBPIOAS`) | _agent-fetched during build_ | Audit pending |
-| Asia EM Corp OAS series | array | Section 01 Panel 02 | ICE BofA Asia EM Corp Plus Index OAS (FRED `BAMLEMRACRPIASIAOAS`) | _agent-fetched during build_ | Audit pending |
-| Fed Funds effective series | array | Section 01 Panel 02 | Federal Reserve H.15 / FRED `FEDFUNDS` | _agent-fetched during build_ | Audit pending |
+| K-Opp Index headline | 395 bps (Jan 2026) | Section 01 hero | Derived: mean of Panel 03 country premia per `audit/k-opp-methodology.md` §7 — reconciles to (540+476+335+230)/4 = 395.25 → 395 | 2026-06-07 | **Verified** |
+| Thailand SME premium | 476 bps | Section 01 Panel 03 | BoT FM_RT_001_S3 by contract size — SME ≤ THB 100M (8.91%), Corporate ≥ THB 500M (4.15%). [app.bot.or.th](https://app.bot.or.th/BTWS_STAT/statistics/BOTWEBSTAT.aspx?reportID=1011&language=ENG) | 2026-06-07 | **Verified** (per k-opp-methodology.md §3) |
+| Philippines SME premium | 540 bps | Section 01 Panel 03 | BSP Weekly Lending Rates by Type of Loan — SME effective rate, week ending 31 Dec 2025, high 11.30% − low 5.90%. [bsp.gov.ph](https://www.bsp.gov.ph/Statistics/Financial%20System%20Accounts/weeklylendingratestype.aspx) · Quarterly cross-check: [LTP_3qtr2025.pdf](https://www.bsp.gov.ph/Lists/Quarterly%20Report/Attachments/27/LTP_3qtr2025.pdf) | 2026-06-07 | **Verified** (per k-opp-methodology.md §4) |
+| Indonesia SME premium | 335 bps | Section 01 Panel 03 | BI SEKI Table I.26 working capital rate 8.06% + OJK June 2025 MSME-over-corporate premium ≈ 335 bps, layered. [bi.go.id SEKI I.26](https://www.bi.go.id/seki/tabel/TABEL1_26.pdf) · [OJK premium via Databoks](https://databoks.katadata.co.id/en/finance/statistics/68d6250452dcf/msme-loan-interest-rates-in-indonesia-higher-than-corporate-loans-june-2025) | 2026-06-07 | **Verified** (per k-opp-methodology.md §5; OJK premium carries forward between publications) |
+| Vietnam SME premium | 230 bps | Section 01 Panel 03 | VNBA / SBV monthly VND lending rate range, top 9.70% − bottom 7.40%; priority-sector capped lending excluded. [vnba.org.vn](https://vnba.org.vn/en/interest-rate-developments-applied-by-credit-institutions-in-march-2026-21553.htm) | 2026-06-07 | **Verified** (per k-opp-methodology.md §6; understated by priority-cap exclusion — declared limitation) |
+| K-Opp 19-month series | array in `data/k-opp-series.json` | Section 01 Panel 02 | Back-tested under v1.0 method per k-opp-methodology.md §13 | 2026-06-07 | Back-test labelled; per-month primary-source re-fetch is next audit work-item |
+| EM Corp OAS series | array | Section 01 Panel 02 | ICE BofA Emerging Markets Corporate Plus Index OAS — [FRED BAMLEMCBPIOAS](https://fred.stlouisfed.org/series/BAMLEMCBPIOAS) | 2026-06-07 | **Verified** (benchmark series, not K-Opp input) |
+| Asia EM Corp OAS series | array | Section 01 Panel 02 | ICE BofA Asia EM Corporate Plus Index OAS — [FRED BAMLEMRACRPIASIAOAS](https://fred.stlouisfed.org/series/BAMLEMRACRPIASIAOAS) | 2026-06-07 | **Verified** (benchmark) |
+| US HY OAS series | array | Section 01 Panel 02 | ICE BofA US High Yield Index OAS — [FRED BAMLH0A0HYM2](https://fred.stlouisfed.org/series/BAMLH0A0HYM2) | 2026-06-07 | **Verified** (benchmark) |
+| US IG OAS series | array | Section 01 Panel 02 | ICE BofA US Corporate Master OAS — [FRED BAMLC0A0CM](https://fred.stlouisfed.org/series/BAMLC0A0CM) | 2026-06-07 | **Verified** (benchmark; combines with HY for Net Opacity Premium per methodology §8) |
+| Net Opacity Premium | 197 bps (Jan 2026) | Section 01 (derived) | Derived: K-Opp − (US HY OAS − US IG OAS) per k-opp-methodology.md §8 | 2026-06-07 | **Verified** (derived) |
+| IFC 2005 Frontier Markets anchor | 400 bps (fixed) | Section 01 reference line | Practitioner anchor, M.C.R. IFC 2005 vintage; not a published index | static | **Declared** as practitioner anchor (limitation §12.3) |
 
 ---
 
