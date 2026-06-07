@@ -965,7 +965,7 @@ html{ scroll-behavior:smooth; }
       <span class="ms-toggle-label-on">Ticker · On</span><span class="ms-toggle-label-off">Ticker · Off</span>
     </button>
   </div>
-  <div class="ms-seg"><strong>WK20 · MAY 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
+  <div class="ms-seg"><strong id="dateline-label">WK23 · JUNE 2026</strong><span class="ms-slash">/</span>Live · <span class="accent">pulse.krv.co</span></div>
  </div>
 </div>
 
@@ -978,6 +978,17 @@ html{ scroll-behavior:smooth; }
 </div>
 
 <script>
+// Dateline hydration — reads data/dateline.json (written by dateline-weekly cron).
+// Falls back silently to the literal in HTML if the JSON is missing or stale.
+(function initDateline() {
+  const EL = document.getElementById('dateline-label');
+  if (!EL) return;
+  fetch('data/dateline.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => { if (j && j.label) EL.textContent = j.label; })
+    .catch(() => {});
+})();
+
 (function initRibbon() {
   const TRACK = document.getElementById('ribbonTrack');
   if (!TRACK) return;
@@ -1177,7 +1188,7 @@ html{ scroll-behavior:smooth; }
     </div>
     <div>
       <div class="h-stat-label">ASEAN-4 SME · vs Corporate</div>
-      <div class="h-stat" style="color:var(--accent);">395 bps</div>
+      <div class="h-stat" style="color:var(--accent);" data-kopp-headline>395 bps</div>
       <div class="h-stat-sub">simple-mean spread · January 2026 · monthly cadence</div>
     </div>
   </div>
@@ -1394,19 +1405,24 @@ html{ scroll-behavior:smooth; }
 </div><!-- /#section-kopp -->
 
 <!-- ─── Section 01 K-OPP Panel 2 lane chart renderer ─── -->
+<!-- Data binding: reads data/k-opp-series.json (written by kopp-monthly cron).        -->
+<!-- Falls back to embedded literal arrays if the JSON fetch fails. Never block page.  -->
 <script>
 (function(){
-  const months = ["2024-07","2024-08","2024-09","2024-10","2024-11","2024-12",
+  // Fallback literals — last known good as of 2026-01 refresh.
+  const FALLBACK_MONTHS = ["2024-07","2024-08","2024-09","2024-10","2024-11","2024-12",
                   "2025-01","2025-02","2025-03","2025-04","2025-05","2025-06",
                   "2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01"];
-  const data = {
+  const FALLBACK_DATA = {
     asean4:  [406,402,392,383,375,366,384,377,389,379,388,389,360,358,356,387,388,398,395],
     us_hyig: [223,237,230,207,189,196,190,189,225,292,239,225,208,211,202,214,225,209,198],
     em_corp: [188,197,196,173,167,170,169,165,172,209,188,176,162,156,150,156,159,157,152],
     asia_em: [118,124,125,108,102,104,103,97,100,131,116,105,95,89,85,84,87,90,88],
-    // Fed Funds Effective Rate, monthly avg, FRED FEDFUNDS
+    // Fed Funds Effective Rate, monthly avg
     fedfunds:[5.33,5.33,5.13,4.83,4.64,4.48,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.13,4.08,3.83,3.72,3.64],
   };
+
+  function renderKopp(months, data) {
   const x0=60, x1=330;
   const xStep = (x1 - x0) / (months.length - 1);
   const yMax = 500, yTop = 50, yBot = 350;
@@ -1575,6 +1591,25 @@ html{ scroll-behavior:smooth; }
     t.textContent = `${s.label} · ${last}`;
     endLabels.appendChild(t);
   });
+  } // end renderKopp
+
+  // Try JSON first; on any error, fall through to embedded literals.
+  fetch('data/k-opp-series.json', { cache: 'no-cache' })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      if (j && j.months && j.series && j.series.asean4) {
+        renderKopp(j.months, j.series);
+        // Hydrate headline bps if present
+        if (typeof j.headline_bps === 'number') {
+          document.querySelectorAll('[data-kopp-headline]').forEach(el => {
+            el.textContent = j.headline_bps + ' bps';
+          });
+        }
+      } else {
+        renderKopp(FALLBACK_MONTHS, FALLBACK_DATA);
+      }
+    })
+    .catch(() => renderKopp(FALLBACK_MONTHS, FALLBACK_DATA));
 })();
 </script>
 

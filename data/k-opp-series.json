@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "generated_utc": "2026-01-31T00:00:00Z",
+  "headline_bps": 395,
+  "headline_label": "January 2026",
+  "cadence": "monthly",
+  "methodology_file": "audit/k-opp-methodology.md",
+  "months": [
+    "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12",
+    "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06",
+    "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12",
+    "2026-01"
+  ],
+  "series": {
+    "asean4":  [406, 402, 392, 383, 375, 366, 384, 377, 389, 379, 388, 389, 360, 358, 356, 387, 388, 398, 395],
+    "us_hyig": [223, 237, 230, 207, 189, 196, 190, 189, 225, 292, 239, 225, 208, 211, 202, 214, 225, 209, 198],
+    "em_corp": [188, 197, 196, 173, 167, 170, 169, 165, 172, 209, 188, 176, 162, 156, 150, 156, 159, 157, 152],
+    "asia_em": [118, 124, 125, 108, 102, 104, 103, 97, 100, 131, 116, 105, 95, 89, 85, 84, 87, 90, 88],
+    "fedfunds": [5.33, 5.33, 5.13, 4.83, 4.64, 4.48, 4.33, 4.33, 4.33, 4.33, 4.33, 4.33, 4.33, 4.33, 4.13, 4.08, 3.83, 3.72, 3.64]
+  },
+  "pipeline": "kopp-monthly-cron",
+  "sources": {
+    "asean4": "audit/k-opp-methodology.md — KRV derived (BoT, BSP, BI, SBV vs Fed Funds)",
+    "us_hyig": "ICE BofA US High Yield Index OAS / BAML US HY-IG vs duration-matched Treasury",
+    "em_corp": "ICE BofA Emerging Markets Corporate Plus OAS",
+    "asia_em": "ICE BofA Asia Emerging Markets Corporate Plus OAS",
+    "fedfunds": "FOMC monthly average of effective Federal Funds Rate"
+  }
+}
