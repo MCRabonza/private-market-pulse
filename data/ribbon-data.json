@@ -1,49 +1,49 @@
 {
   "schema_version": "2.0",
-  "last_refreshed_utc": "2026-06-08T00:09:05Z",
-  "last_refreshed_label": "8 Jun 2026 \u00b7 07:09 ICT",
+  "last_refreshed_utc": "2026-06-09T00:02:03Z",
+  "last_refreshed_label": "9 Jun 2026 \u00b7 07:02 ICT",
   "pipeline": "perplexity-finance-connector",
   "items": [
     {
       "id": "thb",
       "label": "THB / USD",
-      "value": "32.81",
-      "delta_pct": 0.4,
+      "value": "32.88",
+      "delta_pct": 0.9,
       "delta_unit": "MoM"
     },
     {
       "id": "php",
       "label": "PHP / USD",
-      "value": "61.72",
-      "delta_pct": 0.3,
+      "value": "61.64",
+      "delta_pct": 0.4,
       "delta_unit": "MoM"
     },
     {
       "id": "idr",
       "label": "IDR / USD",
-      "value": "18,035",
-      "delta_pct": 3.9,
+      "value": "18,166",
+      "delta_pct": 4.3,
       "delta_unit": "MoM"
     },
     {
       "id": "vnd",
       "label": "VND / USD",
-      "value": "26,270",
-      "delta_pct": -0.2,
+      "value": "26,285",
+      "delta_pct": 0.0,
       "delta_unit": "MoM"
     },
     {
       "id": "set",
       "label": "SET",
-      "value": "1,582.60",
-      "delta_pct": 6.2,
+      "value": "1,561.68",
+      "delta_pct": 4.8,
       "delta_unit": "MoM"
     },
     {
       "id": "jci",
       "label": "JCI",
-      "value": "5,594.77",
-      "delta_pct": -19.8,
+      "value": "5,342.14",
+      "delta_pct": -24.3,
       "delta_unit": "MoM"
     },
     {
@@ -77,29 +77,29 @@
     {
       "id": "us10y",
       "label": "US 10Y",
-      "value": "4.54%",
-      "delta_bps": 9,
+      "value": "4.55%",
+      "delta_bps": 13,
       "delta_unit": "bps"
     },
     {
       "id": "dxy",
       "label": "DXY",
-      "value": "100.05",
-      "delta_pct": 1.7,
+      "value": "100.04",
+      "delta_pct": 1.5,
       "delta_unit": "MoM"
     },
     {
       "id": "cemb",
       "label": "EM IG CORP",
-      "value": "45.39",
-      "delta_pct": -0.4,
+      "value": "45.36",
+      "delta_pct": -0.7,
       "delta_unit": "MoM"
     },
     {
       "id": "hyem",
       "label": "EM HY CORP",
-      "value": "20.07",
-      "delta_pct": 0.6,
+      "value": "20.08",
+      "delta_pct": 0.3,
       "delta_unit": "MoM"
     }
   ],
