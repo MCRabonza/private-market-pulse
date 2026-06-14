@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "audit_utc": "2026-06-07T15:01:30Z",
+  "audit_utc": "2026-06-14T15:01:39Z",
   "total_urls": 26,
   "summary": {
-    "200": 14,
+    "200": 16,
     "3xx": 0,
     "4xx": 7,
     "5xx": 0,
     "timeout": 1,
     "auth": 1,
-    "error": 3
+    "error": 1
   },
   "defects": [
     {
@@ -31,11 +31,6 @@
       "url": "https://www.bot.or.th/en/financial-institutions/key-regulations/capital-adequacy.html",
       "status": 404,
       "proposed_alternative": null
-    },
-    {
-      "url": "https://www.bi.go.id/en/statistik/",
-      "status": "error",
-      "error": "The read operation timed out"
     },
     {
       "url": "https://www.kemenkopukm.go.id/",
@@ -61,11 +56,6 @@
       "url": "https://www.bsp.gov.ph/SitePages/MediaAndResearch/MonetaryPolicyDecisions.aspx",
       "status": 404,
       "proposed_alternative": null
-    },
-    {
-      "url": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Default.aspx",
-      "status": "error",
-      "error": "The read operation timed out"
     }
   ],
   "redirects": [],
@@ -73,37 +63,37 @@
     {
       "url": "https://app.bot.or.th/BTWS_STAT/statistics/BOTWEBSTAT.aspx?reportID=1011&language=ENG",
       "status": 200,
-      "elapsed_ms": 1164
+      "elapsed_ms": 1038
     },
     {
       "url": "https://www.bsp.gov.ph/Statistics/Financial%20System%20Accounts/weeklylendingratestype.aspx",
       "status": 200,
-      "elapsed_ms": 348
+      "elapsed_ms": 285
     },
     {
       "url": "https://www.bsp.gov.ph/Lists/Quarterly%20Report/Attachments/27/LTP_3qtr2025.pdf",
       "status": 200,
-      "elapsed_ms": 348
+      "elapsed_ms": 225
     },
     {
       "url": "https://www.bi.go.id/seki/tabel/TABEL1_26.pdf",
       "status": 200,
-      "elapsed_ms": 746
+      "elapsed_ms": 574
     },
     {
       "url": "https://databoks.katadata.co.id/en/finance/statistics/68d6250452dcf/msme-loan-interest-rates-in-indonesia-higher-than-corporate-loans-june-2025",
       "status": 200,
-      "elapsed_ms": 1728
+      "elapsed_ms": 1434
     },
     {
       "url": "https://vnba.org.vn/en/interest-rate-developments-applied-by-credit-institutions-in-march-2026-21553.htm",
       "status": 200,
-      "elapsed_ms": 825
+      "elapsed_ms": 850
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLEMCBPIOAS",
       "status": 200,
-      "elapsed_ms": 649
+      "elapsed_ms": 381
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLEMRACRPIASIAOAS",
@@ -113,38 +103,48 @@
     {
       "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
       "status": 200,
-      "elapsed_ms": 359
+      "elapsed_ms": 304
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
       "status": 200,
-      "elapsed_ms": 478
+      "elapsed_ms": 368
     },
     {
       "url": "https://www.smefinanceforum.org/data-sites/msme-finance-gap",
       "status": 200,
-      "elapsed_ms": 338
+      "elapsed_ms": 1139
     },
     {
       "url": "https://www.bot.or.th/en/our-roles/monetary-policy/mpc-publication.html",
       "status": 200,
-      "elapsed_ms": 309
+      "elapsed_ms": 501
     },
     {
       "url": "https://www.bis.org/bcbs/basel3.htm",
       "status": 200,
-      "elapsed_ms": 466
+      "elapsed_ms": 495
+    },
+    {
+      "url": "https://www.bi.go.id/en/statistik/",
+      "status": 200,
+      "elapsed_ms": 1577
     },
     {
       "url": "https://www.oecd.org/en/publications/oecd-sme-and-entrepreneurship-outlook_25166679.html",
       "status": 403,
       "note": "auth-required",
-      "elapsed_ms": 111
+      "elapsed_ms": 52
+    },
+    {
+      "url": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Default.aspx",
+      "status": 200,
+      "elapsed_ms": 1063
     },
     {
       "url": "https://sbv.gov.vn/webcenter/portal/en/home/sbv/news/news_chitiet",
       "status": 200,
-      "elapsed_ms": 3815
+      "elapsed_ms": 4075
     }
   ]
 }
