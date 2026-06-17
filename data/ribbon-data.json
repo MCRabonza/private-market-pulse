@@ -1,49 +1,49 @@
 {
   "schema_version": "2.0",
-  "last_refreshed_utc": "2026-06-16T00:01:49Z",
-  "last_refreshed_label": "16 Jun 2026 \u00b7 07:01 ICT",
+  "last_refreshed_utc": "2026-06-17T00:06:18Z",
+  "last_refreshed_label": "17 Jun 2026 \u00b7 07:06 ICT",
   "pipeline": "perplexity-finance-connector",
   "items": [
     {
       "id": "thb",
       "label": "THB / USD",
-      "value": "32.56",
-      "delta_pct": 0.4,
+      "value": "32.51",
+      "delta_pct": 0.5,
       "delta_unit": "MoM"
     },
     {
       "id": "php",
       "label": "PHP / USD",
-      "value": "60.40",
+      "value": "60.23",
       "delta_pct": -1.8,
       "delta_unit": "MoM"
     },
     {
       "id": "idr",
       "label": "IDR / USD",
-      "value": "17,714",
-      "delta_pct": 1.2,
+      "value": "17,715",
+      "delta_pct": 1.3,
       "delta_unit": "MoM"
     },
     {
       "id": "vnd",
       "label": "VND / USD",
-      "value": "26,230",
+      "value": "26,240",
       "delta_pct": -0.3,
       "delta_unit": "MoM"
     },
     {
       "id": "set",
       "label": "SET",
-      "value": "1,591.72",
-      "delta_pct": 7.3,
+      "value": "1,588.05",
+      "delta_pct": 4.7,
       "delta_unit": "MoM"
     },
     {
       "id": "jci",
       "label": "JCI",
       "value": "6,254.97",
-      "delta_pct": -8.8,
+      "delta_pct": -7.0,
       "delta_unit": "MoM"
     },
     {
@@ -77,29 +77,29 @@
     {
       "id": "us10y",
       "label": "US 10Y",
-      "value": "4.47%",
-      "delta_bps": 1,
+      "value": "4.43%",
+      "delta_bps": -5,
       "delta_unit": "bps"
     },
     {
       "id": "dxy",
       "label": "DXY",
-      "value": "99.66",
-      "delta_pct": 1.4,
+      "value": "99.30",
+      "delta_pct": 1.1,
       "delta_unit": "MoM"
     },
     {
       "id": "cemb",
       "label": "EM IG CORP",
-      "value": "45.71",
+      "value": "45.68",
       "delta_pct": 0.1,
       "delta_unit": "MoM"
     },
     {
       "id": "hyem",
       "label": "EM HY CORP",
-      "value": "20.17",
-      "delta_pct": 0.3,
+      "value": "20.23",
+      "delta_pct": 0.9,
       "delta_unit": "MoM"
     }
   ],
