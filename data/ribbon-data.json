@@ -1,49 +1,49 @@
 {
   "schema_version": "2.0",
-  "last_refreshed_utc": "2026-06-19T00:04:53Z",
-  "last_refreshed_label": "19 Jun 2026 \u00b7 07:04 ICT",
+  "last_refreshed_utc": "2026-06-22T00:02:04Z",
+  "last_refreshed_label": "22 Jun 2026 \u00b7 07:02 ICT",
   "pipeline": "perplexity-finance-connector",
   "items": [
     {
       "id": "thb",
       "label": "THB / USD",
-      "value": "32.77",
-      "delta_pct": 0.5,
+      "value": "32.94",
+      "delta_pct": 1.1,
       "delta_unit": "MoM"
     },
     {
       "id": "php",
       "label": "PHP / USD",
-      "value": "60.53",
-      "delta_pct": -1.8,
+      "value": "60.71",
+      "delta_pct": -1.5,
       "delta_unit": "MoM"
     },
     {
       "id": "idr",
       "label": "IDR / USD",
       "value": "17,821",
-      "delta_pct": 2.1,
+      "delta_pct": 0.9,
       "delta_unit": "MoM"
     },
     {
       "id": "vnd",
       "label": "VND / USD",
-      "value": "26,270",
-      "delta_pct": -0.3,
+      "value": "26,335",
+      "delta_pct": 0.0,
       "delta_unit": "MoM"
     },
     {
       "id": "set",
       "label": "SET",
-      "value": "1,585.06",
-      "delta_pct": 4.4,
+      "value": "1,572.50",
+      "delta_pct": 3.6,
       "delta_unit": "MoM"
     },
     {
       "id": "jci",
       "label": "JCI",
-      "value": "6,172.34",
-      "delta_pct": -6.5,
+      "value": "6,177.14",
+      "delta_pct": -6.4,
       "delta_unit": "MoM"
     },
     {
@@ -78,28 +78,28 @@
       "id": "us10y",
       "label": "US 10Y",
       "value": "4.45%",
-      "delta_bps": -14,
+      "delta_bps": -17,
       "delta_unit": "bps"
     },
     {
       "id": "dxy",
       "label": "DXY",
-      "value": "100.58",
-      "delta_pct": 1.6,
+      "value": "100.89",
+      "delta_pct": 1.9,
       "delta_unit": "MoM"
     },
     {
       "id": "cemb",
       "label": "EM IG CORP",
       "value": "45.74",
-      "delta_pct": 0.5,
+      "delta_pct": 0.7,
       "delta_unit": "MoM"
     },
     {
       "id": "hyem",
       "label": "EM HY CORP",
       "value": "20.18",
-      "delta_pct": 0.7,
+      "delta_pct": 1.0,
       "delta_unit": "MoM"
     }
   ],
