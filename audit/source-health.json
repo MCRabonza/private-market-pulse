@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "audit_utc": "2026-07-05T15:02:33Z",
+  "audit_utc": "2026-07-12T15:04:23Z",
   "total_urls": 26,
   "summary": {
     "200": 16,
@@ -63,88 +63,88 @@
     {
       "url": "https://app.bot.or.th/BTWS_STAT/statistics/BOTWEBSTAT.aspx?reportID=1011&language=ENG",
       "status": 200,
-      "elapsed_ms": 934
+      "elapsed_ms": 1161
     },
     {
       "url": "https://www.bsp.gov.ph/Statistics/Financial%20System%20Accounts/weeklylendingratestype.aspx",
       "status": 200,
-      "elapsed_ms": 305
+      "elapsed_ms": 317
     },
     {
       "url": "https://www.bsp.gov.ph/Lists/Quarterly%20Report/Attachments/27/LTP_3qtr2025.pdf",
       "status": 200,
-      "elapsed_ms": 218
+      "elapsed_ms": 219
     },
     {
       "url": "https://www.bi.go.id/seki/tabel/TABEL1_26.pdf",
       "status": 200,
-      "elapsed_ms": 3291
+      "elapsed_ms": 569
     },
     {
       "url": "https://databoks.katadata.co.id/en/finance/statistics/68d6250452dcf/msme-loan-interest-rates-in-indonesia-higher-than-corporate-loans-june-2025",
       "status": 200,
-      "elapsed_ms": 1537
+      "elapsed_ms": 1528
     },
     {
       "url": "https://vnba.org.vn/en/interest-rate-developments-applied-by-credit-institutions-in-march-2026-21553.htm",
       "status": 200,
-      "elapsed_ms": 1001
+      "elapsed_ms": 800
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLEMCBPIOAS",
       "status": 200,
-      "elapsed_ms": 374
+      "elapsed_ms": 508
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLEMRACRPIASIAOAS",
       "status": 200,
-      "elapsed_ms": 291
+      "elapsed_ms": 478
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
       "status": 200,
-      "elapsed_ms": 278
+      "elapsed_ms": 322
     },
     {
       "url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
       "status": 200,
-      "elapsed_ms": 362
+      "elapsed_ms": 429
     },
     {
       "url": "https://www.smefinanceforum.org/data-sites/msme-finance-gap",
       "status": 200,
-      "elapsed_ms": 322
+      "elapsed_ms": 318
     },
     {
       "url": "https://www.bot.or.th/en/our-roles/monetary-policy/mpc-publication.html",
       "status": 200,
-      "elapsed_ms": 560
+      "elapsed_ms": 294
     },
     {
       "url": "https://www.bis.org/bcbs/basel3.htm",
       "status": 200,
-      "elapsed_ms": 506
+      "elapsed_ms": 4348
     },
     {
       "url": "https://www.bi.go.id/en/statistik/",
       "status": 200,
-      "elapsed_ms": 1376
+      "elapsed_ms": 1370
     },
     {
       "url": "https://www.oecd.org/en/publications/oecd-sme-and-entrepreneurship-outlook_25166679.html",
       "status": 403,
       "note": "auth-required",
-      "elapsed_ms": 58
+      "elapsed_ms": 48
     },
     {
       "url": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Default.aspx",
       "status": 200,
-      "elapsed_ms": 1099
+      "elapsed_ms": 1117
     },
     {
       "url": "https://sbv.gov.vn/webcenter/portal/en/home/sbv/news/news_chitiet",
       "status": 200,
-      "elapsed_ms": 4304
+      "elapsed_ms": 4606
     }
   ]
 }
