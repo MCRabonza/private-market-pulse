@@ -2,7 +2,7 @@
 
 **Status:** v0.1 · skeleton committed to make the source-trace gap visible on `main`
 **Owner:** agent (compilation) · MCR (approval)
-**Last updated:** 2026-06-07
+**Last updated:** 2026-07-01 (Q3 2026 editorial refresh — Section 05 PH MSME credit share; Sections 03/04/06/07/08 refresh blocked by dead primary-source URLs — see Q3 2026 refresh note below)
 **Filed against:** ISSUE-001 — reproducibility files missing from `main`
 
 ---
@@ -59,6 +59,16 @@ Until a number's row here is filled, the number is flagged as **pre-trace, audit
 | Stage 2 ratio | 11.7% | BoT FSR | _pending recovery_ | Audit pending |
 | BoT policy rate (Feb 2026) | 1.00% | BoT MPC release — https://www.bot.or.th/en/our-roles/monetary-policy/mpc-publication.html | _pending recovery_ | Audit pending |
 
+### Q3 2026 refresh notes (added 2026-07-01, `pulse/quarterly-draft-2026Q3`)
+
+| Signal | Value | Primary source | Retrieval date | Status |
+|---|---|---|---|---|
+| SMEs operating at loss / NPL-risk (Thai SME Federation) | rose from 18% (Q4 2025) to 22% (Q1 2026) | Thai SME Federation via [en.thairath.co.th 2026-06-20](https://en.thairath.co.th/news/society/2940815) — Saengchai Theerakulwanich, Honorary Chairman & Strategy Chairman | 2026-07-01 | **Fresh** — practitioner survey signal, not BoT ratio; needs MCR sign-off on whether to add to Section 03 |
+| SME lending rate ≤THB 100M (Jan 2026 p) | 8.57% | BoT [FM_RT_001_S3](https://app.bot.or.th/BTWS_STAT/statistics/BOTWEBSTAT.aspx?reportID=1011&language=ENG) | 2026-07-01 | **Fresh** — matches kopp-monthly fetch |
+| Corporate lending rate ≥THB 500M (Jan 2026 p) | 3.89% | BoT [FM_RT_001_S3](https://app.bot.or.th/BTWS_STAT/statistics/BOTWEBSTAT.aspx?reportID=1011&language=ENG) | 2026-07-01 | **Fresh** — matches kopp-monthly fetch |
+| BoT SME loan commentary (Q2 2026) | "SME loans continue to contract" | [Krungsri Research Flash 2026-06-24](https://www.krungsri.com/en/research/macroeconomic/research-flash/flash-20260624) | 2026-07-01 | Contextual — supports −4.1% Q4 2025 headline direction |
+| BOT SME Boost / SME Secure+ programs | THB 5.4B approved in first ~2 months; BoT projects THB 80B new approvals H2 2026 | [en.thairath.co.th 2026-06-05](https://en.thairath.co.th/money/experts_pool/columnist/2937679) | 2026-07-01 | Fresh signal — could feed a Section 03 sidebar |
+
 ---
 
 ## 4. Section 04 — The Rate Paradox
@@ -82,7 +92,10 @@ Until a number's row here is filled, the number is flagged as **pre-trace, audit
 | Indonesia total banking credit growth | +9.37% | BI SEKI | _pending recovery_ | Audit pending |
 | Indonesia MSME count | 66M | Kementerian Koperasi & UKM annual report — https://www.kemenkopukm.go.id/ | _pending_ | Audit pending |
 | Indonesia MSME share of GDP | 61% | Kementerian Koperasi annual | _pending_ | Audit pending |
-| Philippines MSME credit share | 4.6% | BSP financial stability / SLS — https://www.bsp.gov.ph/SitePages/MediaAndResearch/FinancialStability.aspx | _pending_ | Audit pending |
+| Philippines MSME credit share | 4.73% (Q1 2026) | BSP data via [Inquirer 2026-06-10](https://business.inquirer.net/594559/bank-lending-to-msmes-stuck-below-ideal-levels) — "MSME loans constituted only 4.73 percent of the Philippine banking sector's total lending portfolio of P12.1 trillion, falling significantly short of the required ratio of 10 percent" | 2026-07-01 | **Refreshed Q3 2026** (was 4.6%) — BSP FinStab primary URL 404 in source audit 2026-06-28, secondary print used |
+| Indonesia banking NPL gross Apr 2026 | 2.17% | OJK RDKB Mei 2026 [ojk.go.id](https://www.ojk.go.id/id/berita-dan-kegiatan/siaran-pers/Pages/RDKB-Mei-2026.aspx) | 2026-07-01 | **Fresh Q3 2026** — context for Section 05 |
+| Indonesia MSME NPL uptick | 0.12% (Mar 2026) → 0.16% (Apr 2026) | OJK via [Jakarta Post 2026-06-07](https://www.thejakartapost.com/business/2026/06/07/loan-growth-rises-despite-persistently-weak-msme-lending-ojk) | 2026-07-01 | **Fresh Q3 2026** — MSME segment showing "modest uptick" |
+| Indonesia total banking loan growth Apr 2026 | ≈9.98% ("approaching double-digits") | OJK via [KlikPapua 2026-06-06](https://klikpapua.com/nasional/kredit-perbankan-tumbuh-998-jadi-rp8-755-triliun-ojk-tegaskan-sektor-keuangan-tetap-stabil-dan-tangguh.html) | 2026-07-01 | **Fresh Q3 2026** — refresh of the +9.37% Feb figure |
 | Philippines Magna Carta mandate | 10% | Republic Act 6977 as amended by RA 9501 | static | Static law |
 | Vietnam EuroCham BCI | 83.0 | EuroCham Vietnam quarterly publication — https://eurochamvn.org/business-confidence-index/ | _pending_ | **FLAGGED in canon — re-verify each quarter** |
 | ASEAN unmet SME credit need | 60–65% | ADB Asia SME Monitor — https://www.adb.org/publications/series/asia-sme-monitor | _pending recovery_ | Audit pending |
