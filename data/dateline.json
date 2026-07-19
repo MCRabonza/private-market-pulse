@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "generated_utc": "2026-07-12T23:56:03.560571Z",
+  "generated_utc": "2026-07-19T23:56:15.952997Z",
   "iso_year": 2026,
-  "iso_week": 29,
+  "iso_week": 30,
   "month": "July",
   "year": 2026,
-  "label": "WK29 \u00b7 JULY 2026",
+  "label": "WK30 \u00b7 JULY 2026",
   "pipeline": "dateline-weekly-cron"
 }
